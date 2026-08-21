@@ -1,5 +1,6 @@
 package com.example.foodcommand.entities;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,18 +13,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
-
-    // para criar tabela no postgress utilizar o id e generated
+public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-    public String nome;
-    public String cpf;
-    public String senha;
-    public String email;
-
-
+    public String produto;
+    public String descricao;
+    public int preco;
 
 }

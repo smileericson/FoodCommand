@@ -12,18 +12,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Mesa {
 
-    // para criar tabela no postgress utilizar o id e generated
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-    public String nome;
-    public String cpf;
-    public String senha;
-    public String email;
+    public int numero;
+    public Status status;
 
-
-
+    public enum Status {
+        LIVRE,
+        OCUPADA,
+        FECHADA
+    }
 }
