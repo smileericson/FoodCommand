@@ -22,7 +22,7 @@ public class UsuarioController {
 
     @GetMapping
     // vai ficar ao lado do usuario vai ficar tipo um titulo,a description é a mais importante vai descrever a regra de negocio.
-    @Operation(summary = "Metodo de cosulta de lista de usuários",description = "Metodo responsavel em efetuar a consulta de todos os usuarios sem filtro")
+    @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a consulta de todos os usuarios sem filtro")
     public ResponseEntity<?> listarTodos(){
 
         List<Usuario> usuarios = List.of(new Usuario(1L,
