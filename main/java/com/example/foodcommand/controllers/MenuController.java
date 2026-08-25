@@ -2,7 +2,6 @@ package com.example.foodcommand.controllers;
 
 import com.example.foodcommand.entities.Menu;
 import com.example.foodcommand.repository.MenuRepository;
-import com.example.foodcommand.repository.PedidoRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
