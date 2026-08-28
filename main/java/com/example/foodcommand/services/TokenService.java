@@ -1,7 +1,10 @@
 package com.example.foodcommand.services;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = com.auth0.jwt.JWT.create()
                     .withIssuer(emissor)
-                    .withIssuer(subject)
+                    .withSubject(subject)
                     .withExpiresAt(getDataExpiracao())
                     .sign(algorithm);
 
@@ -40,12 +43,22 @@ public class TokenService {
         }
     }
 
+    public DecodedJWT vericarToken(String token) throws JWTVerificationException {
+
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+
+        JWTVerifier verificador = JWT.require(algorithm).withIssuer(emissor).build();
+
+        return verificador.verify(token);
+
+    }
+
     private Instant getDataExpiracao(){
         // pegar a data atual
         var dataAtual = LocalDateTime.now();
-        // adicionar ou diminuoir tempo da data atual
+        // adicionar ou diminuir tempo da data atual
         var dataFutura = dataAtual.plusMinutes(expiracao);
 
-        return dataFutura.toInstant(ZoneOffset.of("-83:00"));
+        return dataFutura.toInstant(ZoneOffset.of("-03:00"));
     }
 }

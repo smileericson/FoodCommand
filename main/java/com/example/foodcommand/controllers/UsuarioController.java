@@ -47,4 +47,5 @@ public class UsuarioController {
         var usuarioBanco =  usuarioRepository.save(usuario);
         return ResponseEntity.ok(usuarioBanco);
     }
+
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/pedidos")
 //tag
-@Tag(name="Pedidos",description = "Grupo de APIs resposanavel por controlar a estrutura e cosunta de pedidos do sistema!")
+@Tag(name="Pedidos",description = "Grupo de APIs resposanavel por controlar a estrutura e consulta de pedidos do sistema!")
 public class PedidoController {
 
     @Autowired
