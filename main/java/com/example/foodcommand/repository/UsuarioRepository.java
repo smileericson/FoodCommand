@@ -1,6 +1,6 @@
 package com.example.foodcommand.repository;
 
-import com.example.foodcommand.entities.StatusUsuario;
+import com.example.foodcommand.entities.EnumStatusUsuario;
 import com.example.foodcommand.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,5 +13,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     boolean existsUsuarioByEmailAndSenha(String email, String senha);
 
-    Optional<List<Usuario>> findByStatusNot(StatusUsuario status);
+    Optional<List<Usuario>> findByStatusNot(EnumStatusUsuario status);
 }

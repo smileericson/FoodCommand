@@ -1,7 +1,7 @@
 package com.example.foodcommand.controllers;
 
 import com.example.foodcommand.DTOs.AtualizarStatusRequest;
-import com.example.foodcommand.entities.StatusUsuario;
+import com.example.foodcommand.entities.EnumStatusUsuario;
 import com.example.foodcommand.entities.Usuario;
 import com.example.foodcommand.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public class UsuarioController {
                 "08319706939",
                 "123456",
                 "smileericson@gmail.com",
-                StatusUsuario.ATIVO));
+                EnumStatusUsuario.ATIVO));
 
         return ResponseEntity.ok(usuarioRepository.findAll());
 
@@ -41,6 +41,7 @@ public class UsuarioController {
     //acesso, saida, nome , entrada
 
     @GetMapping("/{id}")
+    @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a consulta de todos os usuarios por Id")
     public ResponseEntity<Usuario>buscarPorId(@PathVariable Long id){
         Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
         if(usuarioBanco != null ){
@@ -62,6 +63,7 @@ public class UsuarioController {
     }
 
     @PatchMapping ("/{id}/status")// serve para atualizar um dado só
+    @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a atualização de todos os usuarios por Id")
     public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusRequest statusRequest){
 
         Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
@@ -75,6 +77,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a atualização de todos os usuarios,filtrado por Id")
     public ResponseEntity<Usuario> atualizar(@PathVariable Long id,@RequestBody Usuario usuario) {
         try {
             Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
@@ -94,11 +97,12 @@ public class UsuarioController {
         }
     }
     @DeleteMapping("/{id}/excluir")
+    @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a atualização para EXCLUIDO, filtrado por Id")
     public ResponseEntity<Void> excluir(@PathVariable Long id){
 
         Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
         if(usuarioBanco != null ){
-            usuarioBanco.setStatus(StatusUsuario.EXCLUIDO);
+            usuarioBanco.setStatus(EnumStatusUsuario.EXCLUIDO);
             usuarioRepository.save((usuarioBanco));
             return  ResponseEntity.ok().build();
         }

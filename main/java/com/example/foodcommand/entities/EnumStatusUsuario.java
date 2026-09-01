@@ -1,6 +1,6 @@
 package com.example.foodcommand.entities;
 
-public enum StatusUsuario {
+public enum EnumStatusUsuario {
 
     ATIVO,
     BLOQUEADO,

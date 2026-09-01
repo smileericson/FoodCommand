@@ -1,6 +1,7 @@
 package com.example.foodcommand.DTOs;
 
-import com.example.foodcommand.entities.StatusUsuario;
 
-public record AtualizarStatusRequest(StatusUsuario status) {
+import com.example.foodcommand.entities.EnumStatusUsuario;
+
+public record AtualizarStatusRequest(EnumStatusUsuario status) {
 }

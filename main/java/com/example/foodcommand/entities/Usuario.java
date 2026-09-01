@@ -23,7 +23,7 @@ public class Usuario {
     private String cpf;
     private String senha;
     private String email;
-    private StatusUsuario status;
+    private EnumStatusUsuario status;
 
 
 

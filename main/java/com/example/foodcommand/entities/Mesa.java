@@ -19,11 +19,6 @@ public class Mesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     public int numero;
-    public Status status;
+    public EnumStatusMesa statusMesa;
 
-    public enum Status {
-        LIVRE,
-        OCUPADA,
-        FECHADA
-    }
 }
