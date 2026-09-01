@@ -17,8 +17,8 @@ public class Mesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public int numero;
-    public EnumStatusMesa statusMesa;
+    private Long id;
+    private int numero;
+    private EnumStatusMesa statusMesa;
 
 }

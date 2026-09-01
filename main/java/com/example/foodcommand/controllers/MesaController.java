@@ -1,7 +1,6 @@
 package com.example.foodcommand.controllers;
 
-import com.example.foodcommand.DTOs.AtualizarStatusRequest;
-import com.example.foodcommand.DTOs.AtualizarStatusRequestMesa;
+import com.example.foodcommand.DTOs.AtualizarStatusMesa;
 import com.example.foodcommand.entities.EnumStatusMesa;
 import com.example.foodcommand.entities.Mesa;
 import com.example.foodcommand.repository.MesaRepository;
@@ -27,6 +26,7 @@ public class MesaController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Metodo de cosulta de lista de mesas",description= "Metodo responsavel em efetuar a consulta de todos as mesas por Id")
     public ResponseEntity<Mesa>buscarPorId(@PathVariable Long id){
         Mesa usuarioBanco = mesaRepository.findById(id).orElse(null);
         if(usuarioBanco != null ){
@@ -45,7 +45,8 @@ public class MesaController {
     }
 
     @PatchMapping ("/{id}/status")// serve para atualizar um dado só
-    public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusRequestMesa statusRequest){
+    @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualização das mesas por Id")
+    public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusMesa statusRequest){
 
         Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
         if(mesaBanco != null ){
@@ -57,6 +58,7 @@ public class MesaController {
 
     }
     @PutMapping("/{id}")
+    @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualizar todas as mesas,filtrado por Id")
     public ResponseEntity<Mesa> atualizar(@PathVariable Long id,@RequestBody Mesa mesa) {
         try {
             Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
@@ -73,6 +75,7 @@ public class MesaController {
         }
     }
     @DeleteMapping("/{id}/excluir")
+    @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualização para EXCLUIDO o Status, filtrado por Id")
     public ResponseEntity<Void> excluir(@PathVariable Long id){
 
         Mesa mesaBanco = mesaRepository.findById(id).orElse(null);

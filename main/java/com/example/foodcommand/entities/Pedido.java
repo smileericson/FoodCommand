@@ -16,15 +16,11 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public int valorSubtotal;
-    public int taxaServico;
-    public int valorTotal;
-    public Status status;
+    private Long id;
+    private int valorSubtotal;
+    private int taxaServico;
+    private int valorTotal;
+    private EnumStatusPedido statusPedido;
 
-    public enum Status{
-        ATIVO,
-        CANCELADO
-    }
 
 }
