@@ -1,9 +1,9 @@
-export default function Pedidos(){
+export default function Menu(){
     return(
         <div className="min-h-screen bg-gray-100 p-6">
             <div className="mx-auto max-w-6xl">
                 <h1 className="mb-6 text-center text-3xl font-bold text-zinc-900">
-                    Meus pedidos
+                    Cardapio
                 </h1>
 
                 <link href="usuarios/novo" />
@@ -22,7 +22,7 @@ export default function Pedidos(){
                             <tbody>
                                 <tr className="transition hover:bg-orange-50">
                                     <td className="px-6 py-4 text-center text-sm font-medium text-zinc-800">
-                                        pedido01
+                                        Livre
                                     </td>
                                 </tr>
                             </tbody>
