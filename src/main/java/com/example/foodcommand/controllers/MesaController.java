@@ -2,7 +2,9 @@ package com.example.foodcommand.controllers;
 
 import com.example.foodcommand.DTOs.AtualizarStatusMesa;
 import com.example.foodcommand.entities.EnumStatusMesa;
+import com.example.foodcommand.entities.EnumStatusUsuario;
 import com.example.foodcommand.entities.Mesa;
+import com.example.foodcommand.entities.Usuario;
 import com.example.foodcommand.repository.MesaRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/mesa")
@@ -22,6 +26,8 @@ public class MesaController {
     @GetMapping
     @Operation(summary = "Metodo de consulta de mesas",description = "Metodo responsavel em efetuar a consulta de todas as mesas sem filtro")
     private ResponseEntity<?>listarTodos(){
+        List<Mesa> mesas = List.of(new Mesa(1L,1,
+                EnumStatusMesa.LIVRE));
         return ResponseEntity.ok(mesaRepository.findAll());
     }
 

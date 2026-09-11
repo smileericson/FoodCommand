@@ -1,4 +1,28 @@
+
+import { Pedido } from "@/app/types/pedido";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 export default function Pedidos(){
+
+    const [pedidos, setPedidos] = useState<Pedido[]>([]);
+
+    useEffect(() => {
+        carregarPedidos();
+    }, []);
+
+    const carregarPedidos = async () => {
+
+        try {
+            const dados = await axios.get<Pedido[]>("http://localhost:8080/pedidos");
+
+            setPedidos(dados.data);
+        } catch (error) {
+            alert("Erro ao carregar dados!")
+        }
+
+
+    }
     return(
         <div className="min-h-screen bg-gray-100 p-6">
             <div className="mx-auto max-w-6xl">
