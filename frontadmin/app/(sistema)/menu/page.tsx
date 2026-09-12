@@ -1,14 +1,15 @@
 "use client"
 
 
-import { Mesa } from "@/app/types/mesa";
-import axios from "axios"
+
+import { Item } from "@/app/types/item";
+import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function Mesas() {
+export default function Menu() {
 
-    const [mesas, setMesas] = useState<Mesa[]>([]);
+    const [itens, setItens] = useState<Item[]>([]);
 
     useEffect(() => {
         carregarDados();
@@ -17,9 +18,9 @@ export default function Mesas() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Mesa[]>("http://localhost:8080/mesas");
+            const dados = await axios.get<Item[]>("http://localhost:8080/cardapio");
 
-            setMesas(dados.data);
+            setItens(dados.data);
         } catch (error) {
             alert("Erro ao carregar dados!")
         }
@@ -30,11 +31,11 @@ export default function Mesas() {
         <div className="min-h-screen bg-gray-100 p-6">
             <div className="mx-auto max-w-7xl">
                 <h1 className="mb-6 text-center text-3xl font-bold text-zinc-900">
-                    Gestão de Mesas
+                    Cardápio
                 </h1>
 
-                <Link href="/mesas/novo" className="mb-4 inline-block rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
-                    + Nova Mesa
+                <Link href="/cardapio/novo" className="mb-4 inline-block rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                    + Novo Item
                 </Link>
 
                 <div>
@@ -46,40 +47,60 @@ export default function Mesas() {
                                         ID
                                     </th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
-                                        Número
+                                        Nome
+                                    </th>
+                                    <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
+                                        Descrição
+                                    </th>
+                                    <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
+                                        Preço
+                                    </th>
+                                    <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
+                                        Disponível
                                     </th>
                                 </tr>
                             </thead>
 
                             <tbody>
 
-                                {mesas.map((mesa) => (
+                                {itens.map((item) => (
                                     <tr
-                                        key={mesa.id}
+                                        key={item.id}
                                         className="border-b border-zinc-200 transition hover:bg-orange-50"
                                     >
                                         <td className="px-6 py-4 text-center text-sm text-zinc-800">
-                                            {mesa.id}
+                                            {item.id}
                                         </td>
 
                                         <td className="px-6 py-4 text-center text-sm font-medium text-zinc-900">
-                                            {mesa.numero}
+                                            {item.nome}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-center text-sm text-zinc-800">
+                                            {item.descricao}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-center text-sm text-zinc-800">
+                                            {item.preco}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-center text-sm text-zinc-800">
+                                            {item.disponivel ? "Sim" : "Não"}
                                         </td>
                                     </tr>
                                 ))}
 
-                                {mesas.length === 0 &&
+                                {itens.length === 0 &&
                                 (
                                     <tr>
                                         <td
-                                            colSpan={2}
+                                            colSpan={5}
                                             className="px-6 py-12 text-center text-slate-800"
                                         >
-                                            Nenhuma mesa encontrada!
+                                            Nenhum item encontrado!
                                         </td>
                                     </tr>
                                 )}
-
                             </tbody>
                         </table>
                     </div>

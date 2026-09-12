@@ -63,7 +63,7 @@ public class MenuController {
             Menu menuBanco = menuRepository.findById(id).orElse(null);
             if (menuBanco != null) {
                 menuBanco.setStatusMenu(menu.getStatusMenu());
-                menuBanco.setProduto(menu.getProduto());
+                menuBanco.setNome(menu.getNome());
                 menuBanco.setDescricao(menu.getDescricao());
                 menuBanco.setPreco(menu.getPreco());
                 menuRepository.save((menuBanco));

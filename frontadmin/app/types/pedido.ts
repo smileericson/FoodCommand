@@ -1,9 +1,9 @@
 export class Pedido{
     constructor(
-        private id:number | null,
-        private valorSubtotal: number,
-        private taxaServico:number,
-        private valorTotal:number,
-        private status:number
+        public id:number | null,
+        public valorSubtotal: number,
+        public taxaServico:number,
+        public valorTotal:number,
+        public status:number
     ){}
 }
