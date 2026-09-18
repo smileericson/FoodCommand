@@ -27,7 +27,7 @@ export default function Mesas() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
+        <div className="bg-gray-100 p-6">
             <div className="mx-auto max-w-7xl">
                 <h1 className="mb-6 text-center text-3xl font-bold text-zinc-900">
                     Gestão de Mesas
