@@ -1,51 +1,44 @@
 import Link from "next/link";
 
-export default function UsuarioForm() {
+export default function PedidoForm() {
     return (
         <form className="space-y-6">
 
             <div>
                 <label className="mb-2 block text-center text-sm font-semibold text-zinc-700">
-                    Nome completo:
+                    Valor Subtotal
                 </label>
 
                 <input
-                    name="nome"
+                    name="valorSubtotal"
+                    type="number"
+                    step="0.01"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>
 
             <div>
                 <label className="mb-2 block text-center text-sm font-semibold text-zinc-700">
-                    CPF:
+                    Taxa de Serviço
                 </label>
 
                 <input
-                    name="CPF"
+                    name="taxaServico"
+                    type="number"
+                    step="0.01"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>
 
             <div>
                 <label className="mb-2 block text-center text-sm font-semibold text-zinc-700">
-                    E-mail:
+                    Valor Total
                 </label>
 
                 <input
-                    name="email"
-                    type="email"
-                    className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
-                />
-            </div>
-
-            <div>
-                <label className="mb-2 block text-center text-sm font-semibold text-zinc-700">
-                    Senha:
-                </label>
-
-                <input
-                    name="senha"
-                    type="password"
+                    name="valorTotal"
+                    type="number"
+                    step="0.01"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>
@@ -53,7 +46,7 @@ export default function UsuarioForm() {
             <div className="flex flex-col-reverse items-center justify-center gap-3 border-t border-zinc-200 pt-6 sm:flex-row">
 
                 <Link
-                    href="/usuarios"
+                    href="/pedidos"
                     className="w-full rounded-lg border border-zinc-300 bg-zinc-100 px-6 py-3 text-center font-semibold text-zinc-700 transition duration-200 hover:border-red-400 hover:bg-red-50 hover:text-red-600 sm:w-auto"
                 >
                     Cancelar
