@@ -16,7 +16,7 @@ export default function Pedidos() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Pedido[]>("http://localhost:8080/pedidos");
+            const dados = await axios.get<Pedido[]>("http://localhost:8080/pedido");
 
             setPedidos(dados.data);
         } catch (error) {

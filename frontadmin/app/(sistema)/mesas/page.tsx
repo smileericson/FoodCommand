@@ -16,7 +16,7 @@ export default function Mesas() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Mesa[]>("http://localhost:8080/mesas");
+            const dados = await axios.get<Mesa[]>("http://localhost:8080/mesa");
 
             setMesas(dados.data);
         } catch (error) {
