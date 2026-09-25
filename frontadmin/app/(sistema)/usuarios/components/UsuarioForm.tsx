@@ -1,16 +1,64 @@
-import Link from "next/link";
+'use client'
 
-export default function UsuarioForm() {
+import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+
+import { useState } from "react";
+
+export default function UsuarioForm({usuarioExistente}:UsuarioFormProps) {
+    const router = useRouter();
+
+    const [usuario,setUsuario] = useState<Usuario>(
+        usuarioExistente || new Usuario(null,"","","ATIVO","",""));
+
+    const handlerChange = ( campo: 'nome'|'cpf'|'email'|'senha',valor:string) =>{
+        setUsuario(valorAnterior =>
+            new Usuario(
+                valorAnterior.id,
+                campo === 'nome' ? valor : valorAnterior.nome,
+                campo === 'email' ? valor : valorAnterior.email,
+                valorAnterior.status,
+                campo === 'cpf' ? valor : valorAnterior.cpf,
+                campo === 'senha' ? valor : valorAnterior.senha
+                
+            )
+        )
+    }
+
+    const handlerSalvar = async(formData : FormData) =>{
+
+        if(usuarioExistente){
+
+       var dadosRetorno=await 
+       axios.post<number>('http://localhost:8080/usuarios',usuario)
+       
+       if(dadosRetorno.status==200){
+        alert("Usuario foi salvo com sucesso!");
+        
+       }else{
+        alert(dadosRetorno.data);
+        return;
+       }
+    }
+    router.push("/usuarios");
+    }
     return (
-        <form className="space-y-6">
+        <form action={handlerSalvar} className="space-y-6">
 
             <div>
                 <label className="mb-2 block text-center text-sm font-semibold text-zinc-700">
                     Nome completo:
                 </label>
 
-                <input
+                <input 
                     name="nome"
+                    value={usuario.nome}
+                    required
+                    onChange={(e)=>handlerChange('nome',e.target.value)}
+                    placeholder="Ericson Smile"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>
@@ -22,6 +70,10 @@ export default function UsuarioForm() {
 
                 <input
                     name="CPF"
+                     value={usuario.cpf}
+                     required
+                     onChange={(e)=>handlerChange('cpf',e.target.value)}
+                     placeholder="000.000.000-00"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>
@@ -33,6 +85,10 @@ export default function UsuarioForm() {
 
                 <input
                     name="email"
+                     value={usuario.email}
+                     required
+                     onChange={(e)=>handlerChange('email',e.target.value)}
+                     placeholder="EricsonSmile@gmail.com"
                     type="email"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
@@ -45,6 +101,10 @@ export default function UsuarioForm() {
 
                 <input
                     name="senha"
+                     value={usuario.senha}
+                     required
+                     onChange={(e)=>handlerChange('senha',e.target.value)}
+                     placeholder="*************"
                     type="password"
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />

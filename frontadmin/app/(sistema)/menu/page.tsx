@@ -18,7 +18,7 @@ export default function Menu() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Item[]>("http://localhost:8080/cardapio");
+            const dados = await axios.get<Item[]>("http://localhost:8080/menu");
 
             setItens(dados.data);
         } catch (error) {
@@ -34,7 +34,7 @@ export default function Menu() {
                     Cardápio
                 </h1>
 
-                <Link href="/cardapio/novo" className="mb-4 inline-block rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                <Link href="/menu/novo" className="mb-4 inline-block rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
                     + Novo Item
                 </Link>
 
@@ -47,17 +47,20 @@ export default function Menu() {
                                         ID
                                     </th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
-                                        Nome
+                                        NOME
                                     </th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
-                                        Descrição
+                                       DESCRIÇÃO
                                     </th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
-                                        Preço
+                                        PREÇO
                                     </th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold text-orange-500">
-                                        Disponível
+                                        STATUS
                                     </th>
+                                     <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                        ACÕES
+                                </th>
                                 </tr>
                             </thead>
 

@@ -25,6 +25,45 @@ export default function Usuarios() {
 
     }
 
+    const handleDeletarUsuario = async (usuario: Usuario) => {
+        var dadosRetorno = await
+            axios.delete('http://localhost:8080/usuarios/' + usuario.id + '/excluir');
+
+        if (dadosRetorno.status == 200) {
+            alert("Excluido com sucesso!");
+
+        } else {
+            alert(dadosRetorno.data);
+            return;
+        }
+        carregarDados
+    }
+
+    const handleAlterarStatusUsuario = async (usuario: Usuario) => {
+
+        var novoStatus = {};
+
+        if (usuario.status === "ATIVO") {
+            novoStatus = { status: "BLOQUEADO" }
+        } else {
+            novoStatus = { status: "ATIVO" }
+        }
+
+        var dadosRetorno = await
+            axios.patch('http://localhost:8080/usuarios/' + usuario.id + '/status', novoStatus);
+
+        if (dadosRetorno.status == 200) {
+            alert("Atulizado status com sucesso!");
+        } else {
+            alert(dadosRetorno.data);
+
+            return;
+        }
+
+        carregarDados();
+
+    }
+
     return (
         <div className="min-h-full bg-gray-100 p-4 sm:p-6">
 
@@ -142,14 +181,37 @@ export default function Usuarios() {
                                         {usuario.status}
                                     </td>
 
-                                    <td className="px-4 py-4 text-center text-sm font-semibold sm:px-6">
+                                    {/* Ações alinhadas verticalmente */}
+                                    <td className="px-6 py-4 text-center text-sm font-medium text-slate-800">
 
-                                        <Link
-                                            href={`/usuarios/${usuario.id}/editar`}
-                                            className="text-orange-600 transition hover:text-orange-800 hover:underline"
-                                        >
-                                            Editar
-                                        </Link>
+                                        <div className="flex flex-col items-center gap-2">
+
+                                            <Link
+                                                href={`/usuarios/${usuario.id}/editar`}
+                                                className="font-medium text-orange-600 transition-colors hover:text-orange-800 hover:underline"
+                                            >
+                                                Editar
+                                            </Link>
+
+                                            <button
+                                                onClick={() => handleDeletarUsuario(usuario)}
+                                                className="font-medium text-red-600 transition-colors hover:text-red-800"
+                                            >
+                                                DELETAR
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleAlterarStatusUsuario(usuario)}
+                                                className={`font-medium transition-colors ${
+                                                    usuario.status === 'BLOQUEADO'
+                                                        ? 'text-orange-600 hover:text-orange-800'
+                                                        : 'text-green-600 hover:text-green-800'
+                                                }`}
+                                            >
+                                                {usuario.status}
+                                            </button>
+
+                                        </div>
 
                                     </td>
 

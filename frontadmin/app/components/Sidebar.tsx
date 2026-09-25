@@ -17,26 +17,32 @@ export default function Sidebar(){
                 >
                     Home
                 </Link>
+                <Link
+                    href="/menu"
+                    className="rounded-lg px-4 py-3 text-center font-medium text-zinc-300 transition duration-200 hover:bg-orange-500 hover:text-white"
+                >
+                    Cardapio
+                </Link>
 
                 <Link
                     href="/usuarios"
                     className="rounded-lg px-4 py-3 text-center font-medium text-zinc-300 transition duration-200 hover:bg-orange-500 hover:text-white"
                 >
-                    Usuarios
+                    Cadastro de Usuarios
                 </Link>
 
                 <Link
                     href="/mesas"
                     className="rounded-lg px-4 py-3 text-center font-medium text-zinc-300 transition duration-200 hover:bg-orange-500 hover:text-white"
                 >
-                    Mesas
+                    Gestão de Mesas
                 </Link>
 
                 <Link
                     href="/pedidos"
                     className="rounded-lg px-4 py-3 text-center font-medium text-zinc-300 transition duration-200 hover:bg-orange-500 hover:text-white"
                 >
-                    Pedidos
+                   Consultar Pedidos
                 </Link>
 
             </nav>

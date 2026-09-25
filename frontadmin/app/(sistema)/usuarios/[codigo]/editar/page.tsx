@@ -3,11 +3,35 @@
 import { useParams } from "next/navigation";
 import UsuarioForm from "../../components/UsuarioForm";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Usuario } from "@/app/types/usuario";
+import axios from "axios";
+import { useRouter } from "next/router";
+
 
 export default function EditarUsuario() {
 
     const parametro = useParams();
     const codigo = Number(parametro.codigo);
+
+    const [usuario, setUsuario] = useState<Usuario|null>(null)
+    const router = useRouter();
+
+    useEffect(()=>{
+
+    },[]);
+
+    const buscarDados=async()=>{
+
+        const valorUsuarioBack = await axios.get<Usuario>('http://localhost:8080/usuarios/'+codigo);
+
+        if(valorUsuarioBack.status==200){
+            setUsuario(valorUsuarioBack.data);
+         }
+         router.push("/usuarios")
+    }
+
+    if(!usuario)return(<div className="p-8">Carregando Dados...</div>)
 
     return (
         <div className="min-h-full bg-gray-100 p-4 sm:p-6">
@@ -41,7 +65,7 @@ export default function EditarUsuario() {
                 {/* Formulário */}
                 <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-lg sm:p-8">
 
-                    <UsuarioForm />
+                    <UsuarioForm usuarioExistente={usuario} />
 
                 </div>
 
