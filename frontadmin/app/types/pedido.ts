@@ -4,6 +4,10 @@ export class Pedido{
         public valorSubtotal: number,
         public taxaServico:number,
         public valorTotal:number,
-        public status:number
+        public statusPedido:string
     ){}
+}
+
+export interface PedidoFormProps{
+    pedidoExistente?:Pedido
 }

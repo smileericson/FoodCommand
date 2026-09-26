@@ -1,13 +1,38 @@
+"use client"
+
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Mesa } from "@/app/types/mesa";
 import MesaForm from "../../components/MesaForm";
-import { useParams } from "next/navigation";
 
-
-export default function CadastroMesa() {
+export default function EditarMesa() {
 
     const parametro = useParams();
-    const codigo = Number(parametro.codigo)
 
+    const codigo = Number(parametro.codigo);
+
+    const [mesa, setMesa] = useState<Mesa | null>(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        buscarDados();
+    }, []);
+
+    const buscarDados = async () => {
+
+             const valorMesaBack = await axios.get<Mesa>("http://localhost:8080/mesa/" + codigo);
+
+            if(valorMesaBack.status==200){
+                setMesa(valorMesaBack.data);
+            }else{
+                router.push("/mesas")
+            }
+    }
+
+            if(!mesa) return(<div className="p-8"> Carregando Dados ...</div>)
+                
     return (
         <div className="min-h-full bg-gray-100 p-4 sm:p-6">
 
@@ -23,7 +48,7 @@ export default function CadastroMesa() {
                         </span>
 
                         <h1 className="mt-2 text-xl font-bold text-zinc-900 sm:text-2xl">
-                            Preencha os dados para Editar a mesa
+                            Preencha os dados para editar a mesa
                         </h1>
 
                     </div>
@@ -47,13 +72,15 @@ export default function CadastroMesa() {
                         </h2>
 
                         <p className="mt-1 text-sm text-zinc-500">
-                            Preencha as informações abaixo para realizar o cadastro da mesa
+                            Altere as informações abaixo para atualizar a mesa
                         </p>
 
                     </div>
 
                     {/* Formulário */}
-                    <MesaForm />
+                    {mesa && (
+                        <MesaForm mesaExistente={mesa} />
+                    )}
 
                 </div>
 

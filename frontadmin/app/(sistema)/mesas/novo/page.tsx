@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link";
 import MesaForm from "../components/MesaForm";
 
 export default function CadastroMesa() {
+
     return (
         <div className="min-h-full bg-gray-100 p-4 sm:p-6">
 

@@ -16,21 +16,67 @@ export default function Pedidos() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Pedido[]>("http://localhost:8080/pedido");
+            const dados = await axios.get<Pedido[]>("http://localhost:8080/pedidos");
 
             setPedidos(dados.data);
+
         } catch (error) {
             alert("Erro ao carregar dados!")
         }
 
     }
 
+    const handleDeletarPedido = async (pedido: Pedido) => {
+
+        var dadosRetorno = await
+            axios.delete(
+                'http://localhost:8080/pedidos/'+pedido.id+'/excluir');
+
+        if (dadosRetorno.status == 200) {
+            alert("Excluido com sucesso!");
+
+        } else {
+            alert(dadosRetorno.data);
+            return;
+        }
+
+        carregarDados();
+    }
+
+    const handleAlterarStatusPedido = async (pedido: Pedido) => {
+
+        var novoStatus = {};
+
+        if (pedido.statusPedido === "ATIVO" ) {
+            novoStatus = { statusPedido: "CANCELADO" }
+        } else {
+            novoStatus = { statusPedido: "ATIVO" }
+        }
+
+        var dadosRetorno = await
+            axios.patch('http://localhost:8080/pedidos/'+pedido.id+'/status',novoStatus);
+
+        if (dadosRetorno.status == 200) {
+            alert("Atulizado status com sucesso!");
+
+        } else {
+            alert(dadosRetorno.data);
+
+            return;
+        }
+
+        carregarDados();
+
+    }
+
     return (
+
         <div className="min-h-full bg-gray-100 p-4 sm:p-6">
 
             <div className="mx-auto max-w-7xl">
 
                 {/* Cabeçalho */}
+
                 <div className="mb-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-md">
 
                     <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
@@ -61,6 +107,7 @@ export default function Pedidos() {
                     </div>
 
                     {/* Legenda de status */}
+
                     <div className="mt-6 flex flex-wrap items-center justify-center gap-3 border-t border-zinc-200 pt-5">
 
                         <span className="text-sm font-semibold text-zinc-700">
@@ -87,84 +134,136 @@ export default function Pedidos() {
                 </div>
 
                 {/* Tabela de pedidos */}
+
                 <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white shadow-lg">
 
-                    <table className="w-full min-w-[900px] border-collapse">
+                    <table className="w-full min-w-[900px] table-fixed border-collapse">
 
                         <thead>
+
                             <tr className="bg-zinc-900">
 
-                                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
+                                <th className="w-[8%] px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
                                     ID
                                 </th>
 
-                                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
+                                <th className="w-[20%] px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
                                     Valor Subtotal
                                 </th>
 
-                                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
+                                <th className="w-[20%] px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
                                     Taxa Serviço
                                 </th>
 
-                                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
+                                <th className="w-[18%] px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
                                     Valor Total
                                 </th>
 
-                                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
+                                <th className="w-[14%] px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
                                     Status
                                 </th>
 
-                                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
+                                <th className="w-[20%] px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:text-sm">
                                     Ações
                                 </th>
 
                             </tr>
+
                         </thead>
 
                         <tbody>
 
                             {pedidos.map((pedido) => (
+
                                 <tr
                                     key={pedido.id}
                                     className="border-b border-zinc-100 transition duration-200 hover:bg-orange-50"
                                 >
 
-                                    <td className="px-6 py-4 text-center text-sm text-zinc-600">
+                                    {/* ID */}
+
+                                    <td className="px-4 py-4 text-center text-sm text-zinc-600">
                                         {pedido.id}
                                     </td>
 
-                                    <td className="px-6 py-4 text-center text-sm text-zinc-800">
+                                    {/* Valor Subtotal */}
+
+                                    <td className="px-4 py-4 text-center text-sm text-zinc-800">
                                         {pedido.valorSubtotal}
                                     </td>
 
-                                    <td className="px-6 py-4 text-center text-sm font-medium text-zinc-900">
+                                    {/* Taxa de Serviço */}
+
+                                    <td className="px-4 py-4 text-center text-sm font-medium text-zinc-900">
                                         {pedido.taxaServico}
                                     </td>
 
-                                    <td className="px-6 py-4 text-center text-sm font-semibold text-zinc-900">
+                                    {/* Valor Total */}
+
+                                    <td className="px-4 py-4 text-center text-sm font-semibold text-zinc-900">
                                         {pedido.valorTotal}
                                     </td>
 
-                                    <td className="px-6 py-4 text-center text-sm font-semibold text-zinc-800">
-                                        {pedido.status}
+                                    {/* Status */}
+
+                                    <td className="px-4 py-4 text-center text-sm font-semibold text-zinc-800">
+                                        {pedido.statusPedido}
                                     </td>
 
-                                    <td className="px-6 py-4 text-center text-sm font-semibold text-zinc-800">
-                                        —
+                                    {/* Ações */}
+
+                                    <td className="px-4 py-4 text-center">
+
+                                        <div className="flex flex-col items-center justify-center gap-2">
+
+                                            <Link
+                                                href={`/pedidos/${pedido.id}/editar`}
+                                                className="rounded-md px-3 py-1 text-sm font-semibold text-orange-600 transition duration-200 hover:bg-orange-50 hover:text-orange-800 hover:underline"
+                                            >
+                                                Editar
+                                            </Link>
+
+                                            <button
+                                                onClick={() => handleDeletarPedido(pedido)}
+                                                className="rounded-md px-3 py-1 text-sm font-semibold text-red-600 transition duration-200 hover:bg-red-50 hover:text-red-800"
+                                            >
+                                                DELETAR
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleAlterarStatusPedido(pedido)}
+                                                className={`rounded-md px-3 py-1 text-sm font-semibold transition duration-200 ${
+                                                    pedido.statusPedido === "CANCELADO"
+                                                        ? 'text-orange-600 hover:bg-red-50 hover:text-red-800'
+                                                        : 'text-green-600 hover:bg-green-50 hover:text-green-800'
+                                                }`}
+                                            >
+                                                {pedido.statusPedido}
+                                            </button>
+
+                                        </div>
+
                                     </td>
 
                                 </tr>
+
                             ))}
 
+                            {/* Nenhum pedido encontrado */}
+
                             {pedidos.length === 0 && (
+
                                 <tr>
+
                                     <td
                                         colSpan={6}
-                                        className="px-6 py-12 text-center text-sm font-medium text-slate-800"
+                                        className="px-6 py-12 text-center text-sm font-medium text-zinc-500"
                                     >
                                         Nenhum pedido encontrado!
                                     </td>
+
                                 </tr>
+
                             )}
 
                         </tbody>
@@ -176,5 +275,6 @@ export default function Pedidos() {
             </div>
 
         </div>
+
     )
 }

@@ -9,7 +9,7 @@ export default function Login() {
 
     const handleLogin = async (formData: FormData) => {
         try {
-            debugger;
+            
             const emailTela = formData.get("email")?.toString() ?? ""
             const senhaTela = formData.get("senha")?.toString() ?? ""
 

@@ -36,7 +36,7 @@ export default function Usuarios() {
             alert(dadosRetorno.data);
             return;
         }
-        carregarDados
+        carregarDados();
     }
 
     const handleAlterarStatusUsuario = async (usuario: Usuario) => {
@@ -72,32 +72,32 @@ export default function Usuarios() {
                 {/* Cabeçalho */}
                 <div className="mb-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-md">
 
-                    <h1 className="text-center text-2xl font-bold text-zinc-900 sm:text-3xl">
+                    <h1 className="text-center text-2xl font-extrabold text-zinc-900 sm:text-3xl">
                         Gestão de usuários
                     </h1>
 
-                    <p className="mt-1 text-center text-sm text-zinc-500">
+                    <p className="mt-1 text-center text-sm font-medium text-zinc-600">
                         Preencha as informações do cadastro do GARÇOM
                     </p>
 
                     {/* Legenda de status */}
-                    <div className="mt-5 flex flex-wrap items-center justify-center gap-3 border-t border-zinc-200 pt-5">
+                    <div className="mt-5 flex flex-wrap items-center justify-center gap-3 border-t-2 border-zinc-200 pt-5">
 
-                        <span className="text-sm font-semibold text-zinc-700">
+                        <span className="text-sm font-bold text-zinc-800">
                             Status:
                         </span>
 
-                        <span className="flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+                        <span className="flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700">
                             <span className="h-2.5 w-2.5 rounded-full bg-green-500"></span>
                             Ativo
                         </span>
 
-                        <span className="flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 text-sm font-semibold text-yellow-700">
+                        <span className="flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 text-sm font-bold text-yellow-700">
                             <span className="h-2.5 w-2.5 rounded-full bg-yellow-500"></span>
                             Bloqueado
                         </span>
 
-                        <span className="flex items-center gap-2 rounded-full bg-zinc-200 px-4 py-2 text-sm font-semibold text-zinc-700">
+                        <span className="flex items-center gap-2 rounded-full bg-zinc-200 px-4 py-2 text-sm font-bold text-zinc-700">
                             <span className="h-2.5 w-2.5 rounded-full bg-zinc-500"></span>
                             Excluído
                         </span>
@@ -111,7 +111,7 @@ export default function Usuarios() {
 
                     <Link
                         href="/usuarios/novo"
-                        className="rounded-lg bg-orange-500 px-5 py-3 text-center font-semibold text-white shadow-md transition duration-200 hover:bg-orange-600 hover:shadow-lg active:scale-95"
+                        className="rounded-lg bg-orange-500 px-5 py-3 text-center font-bold text-white shadow-md transition duration-200 hover:bg-orange-600 hover:shadow-lg active:scale-95"
                     >
                         + Novo Cadastro
                     </Link>
@@ -126,27 +126,27 @@ export default function Usuarios() {
                         <thead>
                             <tr className="bg-zinc-900">
 
-                                <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
                                     ID
                                 </th>
 
-                                <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
                                     Nome
                                 </th>
 
-                                <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
                                     CPF
                                 </th>
 
-                                <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
                                     E-mail
                                 </th>
 
-                                <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
                                     Status
                                 </th>
 
-                                <th className="px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
+                                <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
                                     Ações
                                 </th>
 
@@ -158,51 +158,51 @@ export default function Usuarios() {
                             {usuarios.map((usuario) => (
                                 <tr
                                     key={usuario.id}
-                                    className="border-b border-zinc-100 transition duration-200 hover:bg-orange-50"
+                                    className="border-b-2 border-zinc-100 transition duration-200 hover:bg-orange-50"
                                 >
 
-                                    <td className="px-4 py-4 text-center text-sm text-zinc-600 sm:px-6">
+                                    <td className="px-4 py-5 text-center text-sm font-semibold text-zinc-800 sm:px-6">
                                         {usuario.id}
                                     </td>
 
-                                    <td className="px-4 py-4 text-center text-sm font-semibold text-zinc-900 sm:px-6">
+                                    <td className="px-4 py-5 text-center text-sm font-bold text-zinc-900 sm:px-6">
                                         {usuario.nome}
                                     </td>
 
-                                    <td className="px-4 py-4 text-center text-sm text-zinc-600 sm:px-6">
+                                    <td className="px-4 py-5 text-center text-sm font-semibold text-zinc-800 sm:px-6">
                                         {usuario.cpf}
                                     </td>
 
-                                    <td className="px-4 py-4 text-center text-sm text-zinc-600 sm:px-6">
+                                    <td className="px-4 py-5 text-center text-sm font-semibold text-zinc-800 sm:px-6">
                                         {usuario.email}
                                     </td>
 
-                                    <td className="px-4 py-4 text-center text-sm font-semibold text-zinc-800 sm:px-6">
+                                    <td className="px-4 py-5 text-center text-sm font-bold text-zinc-900 sm:px-6">
                                         {usuario.status}
                                     </td>
 
                                     {/* Ações alinhadas verticalmente */}
-                                    <td className="px-6 py-4 text-center text-sm font-medium text-slate-800">
+                                    <td className="px-6 py-5 text-center text-sm font-bold text-zinc-800">
 
-                                        <div className="flex flex-col items-center gap-2">
+                                        <div className="flex flex-col items-center justify-center gap-3">
 
                                             <Link
                                                 href={`/usuarios/${usuario.id}/editar`}
-                                                className="font-medium text-orange-600 transition-colors hover:text-orange-800 hover:underline"
+                                                className="font-bold text-orange-600 transition-colors hover:text-orange-800 hover:underline"
                                             >
                                                 Editar
                                             </Link>
 
                                             <button
                                                 onClick={() => handleDeletarUsuario(usuario)}
-                                                className="font-medium text-red-600 transition-colors hover:text-red-800"
+                                                className="font-bold text-red-600 transition-colors hover:text-red-800"
                                             >
                                                 DELETAR
                                             </button>
 
                                             <button
                                                 onClick={() => handleAlterarStatusUsuario(usuario)}
-                                                className={`font-medium transition-colors ${
+                                                className={`font-bold transition-colors ${
                                                     usuario.status === 'BLOQUEADO'
                                                         ? 'text-orange-600 hover:text-orange-800'
                                                         : 'text-green-600 hover:text-green-800'
@@ -222,7 +222,7 @@ export default function Usuarios() {
                                 <tr>
                                     <td
                                         colSpan={6}
-                                        className="px-6 py-12 text-center text-sm font-medium text-slate-800"
+                                        className="px-6 py-12 text-center text-base font-bold text-zinc-700"
                                     >
                                         Nenhum usuário encontrado!
                                     </td>
