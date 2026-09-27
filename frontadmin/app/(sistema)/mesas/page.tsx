@@ -28,7 +28,7 @@ export default function Mesas() {
     const handleDeletarMesa = async (mesa: Mesa) => {
 
         var dadosRetorno = await
-            axios.delete('http://localhost:8080/mesas/' + mesa.id + '/excluir');
+            axios.delete('http://localhost:8080/mesa/' + mesa.id + '/excluir');
 
         if (dadosRetorno.status == 200) {
             alert("Excluido com sucesso!");
@@ -46,14 +46,15 @@ export default function Mesas() {
         var novoStatus = {};
 
         if (mesa.statusMesa === "LIVRE") {
-            novoStatus = { statusMesa: "OCUPADA" }
-
+            novoStatus = { statusMesa: "OCUPADA" };
+        }else if(mesa.statusMesa === "OCUPADA"){
+            novoStatus = { statusMesa:"AGUARDANDO_FECHAMENTO"}
         } else {
             novoStatus = { statusMesa: "LIVRE" }
         }
 
         var dadosRetorno = await
-            axios.patch('http://localhost:8080/mesas/' + mesa.id + '/status', novoStatus);
+            axios.patch('http://localhost:8080/mesa/' + mesa.id + '/status', novoStatus);
 
         if (dadosRetorno.status == 200) {
             alert("Atulizado status com sucesso!");
@@ -193,9 +194,13 @@ export default function Mesas() {
 
                                             <button
                                                 onClick={() => handleAlterarStatusMesa(mesa)}
-                                                className={`font-bold transition-colors ${
-                                                    mesa.statusMesa === 'BLOQUEADO'
-                                                        ? 'text-orange-600 hover:text-orange-800'
+                                                className={`font-bold transition-colors ${                                   
+                                                        mesa.statusMesa ==='AGUARDANDO_FECHAMENTO'
+                                                        ? 'text-purple-600 hover:text-purple-800'
+                                                        :mesa.statusMesa ==='OCUPADA'
+                                                        ? 'text-yellow-600 hover:text-yellow-800'
+                                                        :mesa.statusMesa ==='EXCLUIDA'
+                                                        ? 'text-black-600 hover:text-black-800'
                                                         : 'text-green-600 hover:text-green-800'
                                                 }`}
                                             >

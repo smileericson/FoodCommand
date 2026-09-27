@@ -235,6 +235,8 @@ export default function Pedidos() {
                                                 className={`rounded-md px-3 py-1 text-sm font-semibold transition duration-200 ${
                                                     pedido.statusPedido === "CANCELADO"
                                                         ? 'text-orange-600 hover:bg-red-50 hover:text-red-800'
+                                                        :pedido.statusPedido === "EXCLUIDO"
+                                                        ? 'text-black-600 hover:bg-black-50 hover:text-black-800'
                                                         : 'text-green-600 hover:bg-green-50 hover:text-green-800'
                                                 }`}
                                             >

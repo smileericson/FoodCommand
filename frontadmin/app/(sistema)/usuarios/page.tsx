@@ -205,6 +205,8 @@ export default function Usuarios() {
                                                 className={`font-bold transition-colors ${
                                                     usuario.status === 'BLOQUEADO'
                                                         ? 'text-orange-600 hover:text-orange-800'
+                                                        :usuario.status === 'EXCLUIDO'
+                                                        ? 'text-black-600 hover:text-black-800'
                                                         : 'text-green-600 hover:text-green-800'
                                                 }`}
                                             >

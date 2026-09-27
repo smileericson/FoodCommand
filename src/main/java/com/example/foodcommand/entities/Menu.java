@@ -17,10 +17,10 @@ public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private String descricao;
-    private int preco;
-    private EnumStatusMenu statusMenu;
+    public Long id;
+    public String nome;
+    public String descricao;
+    public int preco;
+    public EnumStatusMenu statusMenu;
 
 }
