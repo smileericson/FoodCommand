@@ -196,9 +196,9 @@ export default function Mesas() {
                                                 onClick={() => handleAlterarStatusMesa(mesa)}
                                                 className={`font-bold transition-colors ${                                   
                                                         mesa.statusMesa ==='AGUARDANDO_FECHAMENTO'
-                                                        ? 'text-purple-600 hover:text-purple-800'
+                                                        ? 'text-orange-600 hover:text-orange-800'
                                                         :mesa.statusMesa ==='OCUPADA'
-                                                        ? 'text-yellow-600 hover:text-yellow-800'
+                                                        ? 'text-red-600 hover:text-red-800'
                                                         :mesa.statusMesa ==='EXCLUIDA'
                                                         ? 'text-black-600 hover:text-black-800'
                                                         : 'text-green-600 hover:text-green-800'

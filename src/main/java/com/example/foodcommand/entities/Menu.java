@@ -20,7 +20,7 @@ public class Menu {
     public Long id;
     public String nome;
     public String descricao;
-    public int preco;
+    public String preco;
     public EnumStatusMenu statusMenu;
 
 }

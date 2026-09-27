@@ -204,9 +204,9 @@ export default function Usuarios() {
                                                 onClick={() => handleAlterarStatusUsuario(usuario)}
                                                 className={`font-bold transition-colors ${
                                                     usuario.status === 'BLOQUEADO'
-                                                        ? 'text-orange-600 hover:text-orange-800'
+                                                        ? 'text-yellow-600 hover:text-yellow-800'
                                                         :usuario.status === 'EXCLUIDO'
-                                                        ? 'text-black-600 hover:text-black-800'
+                                                        ? 'text-gray-600 hover:text-gray-800'
                                                         : 'text-green-600 hover:text-green-800'
                                                 }`}
                                             >

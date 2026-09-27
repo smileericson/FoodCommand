@@ -177,7 +177,7 @@ export default function Menu() {
                                     </td>
 
                                     {/* Descrição */}
-                                    <td className="px-4 py-5 text-center text-sm font-medium text-zinc-800 sm:px-6">
+                                    <td className="px-4 py-5 text-center text-sm font-bold text-zinc-800 sm:px-6">
                                         {menu.descricao}
                                     </td>
 
@@ -212,7 +212,7 @@ export default function Menu() {
                                             <button
                                                 onClick={() => handleAlterarStatusUsuario(menu)}
                                                 className={`font-bold transition-colors ${menu.statusMenu === 'INATIVO'
-                                                        ? 'text-orange-600 hover:text-orange-800'
+                                                        ? 'text-yellow-600 hover:text-yellow-800'
                                                         : menu.statusMenu === 'EXCLUIDO'
                                                             ? 'text-black-600 hover:text-black-800'
                                                             : 'text-green-600 hover:text-green-800'

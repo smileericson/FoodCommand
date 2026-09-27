@@ -4,7 +4,7 @@ export class Menus {
         public id: number |null,
         public nome: string,
         public descricao: string,
-        public preco: number,
+        public preco: string,
         public statusMenu: string,
     ) { }
 }

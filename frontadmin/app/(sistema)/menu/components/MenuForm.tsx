@@ -12,7 +12,7 @@ export default function MenuForm({menuExistente}:MenusFormProps) {
 
     const [ menu,setMenu ] = useState<Menus>(
         menuExistente ||
-        new Menus(null,"","",0,"ATIVO")
+        new Menus(null,"","","","ATIVO")
     );
 
 const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valor: string | number) => {
@@ -21,7 +21,7 @@ const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valo
             valorAnterior.id,
             campo === 'nome' ? String(valor) : valorAnterior.nome,
             campo === 'descricao' ? String(valor) : valorAnterior.descricao,
-            campo === 'preco' ? Number(valor) : valorAnterior.preco,
+            campo === 'preco' ? String(valor) : valorAnterior.preco,
             valorAnterior.statusMenu
         )
 
@@ -90,7 +90,7 @@ const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valo
                     value={menu.descricao}
                     required
                     onChange={(e)=> handlerChange('descricao',e.target.value)}
-                    placeholder="arroz,feijao,carne...."  
+                    placeholder="...."  
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center font-medium text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>
@@ -106,7 +106,7 @@ const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valo
                     value={menu.preco || "" }
                     required
                     onChange={(e)=> handlerChange('preco',e.target.value)}
-                    placeholder="1000.00" 
+                    placeholder="R$1000.00" 
                     className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-center font-medium text-zinc-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
             </div>

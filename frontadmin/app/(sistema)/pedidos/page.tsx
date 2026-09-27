@@ -30,7 +30,7 @@ export default function Pedidos() {
 
         var dadosRetorno = await
             axios.delete(
-                'http://localhost:8080/pedidos/'+pedido.id+'/excluir');
+                'http://localhost:8080/pedidos/' + pedido.id + '/excluir');
 
         if (dadosRetorno.status == 200) {
             alert("Excluido com sucesso!");
@@ -47,14 +47,14 @@ export default function Pedidos() {
 
         var novoStatus = {};
 
-        if (pedido.statusPedido === "ATIVO" ) {
+        if (pedido.statusPedido === "ATIVO") {
             novoStatus = { statusPedido: "CANCELADO" }
         } else {
             novoStatus = { statusPedido: "ATIVO" }
         }
 
         var dadosRetorno = await
-            axios.patch('http://localhost:8080/pedidos/'+pedido.id+'/status',novoStatus);
+            axios.patch('http://localhost:8080/pedidos/' + pedido.id + '/status', novoStatus);
 
         if (dadosRetorno.status == 200) {
             alert("Atulizado status com sucesso!");
@@ -177,41 +177,35 @@ export default function Pedidos() {
 
                                 <tr
                                     key={pedido.id}
-                                    className="border-b border-zinc-100 transition duration-200 hover:bg-orange-50"
+                                    className="border-b border-zinc-100 font-bold transition duration-200 hover:bg-orange-50"
                                 >
 
                                     {/* ID */}
-
-                                    <td className="px-4 py-4 text-center text-sm text-zinc-600">
+                                    <td className="px-4 py-4 text-center text-sm font-bold text-zinc-600">
                                         {pedido.id}
                                     </td>
 
                                     {/* Valor Subtotal */}
-
-                                    <td className="px-4 py-4 text-center text-sm text-zinc-800">
+                                    <td className="px-4 py-4 text-center text-sm font-bold text-zinc-800">
                                         {pedido.valorSubtotal}
                                     </td>
 
                                     {/* Taxa de Serviço */}
-
-                                    <td className="px-4 py-4 text-center text-sm font-medium text-zinc-900">
+                                    <td className="px-4 py-4 text-center text-sm font-bold text-zinc-900">
                                         {pedido.taxaServico}
                                     </td>
 
                                     {/* Valor Total */}
-
-                                    <td className="px-4 py-4 text-center text-sm font-semibold text-zinc-900">
+                                    <td className="px-4 py-4 text-center text-sm font-bold text-zinc-900">
                                         {pedido.valorTotal}
                                     </td>
 
                                     {/* Status */}
-
-                                    <td className="px-4 py-4 text-center text-sm font-semibold text-zinc-800">
+                                    <td className="px-4 py-4 text-center text-sm font-bold text-zinc-800">
                                         {pedido.statusPedido}
                                     </td>
 
                                     {/* Ações */}
-
                                     <td className="px-4 py-4 text-center">
 
                                         <div className="flex flex-col items-center justify-center gap-2">
@@ -232,13 +226,12 @@ export default function Pedidos() {
 
                                             <button
                                                 onClick={() => handleAlterarStatusPedido(pedido)}
-                                                className={`rounded-md px-3 py-1 text-sm font-semibold transition duration-200 ${
-                                                    pedido.statusPedido === "CANCELADO"
+                                                className={`rounded-md px-3 py-1 text-sm font-semibold transition duration-200 ${pedido.statusPedido === "CANCELADO"
                                                         ? 'text-orange-600 hover:bg-red-50 hover:text-red-800'
-                                                        :pedido.statusPedido === "EXCLUIDO"
-                                                        ? 'text-black-600 hover:bg-black-50 hover:text-black-800'
-                                                        : 'text-green-600 hover:bg-green-50 hover:text-green-800'
-                                                }`}
+                                                        : pedido.statusPedido === "EXCLUIDO"
+                                                            ? 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                                                            : 'text-green-600 hover:bg-green-50 hover:text-green-800'
+                                                    }`}
                                             >
                                                 {pedido.statusPedido}
                                             </button>
