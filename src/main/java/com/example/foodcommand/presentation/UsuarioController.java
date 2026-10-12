@@ -1,13 +1,14 @@
 package com.example.foodcommand.presentation;
 
 import com.example.foodcommand.application.DTOs.AtualizarStatusRequest;
+import com.example.foodcommand.application.DTOs.CriarAdminReponse;
+import com.example.foodcommand.application.DTOs.CriarAdminRequest;
 import com.example.foodcommand.application.DTOs.UsuarioResponse;
 import com.example.foodcommand.application.services.UsuarioService;
 import com.example.foodcommand.domain.entities.EnumStatusUsuario;
 import com.example.foodcommand.domain.entities.Usuario;
 import com.example.foodcommand.domain.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,17 @@ public class UsuarioController {
     // chama o metodo ...table dp service e retorna do http reponseentity com http 200 e a lista.
    public ResponseEntity<List<UsuarioResponse>> listarTodos(){
         return ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<CriarAdminReponse>criarAdmin(@RequestBody CriarAdminRequest criarAdminRequest) {
+
+        try {
+            CriarAdminReponse repostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
+            return ResponseEntity.ok(repostaSalvar);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     //1 Define o get como variavel exemplo /usuarios/1

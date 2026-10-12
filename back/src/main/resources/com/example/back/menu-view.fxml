@@ -7,6 +7,6 @@
    <children>
       <Button layoutX="29.0" layoutY="350.0" mnemonicParsing="false" onAction="#sair" text="Sair" />
       <Button layoutX="226.0" layoutY="91.0" mnemonicParsing="false" onAction="#abrirCadastro" prefHeight="26.0" prefWidth="126.0" text="Cadastro Admin" />
-      <Button layoutX="227.0" layoutY="132.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" text="Button" />
+      <Button layoutX="227.0" layoutY="132.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" text="Cadastro Garçon" />
    </children>
 </AnchorPane>

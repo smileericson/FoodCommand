@@ -1,5 +1,6 @@
 package com.example.foodcommand.domain.entities;
 
+import com.example.foodcommand.application.DTOs.CriarAdminRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +32,19 @@ public class Usuario {
     public String cpf;
     public String senha;
     public String email;
-    public EnumStatusUsuario status;
 
+    private String role = "ROLE_USER";
+
+    public EnumStatusUsuario status =EnumStatusUsuario.ATIVO;
+
+
+    //construtor que pega as informações
+    public Usuario(CriarAdminRequest criarAdminRequest) {
+        this.setCpf(criarAdminRequest.cpf());
+        this.setNome(criarAdminRequest.nome());
+        this.setSenha(criarAdminRequest.senha());
+        this.setEmail(criarAdminRequest.email());
+        this.setRole("ROLE_ADMIN");
+
+    }
 }

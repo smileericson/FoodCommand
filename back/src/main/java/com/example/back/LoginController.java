@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class LoginController {
 
-    private String key = "foodcommand";
+    private String key = "string";
     @FXML
     private TextField txtKey;
 

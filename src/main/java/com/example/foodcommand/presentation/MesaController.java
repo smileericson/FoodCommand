@@ -1,6 +1,6 @@
 package com.example.foodcommand.presentation;
 
-import com.example.foodcommand.application.DTOs.AtualizarStatusMesa;
+import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.domain.entities.EnumStatusMesa;
 import com.example.foodcommand.domain.entities.Mesa;
 import com.example.foodcommand.domain.repository.MesaRepository;
@@ -21,6 +21,7 @@ public class MesaController {
     @Autowired
     private MesaRepository mesaRepository;
 
+
     @GetMapping
     @Operation(summary = "Metodo de consulta de mesas",description = "Metodo responsavel em efetuar a consulta de todas as mesas sem filtro")
     private ResponseEntity<?>listarTodos(){
@@ -28,6 +29,7 @@ public class MesaController {
                 EnumStatusMesa.LIVRE));
         return ResponseEntity.ok(mesaRepository.findAll());
     }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de mesas",description= "Metodo responsavel em efetuar a consulta de todos as mesas por Id")
