@@ -9,13 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 
+// Cada objeto dessa classe vira uma linha da tabela.
 // Lombok: As anotações do Lombok geram automaticamente códigos repetitivos,
 // data: Gera automaticamente os métodos getters e setters,
 // NoArgsConstructor: Cria automaticamente um construtor sem parâmetros.
 //@AllArgsConstructor: Cria automaticamente um construtor com todos os atributos da classe.
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

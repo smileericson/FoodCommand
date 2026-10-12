@@ -21,7 +21,8 @@ public class MesaController {
     @Autowired
     private MesaRepository mesaRepository;
 
-
+    // get /mesa -> lista todas as mesas
+    //(Operation)summary: descreve a documentação da api, description:descreve a regra de negocio.
     @GetMapping
     @Operation(summary = "Metodo de consulta de mesas",description = "Metodo responsavel em efetuar a consulta de todas as mesas sem filtro")
     private ResponseEntity<?>listarTodos(){
@@ -30,7 +31,7 @@ public class MesaController {
         return ResponseEntity.ok(mesaRepository.findAll());
     }
 
-
+    // get/mesa/id - busca pelo id
     @GetMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de mesas",description= "Metodo responsavel em efetuar a consulta de todos as mesas por Id")
     public ResponseEntity<Mesa>buscarPorId(@PathVariable Long id){
@@ -42,6 +43,7 @@ public class MesaController {
 
     }
 
+    // post/mesa -> cria uma nova mesa
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Metodo de consulta de lista de mesas",description = "Metodo responsavel em efutuar a criação de novas mesas")
@@ -50,6 +52,7 @@ public class MesaController {
         return ResponseEntity.ok(mesaBanco);
     }
 
+    //pach/mesa/id/status - altera somente status neste caso.
     @PatchMapping ("/{id}/status")// serve para atualizar um dado só
     @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualização das mesas por Id")
     public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusMesa statusRequest){
@@ -63,6 +66,8 @@ public class MesaController {
         return ResponseEntity.notFound().build();
 
     }
+
+    //put /mesa/id - atualiza os dado -> status, numero da mesa.
     @PutMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualizar todas as mesas,filtrado por Id")
     public ResponseEntity<Mesa> atualizar(@PathVariable Long id,@RequestBody Mesa mesa) {
@@ -80,6 +85,8 @@ public class MesaController {
             throw new RuntimeException(e);
         }
     }
+
+    // delete /mesa/id/excluir - aqui temos exclusão logica: não apaga do banco e sim altera o status para excluido.
     @DeleteMapping("/{id}/excluir")
     @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualização para EXCLUIDO o Status, filtrado por Id")
     public ResponseEntity<Void> excluir(@PathVariable Long id){
