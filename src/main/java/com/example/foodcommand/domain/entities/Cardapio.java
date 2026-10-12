@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Menu {
+public class Cardapio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,6 @@ public class Menu {
     public String nome;
     public String descricao;
     public String preco;
-    public EnumStatusMenu statusMenu;
+    public EnumStatusCardapio statusCardapio;
 
 }

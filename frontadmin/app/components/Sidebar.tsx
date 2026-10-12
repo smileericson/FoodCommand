@@ -18,7 +18,7 @@ export default function Sidebar(){
                     Home
                 </Link>
                 <Link
-                    href="/menu"
+                    href="/cardapio"
                     className="rounded-lg px-4 py-3 text-center font-medium text-zinc-300 transition duration-200 hover:bg-orange-500 hover:text-white"
                 >
                     Cardapio

@@ -17,16 +17,16 @@ import java.time.ZoneOffset;
 //anotação do Spring Boot que indica que a classe contém a lógica de negócio da aplicação
 public class TokenService {
 
-    @Value("${spring.secret}")
     // Obtém o segredo
+    @Value("${spring.secret}")
     private String secret;
 
-    @Value("${spring.expiracao}")
     // Obtém o tempo de expiração
+    @Value("${spring.expiracao}")
     private Long expiracao;
 
-    @Value("${spring.emissor}")
     // Obtém o emissor do token
+    @Value("${spring.emissor}")
     private String emissor;
 
     // Método responsável por gerar um token JWT , recebe o parametro subject e identifica o asunto
@@ -36,15 +36,13 @@ public class TokenService {
 
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-
+                    // Define quem emitiu o token.// Define o subject, ou seja, a identificação associada ao token
+                    // Define a data e hora em que o token irá expirar.// Assina o token utilizando o algoritmo configurado
                     .withIssuer(emissor)
-                    // Define quem emitiu o token
                     .withSubject(loginRequestDto.email())
-                    // Define o subject, ou seja, a identificação associada ao token
                     .withExpiresAt(getDataExpiracao())
-                    // Define a data e hora em que o token irá expirar
                     .sign(algorithm);
-                    // Assina o token utilizando o algoritmo configurado
+
 
             return token;
     }

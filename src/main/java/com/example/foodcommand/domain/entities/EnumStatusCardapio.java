@@ -1,6 +1,6 @@
 package com.example.foodcommand.domain.entities;
 
-public enum EnumStatusMenu {
+public enum EnumStatusCardapio {
 
     ATIVO,
     INATIVO,

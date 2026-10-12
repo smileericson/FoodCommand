@@ -19,7 +19,7 @@ export default function MesaForm({ mesaExistente }: MesaFormProps) {
         setMesa(valorAnterior =>
             new Mesa(
                 valorAnterior.id,
-                campo === 'numero' ? Number(valor) : valorAnterior.numero,
+                campo === 'numero' ? Number(valor) : valorAnterior.numeroMesa,
                 valorAnterior.statusMesa
             )
         )
@@ -70,7 +70,7 @@ export default function MesaForm({ mesaExistente }: MesaFormProps) {
                     <input
                         name="numero"
                         type="number"
-                        value={mesa.numero}
+                        value={mesa.numeroMesa}
                         required
                         onChange={(e)=> handlerChange('numero',e.target.value)}
                         placeholder="000"

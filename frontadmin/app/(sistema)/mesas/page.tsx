@@ -136,7 +136,7 @@ export default function Mesas() {
                                 </th>
 
                                 <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
-                                    Número
+                                    Número Mesa
                                 </th>
 
                                 <th className="px-4 py-4 text-center text-xs font-extrabold uppercase tracking-wider text-orange-500 sm:px-6 sm:text-sm">
@@ -165,7 +165,7 @@ export default function Mesas() {
 
                                     {/* Número */}
                                     <td className="px-4 py-5 text-center text-sm font-bold text-zinc-900 sm:px-6">
-                                        {mesa.numero}
+                                        {mesa.numeroMesa}
                                     </td>
 
                                     {/* Status */}

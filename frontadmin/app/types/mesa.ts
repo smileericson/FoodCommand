@@ -3,7 +3,7 @@ export class Mesa {
     constructor(
 
         public id: number,
-        public numero: number,
+        public numeroMesa: number,
         public statusMesa: string
 
     ) { }

@@ -16,8 +16,8 @@ public class SwaggerConfiguration {
 
     @Bean
     // abaixo : Cria e configura o objeto principal da documentação da API.
-    // dentro do return new 1- adiciona o requisito de segurança
-    // 2- registra os compornentes incluindo o schema
+    // dentro do return new 1- adiciona o requisito de segurança (addsecurity)
+    // 2- registra os compornentes(components) e incluindo o schema de segurança
     // no new security, 1 -cria a configuração do schema, 2 defino o tipo, 3 defini o schema, 4 informa o formato do token.
     public OpenAPI customOpemApi(){
 

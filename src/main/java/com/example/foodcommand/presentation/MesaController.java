@@ -70,7 +70,7 @@ public class MesaController {
             Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
             if (mesaBanco != null) {
                 mesaBanco.setStatusMesa(mesa.getStatusMesa());
-                mesaBanco.setNumero(mesa.getNumero());
+                mesaBanco.setNumeroMesa(mesa.getNumeroMesa());
                 mesaRepository.save((mesaBanco));
                 return ResponseEntity.ok().build();
 
