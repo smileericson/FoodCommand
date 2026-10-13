@@ -9,6 +9,7 @@ import com.example.foodcommand.domain.entities.EnumStatusUsuario;
 import com.example.foodcommand.domain.entities.Usuario;
 import com.example.foodcommand.domain.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
-
+@Tag(name="Usuarios",description = "Grupo de APIs resposanavel por controlar a estrutura e consulta de Usuarios do sistema!")
 
 public class UsuarioController {
 

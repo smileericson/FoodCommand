@@ -1,6 +1,8 @@
 package com.example.foodcommand.presentation;
 
 import com.example.foodcommand.application.DTOs.AtualizarStatusPedido;
+import com.example.foodcommand.application.DTOs.PedidoResponse;
+import com.example.foodcommand.application.services.PedidoService;
 import com.example.foodcommand.domain.entities.EnumStatusPedido;
 import com.example.foodcommand.domain.entities.Pedido;
 import com.example.foodcommand.domain.repository.PedidoRepository;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pedidos")
 //tag
@@ -20,12 +24,15 @@ public class PedidoController {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private PedidoService pedidoService;
+
     // GET /pedidos -> lista todos.
     //(Operation)summary: descreve a documentação da api, description:descreve a regra de negocio.
     @GetMapping
     @Operation(summary = "Metodo de consulta de lista de pedidos",description = "Metodo responsavel em efetuar consulta de todos os pedidos sem filtro")
-    public ResponseEntity<?>listarTodos(){
-        return ResponseEntity.ok(pedidoRepository.findAll());
+    public ResponseEntity<List<PedidoResponse>>listarTodos(){
+        return ResponseEntity.ok(pedidoService.listarTodosPedidosTable());
     }
 
     // GET /pedidos/{id} -> busca um pelo id.
@@ -56,7 +63,7 @@ public class PedidoController {
 
         Pedido pedidoBanco = pedidoRepository.findById(id).orElse(null);
         if(pedidoBanco != null ){
-            pedidoBanco.setStatusPedido(statusRequest.statusPedido());
+            pedidoBanco.setStatus(statusRequest.statusPedido());
             pedidoRepository.save((pedidoBanco));
             return  ResponseEntity.ok().build();
         }
@@ -71,7 +78,7 @@ public class PedidoController {
         try {
             Pedido pedidoBanco = pedidoRepository.findById(id).orElse(null);
             if (pedidoBanco != null) {
-                pedidoBanco.setStatusPedido(pedido.getStatusPedido());
+                pedidoBanco.setStatus(pedido.getStatus());
                 pedidoBanco.setValorSubtotal(pedido.getValorSubtotal());
                 pedidoBanco.setTaxaServico(pedido.getTaxaServico());
                 pedidoBanco.setValorTotal(pedido.getValorTotal());
@@ -92,7 +99,7 @@ public class PedidoController {
 
         Pedido pedidoBanco = pedidoRepository.findById(id).orElse(null);
         if(pedidoBanco != null ){
-            pedidoBanco.setStatusPedido(EnumStatusPedido.EXCLUIDO);
+            pedidoBanco.setStatus(EnumStatusPedido.EXCLUIDO);
             pedidoRepository.save((pedidoBanco));
             return  ResponseEntity.ok().build();
         }

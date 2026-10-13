@@ -1,6 +1,7 @@
 package com.example.foodcommand.presentation;
 
 import com.example.foodcommand.application.DTOs.*;
+import com.example.foodcommand.application.services.MesaService;
 import com.example.foodcommand.domain.entities.EnumStatusMesa;
 import com.example.foodcommand.domain.entities.Mesa;
 import com.example.foodcommand.domain.repository.MesaRepository;
@@ -20,15 +21,15 @@ public class MesaController {
 
     @Autowired
     private MesaRepository mesaRepository;
+    @Autowired
+    private MesaService mesaService;
 
     // get /mesa -> lista todas as mesas
     //(Operation)summary: descreve a documentação da api, description:descreve a regra de negocio.
     @GetMapping
     @Operation(summary = "Metodo de consulta de mesas",description = "Metodo responsavel em efetuar a consulta de todas as mesas sem filtro")
-    private ResponseEntity<?>listarTodos(){
-        List<Mesa> mesas = List.of(new Mesa(1L,1,
-                EnumStatusMesa.LIVRE));
-        return ResponseEntity.ok(mesaRepository.findAll());
+    private ResponseEntity<List<MesaResponse>>listarTodos(){
+        return ResponseEntity.ok(mesaService.listarTodasMesas());
     }
 
     // get/mesa/id - busca pelo id
@@ -59,7 +60,7 @@ public class MesaController {
 
         Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
         if(mesaBanco != null ){
-            mesaBanco.setStatusMesa(statusRequest.statusMesa());
+            mesaBanco.setStatus(statusRequest.statusMesa());
             mesaRepository.save((mesaBanco));
             return  ResponseEntity.ok().build();
         }
@@ -74,7 +75,7 @@ public class MesaController {
         try {
             Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
             if (mesaBanco != null) {
-                mesaBanco.setStatusMesa(mesa.getStatusMesa());
+                mesaBanco.setStatus(mesa.getStatus());
                 mesaBanco.setNumeroMesa(mesa.getNumeroMesa());
                 mesaRepository.save((mesaBanco));
                 return ResponseEntity.ok().build();
@@ -93,7 +94,7 @@ public class MesaController {
 
         Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
         if(mesaBanco != null ){
-            mesaBanco.setStatusMesa(EnumStatusMesa.EXCLUIDA);
+            mesaBanco.setStatus(EnumStatusMesa.EXCLUIDA);
             mesaRepository.save((mesaBanco));
             return  ResponseEntity.ok().build();
         }

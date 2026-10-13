@@ -19,6 +19,6 @@ public class Mesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     public int numeroMesa;
-    public EnumStatusMesa statusMesa;
+    public EnumStatusMesa status = EnumStatusMesa.LIVRE;
 
 }

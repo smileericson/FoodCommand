@@ -21,6 +21,6 @@ public class Cardapio {
     public String nome;
     public String descricao;
     public String preco;
-    public EnumStatusCardapio statusCardapio;
+    public EnumStatusCardapio status = EnumStatusCardapio.ATIVO;
 
 }

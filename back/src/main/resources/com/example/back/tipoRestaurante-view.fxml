@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="336.0" prefWidth="406.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.TipoRestauranteController">
+   <children>
+      <Button layoutX="103.0" layoutY="210.0" mnemonicParsing="false" onAction="#voltar" text="Sair" />
+      <Button layoutX="255.0" layoutY="210.0" mnemonicParsing="false" onAction="#SalvarTipoRestaurante" text="Salvar" />
+      <Label layoutX="150.0" layoutY="109.0" text="Tipo de Restaurante" />
+      <TextField fx:id="txtNome" layoutX="129.0" layoutY="141.0" />
+   </children>
+</AnchorPane>

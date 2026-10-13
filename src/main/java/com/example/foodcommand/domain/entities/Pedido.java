@@ -20,7 +20,7 @@ public class Pedido {
     public int valorSubtotal;
     public int taxaServico;
     public int valorTotal;
-    public EnumStatusPedido statusPedido;
+    public EnumStatusPedido status = EnumStatusPedido.ATIVO;
 
 
 }

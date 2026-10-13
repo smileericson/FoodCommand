@@ -1,6 +1,8 @@
 package com.example.foodcommand.presentation;
 
 import com.example.foodcommand.application.DTOs.AtualizarStatusCardapio;
+import com.example.foodcommand.application.DTOs.CardapioResponse;
+import com.example.foodcommand.application.services.CardapioService;
 import com.example.foodcommand.domain.entities.Cardapio;
 import com.example.foodcommand.domain.entities.EnumStatusCardapio;
 import com.example.foodcommand.domain.repository.CardapioRepository;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cardapio")
 @Tag(name="Cardapio",description = "Grupo de APIs responsavel por controlar a estrutura e consultar o Cardapio do sistema")
@@ -18,13 +22,15 @@ public class CardapioController {
 
     @Autowired
     private CardapioRepository cardapioRepository;
+    @Autowired
+    private CardapioService cardapioService;
 
     // get /cardapio - lista todos os cardapios do banco.
     //(Operation)summary: descreve a documentação da api, description:descreve a regra de negocio.
     @GetMapping
     @Operation(summary = "Metodo de consulta de lista de Cardapio",description = "Metodo responsavel em efetuar a consulta de todos os Cardapios sem filtro")
-    public ResponseEntity<?>listarTodos(){
-        return ResponseEntity.ok(cardapioRepository.findAll());
+    public ResponseEntity<List<CardapioResponse>>listarTodos(){
+        return ResponseEntity.ok(cardapioService.listarTodosCardapiosTable());
     }
 
     // get id /cardapio/id - busca por id
@@ -54,7 +60,7 @@ public class CardapioController {
     public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusCardapio statusRequest){
         Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
         if(cardapioBanco != null ){
-            cardapioBanco.setStatusCardapio(statusRequest.statusCardapio());
+            cardapioBanco.setStatus(statusRequest.statusCardapio());
             cardapioRepository.save((cardapioBanco));
             return  ResponseEntity.ok().build();
         }
@@ -68,7 +74,7 @@ public class CardapioController {
         try {
             Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
             if (cardapioBanco != null) {
-                cardapioBanco.setStatusCardapio(cardapio.getStatusCardapio());
+                cardapioBanco.setStatus(cardapio.getStatus());
                 cardapioBanco.setNome(cardapio.getNome());
                 cardapio.setDescricao(cardapio.getDescricao());
                 cardapioBanco.setPreco(cardapio.getPreco());
@@ -89,7 +95,7 @@ public class CardapioController {
 
         Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
         if(cardapioBanco != null ){
-            cardapioBanco.setStatusCardapio(EnumStatusCardapio.EXCLUIDO);
+            cardapioBanco.setStatus(EnumStatusCardapio.EXCLUIDO);
             cardapioRepository.save((cardapioBanco));
             return  ResponseEntity.ok().build();
         }
