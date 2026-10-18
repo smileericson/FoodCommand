@@ -1,6 +1,6 @@
 package com.example.foodcommand.domain.repository;
 
-import com.example.foodcommand.domain.entities.EnumStatusUsuario;
+import com.example.foodcommand.application.DTOs.EnumStatusUsuario;
 import com.example.foodcommand.domain.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

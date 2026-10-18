@@ -1,12 +1,8 @@
 package com.example.foodcommand.presentation;
 
-import com.example.foodcommand.application.DTOs.AtualizarStatusRequest;
-import com.example.foodcommand.application.DTOs.CriarAdminReponse;
-import com.example.foodcommand.application.DTOs.CriarAdminRequest;
-import com.example.foodcommand.application.DTOs.UsuarioResponse;
+import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.application.services.UsuarioService;
-import com.example.foodcommand.domain.entities.EnumStatusUsuario;
-import com.example.foodcommand.domain.entities.Usuario;
+import com.example.foodcommand.application.DTOs.EnumStatusUsuario;
 import com.example.foodcommand.domain.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,15 +26,11 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
-
     //retorna uma resposta do http contendo a lista de usuarioresponce
-    // chama o metodo ...table dp service e retorna do http reponseentity com http 200 e a lista.
+    // chama o metodo ...table depois service e retorna do http reponseentity com http 200 e a lista.
    public ResponseEntity<List<UsuarioResponse>> listarTodos(){
         return ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
     }
@@ -46,7 +38,6 @@ public class UsuarioController {
     @PostMapping("/admin")
     @Operation(summary = "Método de criação de usuários ADMS!", description = "Método reponsável em efetuar a criação de novos usuários ADMS!")
     public ResponseEntity<CriarAdminReponse>criarAdmin(@RequestBody CriarAdminRequest criarAdminRequest) {
-
         try {
             CriarAdminReponse repostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
             return ResponseEntity.ok(repostaSalvar);
@@ -59,38 +50,27 @@ public class UsuarioController {
     //2 - summary: descreve a documentação da api, description:descreve a regra de negocio.
     @GetMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a consulta de todos os usuarios por Id")
-
-    //recebe o id informado na URL
-    // recebe o usuario pelo id se não encontrar retorna null
-    // if verifica se o usuario foi encontrado, retorna 200, caso não encontre returna 404 not found
-    public ResponseEntity<Usuario>buscarPorId(@PathVariable Long id){
-        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+    public ResponseEntity<UsuarioResponse>buscarPorId(@PathVariable Long id){
+        UsuarioResponse usuarioBanco = usuarioService.buscarPorId(id);
         if(usuarioBanco != null ){
-
             return  ResponseEntity.ok(usuarioBanco);
-
         }
         return ResponseEntity.notFound().build();
-
-
     }
 
     //1 - define o enpoint caminho/usuario e cria um usuario.
     //2 - indica o status 201 created
     //3 -  Serve para descrever a documentação, summary: descreve a documentação description a regra de negocio
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Metodo de cosulta de lista de usuários",description = "Metodo responsavel em efetuar a criação de novos usuarios")
-
-    // converte parte do requestbory o JSON em um objeto da entidade Usuario.
-    // salva o usuario no banco .save
-    // retur retorna http 200
-
-    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario){
-        var usuarioBanco =  usuarioRepository.save(usuario);
-
-        return ResponseEntity.ok(usuarioBanco);
+    public ResponseEntity<?> criar(@RequestBody UsuarioRequest usuario){
+       try {
+           UsuarioResponse usuarioBanco =  usuarioService.salvarUsuario(usuario,0L);
+           return ResponseEntity.ok(usuarioBanco);
+       } catch (Exception e) {
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
     }
 
     //1 - Atualiza parcialmente um recurso, no caso somente o status
@@ -102,17 +82,9 @@ public class UsuarioController {
     // pachvariable busca o id, requestbory recebe o novo status da requisicao
     public ResponseEntity<Void>atualizarStatus(@PathVariable Long id,
                                                @RequestBody AtualizarStatusRequest statusRequest){
-        // busca o usuario por id findbyid, verifica se é null orElse, verifica se existe !=
-        // atualiza o status do usuario com valor recebido se existir
-        // persiste a alteração no banco .save
-        // retorna http 200
-        // retorna2 se não encontrar http 404
-        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
-
-        if(usuarioBanco != null ){
-            usuarioBanco.setStatus(statusRequest.status());
-            usuarioRepository.save((usuarioBanco));
-            return  ResponseEntity.ok().build();
+        boolean atualizarUsuario = usuarioService.atualizarStatus(statusRequest.status(),id);
+        if(atualizarUsuario){
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
 
@@ -122,42 +94,18 @@ public class UsuarioController {
     // 2 - descreve a documentação da api, summary descrição, description regra de negocio.
 
     @PutMapping("/{id}")
-
     @Operation(summary = "Metodo de cosulta de lista de usuários",description= "Metodo responsavel em efetuar a atualização de todos os usuarios,filtrado por Id")
 
-    // pathvariabele recebe o id usuario, requestbody recebe o novo dados no corpo da requisição.
-    public ResponseEntity<Usuario> atualizar(@PathVariable Long id,
-                                             @RequestBody Usuario usuario) {
-
-        // aqui tratase as possiveis runtimeexceptions dentro do bloco
-        // busca o usuario cadastrado findbyid ou orElse se é null
-        // só atualiza se o usuario for != de null "existir"
-        // os atributos
-        // .save salva as atribuições alteradads
-        // retorna http200
-        // retorna 2 se usuario não encontrado http 404
-        // cath retorna novamente a exceção recebida
-        try {
-
-            Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
-            if (usuarioBanco != null) {
-
-                usuarioBanco.setStatus(usuario.getStatus());
-                usuarioBanco.setNome(usuario.getNome());
-                usuarioBanco.setCpf(usuario.getCpf());
-                usuarioBanco.setEmail(usuario.getEmail());
-                usuarioBanco.setSenha(usuario.getSenha());
-
-                usuarioRepository.save((usuarioBanco));
-                return ResponseEntity.ok().build();
-
-
-            }
-            return ResponseEntity.notFound().build();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-
-        }
+    // pathvariabele recebe o id usuario,
+    // requestBody converte o JSON enviado no corpo da requisição em um objeto UsuarioRequest
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                             @RequestBody UsuarioRequest usuario) {
+       try {
+           UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario,id);
+           return ResponseEntity.ok(usuarioBanco);
+       }catch (Exception e){
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
     }
     //1 define o caminho do delete, exclusão logica altera o status nosso caso, se fosse exclusão fisica removeria o registro do banco
     // 2 serve para descrever a documentação da api, summary descrição , description regra de negocio
@@ -168,22 +116,10 @@ public class UsuarioController {
     // patchvariable recebe o id do usuario.
     public ResponseEntity<Void> excluir(@PathVariable Long id){
 
-        // busca o ide findbyid, oreslse se é nul
-        // verifica se o usuario =! de null se ele existe
-
-        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
-        if(usuarioBanco != null ){
-
-            // altera o statuso para excluido, sem remover o registro do banco
-            // salva a alteração do status
-            // retorna http 200
-            // notfound, se o usuario não existir retorna http 404
-            usuarioBanco.setStatus(EnumStatusUsuario.EXCLUIDO);
-            usuarioRepository.save((usuarioBanco));
-
-            return  ResponseEntity.ok().build();
-
-        }
+       var atualizarUsuario = usuarioService.atualizarStatus(EnumStatusUsuario.EXCLUIDO,id);
+       if(atualizarUsuario){
+           return ResponseEntity.ok().build();
+       }
         return ResponseEntity.notFound().build();
 
     }

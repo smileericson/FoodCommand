@@ -1,9 +1,6 @@
 package com.example.foodcommand.application.DTOs;
 
 
-import com.example.foodcommand.domain.entities.EnumStatusUsuario;
-
-
 public record AtualizarStatusRequest(EnumStatusUsuario status) {
     // Declara um record chamado AtualizarStatusRequest.
     // O record é uma estrutura do Java utilizada para representar

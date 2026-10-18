@@ -1,10 +1,10 @@
 package com.example.foodcommand.domain.entities;
 
 import com.example.foodcommand.application.DTOs.CriarAdminRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.foodcommand.application.DTOs.EnumStatusUsuario;
+import com.example.foodcommand.application.DTOs.UsuarioRequest;
+import com.example.foodcommand.domain.valueobject.CPF;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,8 @@ public class Usuario {
 
     //atributos
     public String nome;
-    public String cpf;
+    @Embedded
+    public CPF cpf;
     public String senha;
     public String email;
 
@@ -41,11 +42,19 @@ public class Usuario {
 
     //construtor que pega as informações
     public Usuario(CriarAdminRequest criarAdminRequest) {
-        this.setCpf(criarAdminRequest.cpf());
+        this.setCpf(new CPF(criarAdminRequest.cpf()));
         this.setNome(criarAdminRequest.nome());
         this.setSenha(criarAdminRequest.senha());
         this.setEmail(criarAdminRequest.email());
         this.setRole("ROLE_ADMIN");
 
+    }
+
+    public Usuario(UsuarioRequest usuario) {
+        this.setCpf(new CPF(usuario.cpf()));
+        this.setNome(usuario.nome());
+        this.setSenha(usuario.senha());
+        this.setEmail(usuario.email());
+        this.setRole("ROLE_USER");
     }
 }

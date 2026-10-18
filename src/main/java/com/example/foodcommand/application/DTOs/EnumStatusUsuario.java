@@ -1,4 +1,4 @@
-package com.example.foodcommand.domain.entities;
+package com.example.foodcommand.application.DTOs;
 
 public enum EnumStatusUsuario {
 

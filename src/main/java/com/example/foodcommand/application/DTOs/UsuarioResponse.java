@@ -1,6 +1,5 @@
 package com.example.foodcommand.application.DTOs;
 
-import com.example.foodcommand.domain.entities.EnumStatusUsuario;
 import com.example.foodcommand.domain.entities.Usuario;
 
 public record UsuarioResponse(Long id, String nome, String cpf, String email, EnumStatusUsuario status) {
@@ -10,7 +9,7 @@ public record UsuarioResponse(Long id, String nome, String cpf, String email, En
         this(
                 usuarioEntidade.getId(),
                 usuarioEntidade.getNome(),
-                usuarioEntidade.getCpf(),
+                usuarioEntidade.getCpf().toString(),
                 usuarioEntidade.getEmail(),
                 usuarioEntidade.getStatus()
         );
