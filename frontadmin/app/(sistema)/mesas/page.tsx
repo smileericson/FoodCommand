@@ -179,7 +179,7 @@ export default function Mesas() {
                                         <div className="flex flex-col items-center justify-center gap-3">
 
                                             <Link
-                                                href={`/usuarios/${mesa.id}/editar`}
+                                                href={`/mesas/${mesa.id}/editar`}
                                                 className="font-bold text-orange-600 transition-colors hover:text-orange-800 hover:underline"
                                             >
                                                 Editar

@@ -6,6 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.foodcommand.application.DTOs.LoginRequest;
+import com.example.foodcommand.domain.entities.Usuario;
+import com.example.foodcommand.domain.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,31 @@ public class TokenService {
     // Obtém o emissor do token
     @Value("${spring.emissor}")
     private String emissor;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    // PASSO 4.2 - descobre o usuário logado pelo token (caminho inverso do login)
+    // recebe "Bearer <token>", tira o email de dentro do token e busca o usuário no banco
+    public Usuario buscarUsuarioLogado(String authorization) {
+
+        // sem token ou fora do padrão "Bearer " -> bloqueia
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new RuntimeException("Token não informado.");
+        }
+
+        // tira o "Bearer " e fica só o token
+        String token = authorization.replace("Bearer ", "");
+
+        // valida o token e pega o email gravado no login
+        String email = vericarToken(token).getSubject();
+
+        // busca o usuário pelo email; se não achar -> bloqueia
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário do token não encontrado."));
+    }
+
+
 
     // Método responsável por gerar um token JWT , recebe o parametro subject e identifica o asunto
     // Define o algoritmo HMAC256

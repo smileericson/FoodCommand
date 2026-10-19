@@ -3,7 +3,6 @@ package com.example.foodcommand.presentation;
 import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.application.services.UsuarioService;
 import com.example.foodcommand.application.DTOs.EnumStatusUsuario;
-import com.example.foodcommand.domain.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

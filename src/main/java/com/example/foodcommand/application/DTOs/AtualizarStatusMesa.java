@@ -1,8 +1,5 @@
 package com.example.foodcommand.application.DTOs;
 
-import com.example.foodcommand.domain.entities.EnumStatusMesa;
-
-
 
 public record AtualizarStatusMesa(EnumStatusMesa statusMesa) {
     // Declara um record chamado AtualizarStatusRequest.

@@ -2,9 +2,7 @@ package com.example.foodcommand.presentation;
 
 import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.application.services.MesaService;
-import com.example.foodcommand.domain.entities.EnumStatusMesa;
-import com.example.foodcommand.domain.entities.Mesa;
-import com.example.foodcommand.domain.repository.MesaRepository;
+import com.example.foodcommand.application.DTOs.EnumStatusMesa;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,70 +18,62 @@ import java.util.List;
 public class MesaController {
 
     @Autowired
-    private MesaRepository mesaRepository;
-    @Autowired
     private MesaService mesaService;
 
     // get /mesa -> lista todas as mesas
     //(Operation)summary: descreve a documentação da api, description:descreve a regra de negocio.
     @GetMapping
     @Operation(summary = "Metodo de consulta de mesas",description = "Metodo responsavel em efetuar a consulta de todas as mesas sem filtro")
-    private ResponseEntity<List<MesaResponse>>listarTodos(){
+    public ResponseEntity<List<MesaResponse>> listarTodos(){
         return ResponseEntity.ok(mesaService.listarTodasMesas());
     }
 
     // get/mesa/id - busca pelo id
     @GetMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de mesas",description= "Metodo responsavel em efetuar a consulta de todos as mesas por Id")
-    public ResponseEntity<Mesa>buscarPorId(@PathVariable Long id){
-        Mesa usuarioBanco = mesaRepository.findById(id).orElse(null);
-        if(usuarioBanco != null ){
-            return  ResponseEntity.ok(usuarioBanco);
+    public ResponseEntity<MesaResponse>buscarPorId(@PathVariable Long id){
+        MesaResponse mesaBanco = mesaService.buscarPorId(id);
+        if(mesaBanco != null ){
+            return  ResponseEntity.ok(mesaBanco);
         }
         return ResponseEntity.notFound().build();
-
     }
 
     // post/mesa -> cria uma nova mesa
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Metodo de consulta de lista de mesas",description = "Metodo responsavel em efutuar a criação de novas mesas")
-    public ResponseEntity<Mesa>criar(@RequestBody Mesa mesa){
-        var mesaBanco = mesaRepository.save(mesa);
-        return ResponseEntity.ok(mesaBanco);
+    public ResponseEntity<?> criar(@RequestBody MesaRequest mesa){
+        try {
+            MesaResponse mesaBanco = mesaService.salvarMesa(mesa,0L);
+            return ResponseEntity.ok(mesaBanco);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     //pach/mesa/id/status - altera somente status neste caso.
     @PatchMapping ("/{id}/status")// serve para atualizar um dado só
     @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualização das mesas por Id")
-    public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusMesa statusRequest){
-
-        Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
-        if(mesaBanco != null ){
-            mesaBanco.setStatus(statusRequest.statusMesa());
-            mesaRepository.save((mesaBanco));
-            return  ResponseEntity.ok().build();
+    public ResponseEntity<Void>atualizarStatus(@PathVariable Long id,
+                                               @RequestBody AtualizarStatusMesa statusRequest){
+        boolean atualizarMesa = mesaService.atualizarStatus(statusRequest.statusMesa(),id);
+        if(atualizarMesa){
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
-
     }
 
     //put /mesa/id - atualiza os dado -> status, numero da mesa.
     @PutMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualizar todas as mesas,filtrado por Id")
-    public ResponseEntity<Mesa> atualizar(@PathVariable Long id,@RequestBody Mesa mesa) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                       @RequestBody MesaRequest mesa) {
         try {
-            Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
-            if (mesaBanco != null) {
-                mesaBanco.setStatus(mesa.getStatus());
-                mesaBanco.setNumeroMesa(mesa.getNumeroMesa());
-                mesaRepository.save((mesaBanco));
-                return ResponseEntity.ok().build();
-
-            }
-            return ResponseEntity.notFound().build();
-        }catch (RuntimeException e){
-            throw new RuntimeException(e);
+            MesaResponse mesaBanco = mesaService.salvarMesa(mesa,id);
+            return ResponseEntity.ok(mesaBanco);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -91,12 +81,9 @@ public class MesaController {
     @DeleteMapping("/{id}/excluir")
     @Operation(summary = "Metodo de cosulta de lista de Mesas",description= "Metodo responsavel em efetuar a atualização para EXCLUIDO o Status, filtrado por Id")
     public ResponseEntity<Void> excluir(@PathVariable Long id){
-
-        Mesa mesaBanco = mesaRepository.findById(id).orElse(null);
-        if(mesaBanco != null ){
-            mesaBanco.setStatus(EnumStatusMesa.EXCLUIDA);
-            mesaRepository.save((mesaBanco));
-            return  ResponseEntity.ok().build();
+        var atualizarMesa = mesaService.atualizarStatus(EnumStatusMesa.EXCLUIDA,id);
+        if(atualizarMesa){
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }

@@ -1,5 +1,7 @@
 package com.example.foodcommand.domain.entities;
 
+import com.example.foodcommand.application.DTOs.EnumStatusMesa;
+import com.example.foodcommand.application.DTOs.MesaRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +21,9 @@ public class Mesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     public int numeroMesa;
-    public EnumStatusMesa status = EnumStatusMesa.LIVRE;
+    public EnumStatusMesa statusMesa = EnumStatusMesa.LIVRE;
 
+    public Mesa(MesaRequest mesa) {
+        this.setNumeroMesa(mesa.numeroMesa());
+    }
 }

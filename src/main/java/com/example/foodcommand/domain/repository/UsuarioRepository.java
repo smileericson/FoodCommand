@@ -22,4 +22,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     // Busca usuários cujo status seja diferente do status informado.
     // Retorna um Optional contendo uma lista de usuários,
     // ou um Optional vazio caso não exista resultado.
+
+    Optional<Usuario> findByEmail(String email);
+    // Busca o usuário pelo e-mail informado.
+    // Retorna um Optional com o usuário, ou vazio caso não exista.
 }

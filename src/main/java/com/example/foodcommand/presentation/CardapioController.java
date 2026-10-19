@@ -1,11 +1,8 @@
 package com.example.foodcommand.presentation;
 
-import com.example.foodcommand.application.DTOs.AtualizarStatusCardapio;
-import com.example.foodcommand.application.DTOs.CardapioResponse;
+import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.application.services.CardapioService;
-import com.example.foodcommand.domain.entities.Cardapio;
-import com.example.foodcommand.domain.entities.EnumStatusCardapio;
-import com.example.foodcommand.domain.repository.CardapioRepository;
+import com.example.foodcommand.application.DTOs.EnumStatusCardapio;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +18,6 @@ import java.util.List;
 public class CardapioController {
 
     @Autowired
-    private CardapioRepository cardapioRepository;
-    @Autowired
     private CardapioService cardapioService;
 
     // get /cardapio - lista todos os cardapios do banco.
@@ -36,33 +31,35 @@ public class CardapioController {
     // get id /cardapio/id - busca por id
     @GetMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista do Cardapio",description= "Metodo responsavel em efetuar a consulta do Cardapio por Id")
-    public ResponseEntity<Cardapio>buscarPorId(@PathVariable Long id){
-        Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
+    public ResponseEntity<CardapioResponse>buscarPorId(@PathVariable Long id){
+        CardapioResponse cardapioBanco = cardapioService.buscarPorId(id);
         if(cardapioBanco != null ){
             return  ResponseEntity.ok(cardapioBanco);
         }
         return ResponseEntity.notFound().build();
-
     }
 
     // post /cardapio/ - recebe o cardapio e cria no banco.
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Metodo de consulta de lista de Cardapio", description = "Metodo responsavel em efeturar a criação de novos Cardapios")
-    public ResponseEntity<Cardapio>criar(@RequestBody Cardapio cardapio){
-        var cardapioBanco= cardapioRepository.save(cardapio);
-        return ResponseEntity.ok(cardapioBanco);
+    public ResponseEntity<?> criar(@RequestBody CardapioRequest cardapio){
+        try {
+            CardapioResponse cardapioBanco = cardapioService.salvarCardapio(cardapio,0L);
+            return ResponseEntity.ok(cardapioBanco);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // patch id - /cardapio/id/status - atualiza neste caso o status do cardapio
     @PatchMapping ("/{id}/status")// serve para atualizar um dado só
     @Operation(summary = "Metodo de cosulta de lista de cardapio",description= "Metodo responsavel em efetuar a atualização do cardapio por Id")
-    public ResponseEntity<Void>atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusCardapio statusRequest){
-        Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
-        if(cardapioBanco != null ){
-            cardapioBanco.setStatus(statusRequest.statusCardapio());
-            cardapioRepository.save((cardapioBanco));
-            return  ResponseEntity.ok().build();
+    public ResponseEntity<Void>atualizarStatus(@PathVariable Long id,
+                                               @RequestBody AtualizarStatusCardapio statusRequest){
+        boolean atualizarCardapio = cardapioService.atualizarStatus(statusRequest.statusCardapio(),id);
+        if(atualizarCardapio){
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
@@ -70,21 +67,13 @@ public class CardapioController {
     // put /cardapio/id - Aqui ele atualiza o status, nome, descrição, preco do cardapio.
     @PutMapping("/{id}")
     @Operation(summary = "Metodo de cosulta de lista de cardapio",description= "Metodo responsavel em efetuar a atualização de todos objetos do cardapio,filtrado por Id")
-    public ResponseEntity<Cardapio> atualizar(@PathVariable Long id,@RequestBody Cardapio cardapio) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                       @RequestBody CardapioRequest cardapio) {
         try {
-            Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
-            if (cardapioBanco != null) {
-                cardapioBanco.setStatus(cardapio.getStatus());
-                cardapioBanco.setNome(cardapio.getNome());
-                cardapio.setDescricao(cardapio.getDescricao());
-                cardapioBanco.setPreco(cardapio.getPreco());
-                cardapioRepository.save((cardapioBanco));
-                return ResponseEntity.ok().build();
-
-            }
-            return ResponseEntity.notFound().build();
-        }catch (RuntimeException e){
-            throw new RuntimeException(e);
+            CardapioResponse cardapioBanco = cardapioService.salvarCardapio(cardapio,id);
+            return ResponseEntity.ok(cardapioBanco);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -92,12 +81,9 @@ public class CardapioController {
     @DeleteMapping("/{id}/excluir")
     @Operation(summary = "Metodo de cosulta de lista de Cardapio",description= "Metodo responsavel em efetuar a atualização para EXCLUIDO, filtrado por Id")
     public ResponseEntity<Void> excluir(@PathVariable Long id){
-
-        Cardapio cardapioBanco = cardapioRepository.findById(id).orElse(null);
-        if(cardapioBanco != null ){
-            cardapioBanco.setStatus(EnumStatusCardapio.EXCLUIDO);
-            cardapioRepository.save((cardapioBanco));
-            return  ResponseEntity.ok().build();
+        var atualizarCardapio = cardapioService.atualizarStatus(EnumStatusCardapio.EXCLUIDO,id);
+        if(atualizarCardapio){
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }

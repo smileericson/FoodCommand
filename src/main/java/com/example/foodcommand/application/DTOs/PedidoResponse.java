@@ -1,9 +1,10 @@
 package com.example.foodcommand.application.DTOs;
 
-import com.example.foodcommand.domain.entities.EnumStatusPedido;
 import com.example.foodcommand.domain.entities.Pedido;
 
-public record PedidoResponse(long id, int valorSubtotal, int taxaServico, int valorTotal, EnumStatusPedido statusPedido) {
+import java.math.BigDecimal;
+
+public record PedidoResponse(long id, BigDecimal valorSubtotal, BigDecimal taxaServico, BigDecimal valorTotal, EnumStatusPedido statusPedido) {
 
     public PedidoResponse(Pedido pedidoEntidade){
         this(
