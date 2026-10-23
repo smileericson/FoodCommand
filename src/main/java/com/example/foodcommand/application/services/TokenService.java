@@ -6,7 +6,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.foodcommand.application.DTOs.LoginRequest;
+import com.example.foodcommand.application.DTOs.UsuarioLogado;
+import com.example.foodcommand.domain.entities.Token;
 import com.example.foodcommand.domain.entities.Usuario;
+import com.example.foodcommand.domain.repository.TokenRepository;
 import com.example.foodcommand.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +38,9 @@ public class TokenService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private TokenRepository tokenRepository;
+
     // PASSO 4.2 - descobre o usuário logado pelo token (caminho inverso do login)
     // recebe "Bearer <token>", tira o email de dentro do token e busca o usuário no banco
     public Usuario buscarUsuarioLogado(String authorization) {
@@ -47,11 +53,10 @@ public class TokenService {
         // tira o "Bearer " e fica só o token
         String token = authorization.replace("Bearer ", "");
 
-        // valida o token e pega o email gravado no login
-        String email = vericarToken(token).getSubject();
+        String email = vericarToken(token).email();
 
         // busca o usuário pelo email; se não achar -> bloqueia
-        return usuarioRepository.findByEmail(email)
+        return usuarioRepository.findByEmail(vericarToken(token).email())
                 .orElseThrow(() -> new RuntimeException("Usuário do token não encontrado."));
     }
 
@@ -63,6 +68,11 @@ public class TokenService {
     public String gerarToken(LoginRequest loginRequestDto) {
 
             Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            var usuario = usuarioRepository.findAll()
+                    .stream().filter(u->u.getEmail().equals(loginRequestDto.email())).findFirst().orElse(null);
+
+
             String token = JWT.create()
                     // Define quem emitiu o token.// Define o subject, ou seja, a identificação associada ao token
                     // Define a data e hora em que o token irá expirar.// Assina o token utilizando o algoritmo configurado
@@ -70,6 +80,8 @@ public class TokenService {
                     .withSubject(loginRequestDto.email())
                     .withExpiresAt(getDataExpiracao())
                     .sign(algorithm);
+
+            tokenRepository.save(new Token(usuario, token));
 
 
             return token;
@@ -80,11 +92,19 @@ public class TokenService {
     // cria o verificador jwt utilitando o alogritmo e emissor esperado
     // verifica o token e retorna suas informações.
 
-    public DecodedJWT vericarToken(String token) throws JWTVerificationException {
+    public UsuarioLogado vericarToken(String token) throws JWTVerificationException {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verificador = JWT.require(algorithm).withIssuer(emissor).build();
 
-        return verificador.verify(token);
+        verificador.verify(token);
+
+        var tokenBanco = tokenRepository.findByToken(token).orElse(null);
+
+        if (tokenBanco == null) {
+            throw new IllegalArgumentException("token Invalido!");
+        }
+
+        return new UsuarioLogado(tokenBanco.getUsuario());
     }
     // Método privado responsável por calcular a data de expiração do token
     // pega a data atual, depois a data fitura que é igual a data atual com o tempo de expiração.

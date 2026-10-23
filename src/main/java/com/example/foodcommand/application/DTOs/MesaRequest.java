@@ -1,4 +1,4 @@
-package com.example.foodcommand.application.DTOs;
+    package com.example.foodcommand.application.DTOs;
 
-public record MesaRequest(int numeroMesa) {
-}
+    public record MesaRequest(int numeroMesa) {
+    }

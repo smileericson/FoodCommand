@@ -7,10 +7,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 
 // 1-  Registra o JwtFilter no contexto do Spring
@@ -44,7 +48,6 @@ public class JwtFilter extends OncePerRequestFilter {
         || uri.startsWith("/swagger-resources")
         || uri.startsWith("webjars")
         || uri.startsWith("/auth/login")
-        || uri.startsWith("/")
         ){
             filterChain.doFilter(request,response);
 
@@ -65,7 +68,15 @@ public class JwtFilter extends OncePerRequestFilter {
                 //variavel verifica o token, mesagem exibe o token valido como subject.
 
                 var jwtValidador = tokenService.vericarToken(token);
-                System.out.println(jwtValidador.getSubject());
+
+                var user = new UsernamePasswordAuthenticationToken(
+                        jwtValidador.email(),
+                        null,
+                        List.of()
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(user);
+
 
 
             }catch (Exception e){
