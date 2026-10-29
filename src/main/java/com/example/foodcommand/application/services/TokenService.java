@@ -41,26 +41,6 @@ public class TokenService {
     @Autowired
     private TokenRepository tokenRepository;
 
-    // PASSO 4.2 - descobre o usuário logado pelo token (caminho inverso do login)
-    // recebe "Bearer <token>", tira o email de dentro do token e busca o usuário no banco
-    public Usuario buscarUsuarioLogado(String authorization) {
-
-        // sem token ou fora do padrão "Bearer " -> bloqueia
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new RuntimeException("Token não informado.");
-        }
-
-        // tira o "Bearer " e fica só o token
-        String token = authorization.replace("Bearer ", "");
-
-        String email = vericarToken(token).email();
-
-        // busca o usuário pelo email; se não achar -> bloqueia
-        return usuarioRepository.findByEmail(vericarToken(token).email())
-                .orElseThrow(() -> new RuntimeException("Usuário do token não encontrado."));
-    }
-
-
 
     // Método responsável por gerar um token JWT , recebe o parametro subject e identifica o asunto
     // Define o algoritmo HMAC256

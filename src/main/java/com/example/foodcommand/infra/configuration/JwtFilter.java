@@ -9,12 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 
 // 1-  Registra o JwtFilter no contexto do Spring
@@ -43,11 +41,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
 
         if(uri.startsWith("/swagger-ui")
-        || uri.startsWith("/v2/api-docs")
-        || uri.startsWith("/v3/api-docs")
-        || uri.startsWith("/swagger-resources")
-        || uri.startsWith("webjars")
-        || uri.startsWith("/auth/login")
+                || uri.startsWith("/v2/api-docs")
+                || uri.startsWith("/v3/api-docs")
+                || uri.startsWith("/swagger-resources")
+                || uri.startsWith("webjars")
+                || uri.startsWith("/auth/login")
         ){
             filterChain.doFilter(request,response);
 
@@ -65,16 +63,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
             try{
 
-                //variavel verifica o token, mesagem exibe o token valido como subject.
-
+                // verifica o token e devolve o UsuarioLogado (id, email, cpf e permissões)
                 var jwtValidador = tokenService.vericarToken(token);
 
+                // ALTERADO - igual ao professor:
+                // guarda o UsuarioLogado inteiro (e não só o email) e as permissões (role) do usuário
                 var user = new UsernamePasswordAuthenticationToken(
-                        jwtValidador.email(),
+                        jwtValidador,
                         null,
-                        List.of()
+                        jwtValidador.authorities()
                 );
 
+                // coloca o usuário logado no SecurityContextHolder para ser lido no service (getUsuarioLogado)
                 SecurityContextHolder.getContext().setAuthentication(user);
 
 

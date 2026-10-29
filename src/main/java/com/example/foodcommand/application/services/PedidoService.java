@@ -9,6 +9,7 @@ import com.example.foodcommand.domain.entities.Usuario;
 import com.example.foodcommand.domain.repository.CardapioRepository;
 import com.example.foodcommand.domain.repository.MesaRepository;
 import com.example.foodcommand.domain.repository.PedidoRepository;
+import com.example.foodcommand.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,14 @@ public class PedidoService {
     // usado para buscar o prato do cardápio ao adicionar item
     @Autowired
     private CardapioRepository cardapioRepository;
+
+    // NOVO - padrão do professor: o service descobre o usuário logado pelo getUsuarioLogado
+    @Autowired
+    private UsuarioService usuarioService;
+
+    // NOVO - busca a entidade Usuario do garçom logado pelo id
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<PedidoResponse> listarTodosPedidosTable(){
         return pedidoRepository.findAll()
@@ -65,10 +74,22 @@ public class PedidoService {
                 .orElse(false);
     }
 
+    // NOVO - pega o garçom logado (getUsuarioLogado do UsuarioService) e busca a entidade Usuario pelo id
+    // o pedido precisa da entidade Usuario (setGarcom), e não do UsuarioLogado (que é um DTO)
+    // É private por que só a propria service usa
+    private Usuario buscarGarcomLogado() {
+        var usuarioLogado = usuarioService.getUsuarioLogado();
+        return usuarioRepository.findById(usuarioLogado.id())
+                .orElseThrow(() -> new RuntimeException("Usuário logado não encontrado."));
+    }
+
     // PASSO 3 - abre o atendimento de uma mesa, gravando o garçom que abriu
     // @Transactional: salva a mesa e o pedido juntos; se um falhar, nenhum é salvo
+    // ALTERADO - não recebe mais o garçom por parâmetro, descobre pelo usuário logado
     @Transactional
-    public PedidoResponse abrirAtendimento(Long mesaId, Usuario garcomLogado) {
+    public PedidoResponse abrirAtendimento(Long mesaId) {
+
+        Usuario garcomLogado = buscarGarcomLogado();
 
         // 1 - busca a mesa; se não existir, lança exceção
         Mesa mesa = mesaRepository.findById(mesaId)
@@ -100,8 +121,11 @@ public class PedidoService {
     }
 
     // PASSO 5.3 - adiciona um prato ao pedido (só o garçom que abriu o atendimento)
+    // ALTERADO - não recebe mais o garçom por parâmetro, descobre pelo usuário logado
     @Transactional
-    public PedidoResponse adicionarItem(Long pedidoId, Long cardapioId, int quantidade, Usuario garcomLogado) {
+    public PedidoResponse adicionarItem(Long pedidoId, Long cardapioId, int quantidade) {
+
+        Usuario garcomLogado = buscarGarcomLogado();
 
         // 1 - busca o pedido e valida se o garçom logado é o dono do atendimento
         Pedido pedido = buscarPedido(pedidoId);
@@ -126,8 +150,12 @@ public class PedidoService {
     }
 
     // PASSO 5.3 - garçom pede a conta: mesa vai para AGUARDANDO_FECHAMENTO
+    // ALTERADO - não recebe mais o garçom por parâmetro, descobre pelo usuário logado
     @Transactional
-    public PedidoResponse pedirConta(Long pedidoId, Usuario garcomLogado) {
+    public PedidoResponse pedirConta(Long pedidoId) {
+
+        Usuario garcomLogado = buscarGarcomLogado();
+
         Pedido pedido = buscarPedido(pedidoId);
         pedido.validarGarcom(garcomLogado);
 
@@ -138,8 +166,12 @@ public class PedidoService {
     }
 
     // PASSO 5.3 - fecha a conta: pedido FECHADO e mesa LIVRE
+    // ALTERADO - não recebe mais o garçom por parâmetro, descobre pelo usuário logado
     @Transactional
-    public PedidoResponse fecharConta(Long pedidoId, Usuario garcomLogado) {
+    public PedidoResponse fecharConta(Long pedidoId) {
+
+        Usuario garcomLogado = buscarGarcomLogado();
+
         Pedido pedido = buscarPedido(pedidoId);
         pedido.validarGarcom(garcomLogado);
 

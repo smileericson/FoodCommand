@@ -7,6 +7,7 @@ import com.example.foodcommand.domain.repository.UsuarioRepository;
 import com.example.foodcommand.domain.valueobject.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,17 @@ public class UsuarioService {
     }
 
     public List<UsuarioResponse> listarTodosUsuariosTable() {
-        return usuarioRepository.findAll()
+
+        var usuarioLogado = getUsuarioLogado();
+
+        if(usuarioLogado.empresa_id() ==null){
+            return  usuarioRepository.findAll()
+                    .stream()
+                    .map(UsuarioResponse::new)
+                    .toList();
+        }
+
+        return  usuarioRepository.getUsuariosByEmpresa_Id(usuarioLogado.empresa_id())
                 .stream()
                 .map(UsuarioResponse::new)
                 .toList();
@@ -53,6 +64,10 @@ public class UsuarioService {
         usuarioRepository.save(usuarioAdminSalvar);
 
         return new CriarAdminReponse(usuarioAdminSalvar.getId(), "Usuario Salvo com sucesso!");
+    }
+
+    public UsuarioLogado getUsuarioLogado(){
+        return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
     //Sem id (ou id 0): cria um usuário novo, salva e devolve.
     //Com id: o findById procura o usuário.

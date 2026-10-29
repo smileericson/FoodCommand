@@ -69,41 +69,25 @@ public class PedidoController {
     }
 
     // PASSO 4.3 - POST /pedidos/mesa/{mesaId}/abrir - o garçom logado abre o atendimento de uma mesa livre
-    // mesaId vem da URL e o garçom vem do token (cabeçalho), nunca do JSON
+// o garçom não vem mais do cabeçalho: o service descobre pelo usuário logado (getUsuarioLogado)
     @PostMapping("/mesa/{mesaId}/abrir")
     @Operation(summary = "Abrir atendimento", description = "O garçom logado abre o atendimento de uma mesa livre")
-    public ResponseEntity<?> abrirAtendimento(@PathVariable Long mesaId,
-                                              @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> abrirAtendimento(@PathVariable Long mesaId) {
         try {
-            // descobre o garçom pelo token
-            Usuario garcomLogado = tokenService.buscarUsuarioLogado(authorization);
-
-            // abre o atendimento gravando a mesa e o garçom no pedido
-            PedidoResponse pedido = pedidoService.abrirAtendimento(mesaId, garcomLogado);
-            return ResponseEntity.ok(pedido);
-
-        } catch (JWTVerificationException e) {
-            // token falso, alterado ou expirado -> 401 (não autenticado)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado.");
-
+            return ResponseEntity.ok(pedidoService.abrirAtendimento(mesaId));
         } catch (Exception e) {
-            // erros de regra (sem token, mesa não encontrada, mesa não livre) -> 400 com a mensagem
+            // erros de regra (mesa não encontrada, mesa não livre) -> 400 com a mensagem
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     // PASSO 5.4 - POST /pedidos/{id}/itens - adiciona um prato ao pedido
-// id do pedido vem da URL, prato e quantidade vêm do corpo, garçom vem do token
     @PostMapping("/{id}/itens")
     @Operation(summary = "Adicionar item", description = "Adiciona um item ao pedido. Somente o garçom que abriu o atendimento")
     public ResponseEntity<?> adicionarItem(@PathVariable Long id,
-                                           @RequestBody AdicionarItemRequest itemRequest,
-                                           @RequestHeader("Authorization") String authorization) {
+                                           @RequestBody AdicionarItemRequest itemRequest) {
         try {
-            Usuario garcomLogado = tokenService.buscarUsuarioLogado(authorization);
-            PedidoResponse pedido = pedidoService.adicionarItem(id, itemRequest.cardapioId(), itemRequest.quantidade(), garcomLogado);
-            return ResponseEntity.ok(pedido);
-        } catch (JWTVerificationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado.");
+            return ResponseEntity.ok(pedidoService.adicionarItem(id, itemRequest.cardapioId(), itemRequest.quantidade()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -112,13 +96,9 @@ public class PedidoController {
     // PASSO 5.4 - PATCH /pedidos/{id}/pedir-conta - mesa fica AGUARDANDO_FECHAMENTO
     @PatchMapping("/{id}/pedir-conta")
     @Operation(summary = "Pedir a conta", description = "Coloca a mesa aguardando fechamento. Somente o garçom que abriu o atendimento")
-    public ResponseEntity<?> pedirConta(@PathVariable Long id,
-                                        @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> pedirConta(@PathVariable Long id) {
         try {
-            Usuario garcomLogado = tokenService.buscarUsuarioLogado(authorization);
-            return ResponseEntity.ok(pedidoService.pedirConta(id, garcomLogado));
-        } catch (JWTVerificationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado.");
+            return ResponseEntity.ok(pedidoService.pedirConta(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -127,13 +107,9 @@ public class PedidoController {
     // PASSO 5.4 - PATCH /pedidos/{id}/fechar-conta - pedido FECHADO e mesa LIVRE
     @PatchMapping("/{id}/fechar-conta")
     @Operation(summary = "Fechar a conta", description = "Fecha o pedido e libera a mesa. Somente o garçom que abriu o atendimento")
-    public ResponseEntity<?> fecharConta(@PathVariable Long id,
-                                         @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> fecharConta(@PathVariable Long id) {
         try {
-            Usuario garcomLogado = tokenService.buscarUsuarioLogado(authorization);
-            return ResponseEntity.ok(pedidoService.fecharConta(id, garcomLogado));
-        } catch (JWTVerificationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado.");
+            return ResponseEntity.ok(pedidoService.fecharConta(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
