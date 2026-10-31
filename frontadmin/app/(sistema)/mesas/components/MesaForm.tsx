@@ -1,5 +1,6 @@
 "use client"
 
+import { atualizarMesa, salvarMesa } from "@/app/services/mesaService";
 import { Mesa, MesaFormProps } from "@/app/types/mesa";
 import axios from "axios";
 import Link from "next/link";
@@ -30,23 +31,23 @@ export default function MesaForm({ mesaExistente }: MesaFormProps) {
 
         if (mesaExistente) {
 
-            var dadosRetorno = await axios.put<number>("http://localhost:8080/mesa/" + mesa.id, mesa);
-            if (dadosRetorno.status == 200) {
+            var dadosRetorno = await atualizarMesa(mesa);
+            if (dadosRetorno) {
                 alert("Mesa salva com sucesso!");
             } else {
-                alert(dadosRetorno.data);
+                alert("Erro ao atualiar mesa");
 
                 return;
             }
 
         } else {
 
-            var dadosRetorno = await axios.post<number>('http://localhost:8080/mesa', mesa)
+            var dadosRetorno = await salvarMesa(mesa);
 
-            if (dadosRetorno.status == 200) {
+            if (dadosRetorno) {
                 alert("A mesa foi salva com sucesso!");
             } else {
-                alert(dadosRetorno.data);
+                alert("Erro ao salvar Mesa");
 
                 return;
             }

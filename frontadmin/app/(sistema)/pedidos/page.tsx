@@ -1,5 +1,6 @@
 "use client"
 
+import { buscarListaPedidos, deletarPedido } from "@/app/services/pedidoService";
 import { Pedido } from "@/app/types/pedido";
 import axios from "axios";
 import Link from "next/link";
@@ -16,9 +17,9 @@ export default function Pedidos() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Pedido[]>("http://localhost:8080/pedidos");
+            const dados = await buscarListaPedidos();
 
-            setPedidos(dados.data);
+            setPedidos( dados);
 
         } catch (error) {
             alert("Erro ao carregar dados!")
@@ -28,15 +29,13 @@ export default function Pedidos() {
 
     const handleDeletarPedido = async (pedido: Pedido) => {
 
-        var dadosRetorno = await
-            axios.delete(
-                'http://localhost:8080/pedidos/' + pedido.id + '/excluir');
+        var dadosRetorno = await deletarPedido (pedido.id || 0);
 
-        if (dadosRetorno.status == 200) {
+        if (dadosRetorno== 200) {
             alert("Excluido com sucesso!");
 
         } else {
-            alert(dadosRetorno.data);
+            alert(dadosRetorno);
             return;
         }
 
@@ -45,25 +44,7 @@ export default function Pedidos() {
 
     const handleAlterarStatusPedido = async (pedido: Pedido) => {
 
-        var novoStatus = {};
-
-        if (pedido.statusPedido === "ATIVO") {
-            novoStatus = { statusPedido: "CANCELADO" }
-        } else {
-            novoStatus = { statusPedido: "ATIVO" }
-        }
-
-        var dadosRetorno = await
-            axios.patch('http://localhost:8080/pedidos/' + pedido.id + '/status', novoStatus);
-
-        if (dadosRetorno.status == 200) {
-            alert("Atulizado status com sucesso!");
-
-        } else {
-            alert(dadosRetorno.data);
-
-            return;
-        }
+        
 
         carregarDados();
 

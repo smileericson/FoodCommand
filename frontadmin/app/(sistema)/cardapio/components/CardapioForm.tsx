@@ -2,6 +2,7 @@
 
 
 
+import { atualizarCardapio, salvarCardapio } from "@/app/services/cardapioService";
 import { CardapioFormProps, Cardapios } from "@/app/types/cardapio";
 import axios from "axios";
 import Link from "next/link";
@@ -32,25 +33,23 @@ const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valo
 
     const handlerSalvar = async (formData : FormData) =>{
     if(cardapioExistente){
-        var dadosRetorno = await  
-        axios.put<Number>('http://localhost:8080/cardapio/'+cardapio.id,cardapio);
-
-        if(dadosRetorno.status==200){
+        var dadosRetorno = await  atualizarCardapio(cardapio);
+        if(dadosRetorno){
             alert("Usuário foi salvo com sucesso!");
         }else{
-            alert(dadosRetorno.data);
+            alert("Erro ao atualizar");
 
             return;
         }
 
 
     }else{
-        var dadosRetorno = await  axios.post<Number>('http://localhost:8080/cardapio',cardapio)
+        var dadosRetorno = await salvarCardapio(cardapio);
 
-        if(dadosRetorno.status==200){
+        if(dadosRetorno){
             alert("Usuário foi salvo com sucesso!");
         }else{
-            alert(dadosRetorno.data);
+            alert("Erro ao salvar Cardapio");
 
             return;
         }

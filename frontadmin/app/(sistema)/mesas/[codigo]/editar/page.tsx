@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Mesa } from "@/app/types/mesa";
 import MesaForm from "../../components/MesaForm";
+import { consultaMesaPorId } from "@/app/services/mesaService";
 
 export default function EditarMesa() {
 
@@ -22,10 +23,10 @@ export default function EditarMesa() {
 
     const buscarDados = async () => {
 
-             const valorMesaBack = await axios.get<Mesa>("http://localhost:8080/mesa/" + codigo);
+             const valorMesaBack = await consultaMesaPorId(codigo);
 
-            if(valorMesaBack.status==200){
-                setMesa(valorMesaBack.data);
+            if(valorMesaBack){
+                setMesa(valorMesaBack);
             }else{
                 router.push("/mesas")
             }

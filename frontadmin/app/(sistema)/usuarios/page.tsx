@@ -1,136 +1,61 @@
 "use client"
 
-// Importa o componente Link do Next.js para criar navegação entre páginas sem recarregar a aplicação.
 import Link from "next/link";
-
-// Importa o tipo/classe Usuario utilizado para representar os usuários.
 import { Usuario } from "@/app/types/usuario";
-
-// Importa o Axios para realizar requisições HTTP ao backend.
 import axios from "axios"
-
-// Importa os Hooks useEffect e useState do React.
 import { useEffect, useState } from "react";
+import { atualizarStatusUsuario, buscarListaUsuarios, deletarUsuario } from "@/app/services/usuarioService";
 
 
-// Componente principal da página de usuários.
 export default function Usuarios() {
 
-    // Cria o estado usuarios, que armazenará a lista de usuários.
-    // O estado começa com um array vazio.
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
-
-    // Executa o código quando o componente é carregado.
-    // O [] significa que será executado somente uma vez na montagem do componente.
     useEffect(() => {
         carregarDados();
     }, []);
 
-
-    // Função responsável por buscar os usuários no backend.
     const carregarDados = async () => {
 
         try {
-
-            // Faz uma requisição GET para buscar os usuários.
-            // <Usuario[]> indica que esperamos receber uma lista de objetos Usuario.
-            const dados = await axios.get<Usuario[]>("http://localhost:8080/usuarios");
-
-            // Atualiza o estado com os dados recebidos do backend.
-            setUsuarios(dados.data);
+        
+            const dados = await buscarListaUsuarios();
+            setUsuarios(dados);
 
         } catch (error) {
 
-            // Caso aconteça algum erro na requisição, mostra uma mensagem.
             alert("Erro ao carregar dados!")
         }
 
     }
 
-
-    // Função responsável por excluir um usuário.
-    // Recebe como parâmetro o usuário que será excluído.
     const handleDeletarUsuario = async (usuario: Usuario) => {
 
-        // Envia uma requisição DELETE para o backend.
-        // O ID do usuário é utilizado para identificar qual usuário será excluído.
-        var dadosRetorno = await
-            axios.delete('http://localhost:8080/usuarios/' + usuario.id + '/excluir');
+        var dadosRetorno = await deletarUsuario(usuario.id || 0);
 
+        if (dadosRetorno == 200) {
 
-        // Verifica se o backend retornou o status HTTP 200.
-        if (dadosRetorno.status == 200) {
-
-            // Informa que a exclusão foi realizada com sucesso.
             alert("Excluido com sucesso!");
 
         } else {
 
-            // Caso o retorno não seja 200, mostra a mensagem recebida do backend.
-            alert(dadosRetorno.data);
+            alert("Erro ao excluir usuário");
 
-            // Interrompe a execução da função.
             return;
         }
 
-        // Depois da exclusão, busca novamente os dados para atualizar a tabela.
         carregarDados();
     }
 
-
-    // Função responsável por alterar o status do usuário.
     const handleAlterarStatusUsuario = async (usuario: Usuario) => {
 
-        // Cria uma variável para armazenar o novo status.
-        var novoStatus = {};
-
-
-        // Verifica o status atual do usuário.
-        if (usuario.status === "ATIVO") {
-
-            // Se o usuário estiver ATIVO, o novo status será BLOQUEADO.
-            novoStatus = { status: "BLOQUEADO" }
-
-        } else {
-
-            // Caso contrário, o novo status será ATIVO.
-            novoStatus = { status: "ATIVO" }
-        }
-
-
-        // Envia uma requisição PATCH para alterar o status do usuário.
-        // O ID identifica o usuário e novoStatus contém o novo status.
-        var dadosRetorno = await
-            axios.patch('http://localhost:8080/usuarios/' + usuario.id + '/status', novoStatus);
-
-
-        // Verifica se o backend retornou o status HTTP 200.
-        if (dadosRetorno.status == 200) {
-
-            // Informa que o status foi atualizado.
-            alert("Atulizado status com sucesso!");
-
-        } else {
-
-            // Caso contrário, mostra a mensagem retornada pelo backend.
-            alert(dadosRetorno.data);
-
-            // Interrompe a execução da função.
-            return;
-        }
-
-
-        // Depois da alteração, busca novamente os usuários para atualizar a tabela.
+        await atualizarStatusUsuario(usuario);
         carregarDados();
 
     }
 
-
-    // Retorna a estrutura visual da página.
     return (
-        // Container principal da página.
-        // As classes Tailwind são responsáveis somente pela aparência e espaçamento.
+      
         <div className="min-h-full bg-gray-100 p-4 sm:p-6">
 
             {/* // Container que limita a largura máxima da página. */}

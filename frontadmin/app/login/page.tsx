@@ -3,9 +3,15 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "../types/auth";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/slices/authSlice";
+import { buscarUsuarioLogado } from "../services/usuarioService";
+import Cookies from "js-cookie";
 
 export default function Login() {
     const router = useRouter();
+
+    const dispatch = useDispatch();
 
     const handleLogin = async (formData: FormData) => {
         try {
@@ -17,6 +23,14 @@ export default function Login() {
                 { email: emailTela, senha: senhaTela });
 
             if (loginResposta.status == 200) {
+                Cookies.set('token',loginResposta.data.token,{secure: true, expires: 7});
+                var usuarioLogado = await buscarUsuarioLogado();
+
+                dispatch(login({
+                    token:loginResposta.data.token,
+                    usuario:{...usuarioLogado}
+                }));
+
                 router.push("/home")
 
             }else {

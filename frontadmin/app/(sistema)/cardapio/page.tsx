@@ -1,5 +1,6 @@
 'use client'
 
+import { atualizarStatusCardapio, buscarListaCardapio, deletarCardapio } from "@/app/services/cardapioService";
 import { Cardapios } from "@/app/types/cardapio";
 import axios from "axios";
 import Link from "next/link";
@@ -16,9 +17,9 @@ export default function Cardapio() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Cardapios[]>("http://localhost:8080/cardapio");
+            const dados = await buscarListaCardapio();
 
-            setCardapio(dados.data);
+            setCardapio(dados);
         } catch (error) {
             alert("Erro ao carregar dados!")
         }
@@ -26,13 +27,12 @@ export default function Cardapio() {
     }
     const handleDeletarUsuario = async (cardapio: Cardapios) => {
 
-        var dadosRetorno = await
-            axios.delete('http://localhost:8080/cardapio/' + cardapio.id + '/excluir');
+        var dadosRetorno = await deletarCardapio(cardapio.id || 0);
 
-        if (dadosRetorno.status == 200) {
+        if (dadosRetorno == 200) {
             alert("Excluido com sucesso!");
         } else {
-            alert(dadosRetorno.data);
+            alert("Erro ao excluir cardapio");
 
             return;
         }
@@ -44,23 +44,7 @@ export default function Cardapio() {
     const handleAlterarStatusUsuario = async (cardapio: Cardapios) => {
 
 
-        var novoStatus = {};
-        if (cardapio.statusCardapio === "ATIVO" ) {
-            novoStatus = { statusCardapio: "INATIVO" }
-        } else {
-            novoStatus = { statusCardapio: "ATIVO" }
-        }
-
-        var dadosRetorno = await
-            axios.patch('http://localhost:8080/cardapio/' + cardapio.id + '/status', novoStatus);
-
-        if (dadosRetorno.status == 200) {
-            alert("Atulizado status com sucesso!");
-        } else {
-            alert(dadosRetorno.data);
-
-            return;
-        }
+        await atualizarStatusCardapio(cardapio);
 
         carregarDados();
 

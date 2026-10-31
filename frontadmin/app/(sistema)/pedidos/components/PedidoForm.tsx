@@ -1,5 +1,6 @@
 'use client'
 
+import { atualizarPedido, salvarPedido } from "@/app/services/pedidoService";
 import { Pedido, PedidoFormProps } from "@/app/types/pedido";
 import axios from "axios";
 import Link from "next/link";
@@ -27,25 +28,24 @@ export default function PedidoForm({pedidoExistente}:PedidoFormProps) {
         const handlerSalvar = async (formData : FormData) =>{
 
     if(pedidoExistente){
-        var dadosRetorno = await  
-        axios.put<number>('http://localhost:8080/pedidos/'+pedido.id,pedido);
+        var dadosRetorno = await  atualizarPedido(pedido);
 
-        if(dadosRetorno.status==200){
+        if(dadosRetorno){
             alert("Pedido foi salvo com sucesso!");
         }else{
-            alert(dadosRetorno.data);
+            alert("Erro ao atualiar Pedido"!);
 
             return;
         }
 
 
     }else{
-        var dadosRetorno = await  axios.post<number>('http://localhost:8080/pedidos',pedido)
+        var dadosRetorno = await salvarPedido(pedido);
 
-        if(dadosRetorno.status==200){
+        if(dadosRetorno){
             alert("Pedido foi salvo com sucesso!");
         }else{
-            alert(dadosRetorno.data);
+            alert("Erro ao salvar o Pedido");
 
             return;
         }

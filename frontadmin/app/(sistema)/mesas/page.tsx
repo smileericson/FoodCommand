@@ -1,5 +1,6 @@
 "use client"
 
+import { buscarListaMesa, deletarMesa } from "@/app/services/mesaService";
 import { Mesa } from "@/app/types/mesa";
 import axios from "axios"
 import Link from "next/link";
@@ -15,9 +16,9 @@ export default function Mesas() {
     const carregarDados = async () => {
 
         try {
-            const dados = await axios.get<Mesa[]>("http://localhost:8080/mesa");
+            const dados = await buscarListaMesa();
 
-            setMesas(dados.data);
+            setMesas(dados);
 
         } catch (error) {
             alert("Erro ao carregar dados!")
@@ -27,14 +28,13 @@ export default function Mesas() {
 
     const handleDeletarMesa = async (mesa: Mesa) => {
 
-        var dadosRetorno = await
-            axios.delete('http://localhost:8080/mesa/' + mesa.id + '/excluir');
+        var dadosRetorno = await deletarMesa(mesa.id || 0);
 
-        if (dadosRetorno.status == 200) {
+        if (dadosRetorno == 200) {
             alert("Excluido com sucesso!");
 
         } else {
-            alert(dadosRetorno.data);
+            alert("Erro ao excluir mesa!");
             return;
         }
 

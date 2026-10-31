@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Cardapios } from "@/app/types/cardapio";
 import CardapioForm from "../../components/CardapioForm";
+import { consultaCardapioPorId } from "@/app/services/cardapioService";
 
 export default function EditarCardapio() {
     const parametro = useParams();
@@ -23,10 +24,10 @@ export default function EditarCardapio() {
 
     const buscarDados =async() =>{
 
-        const valorCardapioBack = await axios.get<Cardapios>('http://localhost:8080/cardapio/'+codigo);
+        const valorCardapioBack = await consultaCardapioPorId(codigo);
 
-        if(valorCardapioBack.status==200){
-            setCardapio(valorCardapioBack.data);
+        if(valorCardapioBack){
+            setCardapio(valorCardapioBack);
         }else{
             router.push("/cardapio")
         }

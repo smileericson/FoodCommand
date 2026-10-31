@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Pedido } from "@/app/types/pedido";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { consultaPedidoPorId } from "@/app/services/pedidoService";
 
 export default function EditarPedido() {
 
@@ -23,10 +24,10 @@ export default function EditarPedido() {
 
     const buscarDados = async () => {
 
-        const valorPedidoBack = await axios.get<Pedido>('http://localhost:8080/pedidos/' + codigo);
+        const valorPedidoBack = await consultaPedidoPorId(codigo)
 
-        if (valorPedidoBack.status == 200) {
-            setPedido(valorPedidoBack.data);
+        if (valorPedidoBack) {
+            setPedido(valorPedidoBack);
         } else {
             router.push("/pedidos")
         }

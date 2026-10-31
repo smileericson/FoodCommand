@@ -40,14 +40,14 @@ public class UsuarioService {
 
         var usuarioLogado = getUsuarioLogado();
 
-        if(usuarioLogado.empresa_id() ==null){
-            return  usuarioRepository.findAll()
+        if (usuarioLogado.empresa_id() == null) {
+            return usuarioRepository.findAll()
                     .stream()
                     .map(UsuarioResponse::new)
                     .toList();
         }
 
-        return  usuarioRepository.getUsuariosByEmpresa_Id(usuarioLogado.empresa_id())
+        return usuarioRepository.getUsuariosByEmpresa_Id(usuarioLogado.empresa_id())
                 .stream()
                 .map(UsuarioResponse::new)
                 .toList();
@@ -66,7 +66,7 @@ public class UsuarioService {
         return new CriarAdminReponse(usuarioAdminSalvar.getId(), "Usuario Salvo com sucesso!");
     }
 
-    public UsuarioLogado getUsuarioLogado(){
+    public UsuarioLogado getUsuarioLogado() {
         return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
     //Sem id (ou id 0): cria um usuário novo, salva e devolve.
@@ -99,7 +99,7 @@ public class UsuarioService {
 
     //Achou: o map troca o status, salva e devolve true, e o controller responde 200.
     //Não achou: o orElse(false) devolve false, e o controller responde 404.
-    public boolean atualizarStatus(EnumStatusUsuario status,Long id){
+    public boolean atualizarStatus(EnumStatusUsuario status, Long id) {
         return usuarioRepository.findById(id)
                 .map(usuario -> {
                     usuario.setStatus(status);
@@ -109,4 +109,16 @@ public class UsuarioService {
                 .orElse(false);
     }
 
+    public UsuarioResponse BuscarUsuarioLogado() {
+        try {
+            var usuarioLogado = getUsuarioLogado();
+            return usuarioRepository.findById(usuarioLogado.id())
+                    .stream()
+                    .map(UsuarioResponse::new)
+                    .findFirst()
+                    .orElse(null);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar buscar usuario logado");
+        }
+    }
 }
