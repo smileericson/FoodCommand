@@ -1,5 +1,7 @@
 package com.example.foodcommand.domain.entities;
 
+import com.example.foodcommand.application.DTOs.CriarAdminRequest;
+import com.example.foodcommand.domain.valueobject.CNPJ;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,10 +21,17 @@ public class Empresa {
 
     private String razaoSocial;
 
-    private String cnpj;
+    @Embedded
+    private CNPJ cnpj;
 
     private String nomeFantasia;
 
     @OneToMany(mappedBy = "empresa")
     private List<Usuario> usuarios;
+
+    public Empresa(CriarAdminRequest criarAdminRequest) {
+            this.setRazaoSocial(criarAdminRequest.razaoSocial());
+            this.setCnpj(new CNPJ(criarAdminRequest.cnpj()));
+            this.setNomeFantasia(criarAdminRequest.nomeFantasia());
+    }
 }

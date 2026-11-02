@@ -5,7 +5,7 @@ import api from "./api";
 
 export async function buscarListaPedidos() : Promise<Pedido[]> {
 
-    const dados = await api.get<Pedido[]>("http://localhost:8080/pedidos");
+    const dados = await api.get<Pedido[]>("/pedidos");
     
     if(dados.status ==200){
         return dados.data;
@@ -17,7 +17,7 @@ export async function buscarListaPedidos() : Promise<Pedido[]> {
 
 export async function deletarPedido(id:number):Promise<number> {
 
-    var dados = await api.delete('http://localhost:8080/pedidos/' + id + '/excluir');
+    var dados = await api.delete('/pedidos/' + id + '/excluir');
     return dados.status;
 }
 
@@ -32,7 +32,7 @@ export async function atualizarStatusUsuario(pedido:Pedido):Promise<void> {
         }
 
         var dadosRetorno = await
-            api.patch('http://localhost:8080/pedidos/' + pedido.id + '/status', novoStatus);
+            api.patch('/pedidos/' + pedido.id + '/status', novoStatus);
 
         if (dadosRetorno.status == 200) {
             alert("Atulizado status com sucesso!");
@@ -47,16 +47,16 @@ export async function atualizarStatusUsuario(pedido:Pedido):Promise<void> {
 
 export async function consultaPedidoPorId (id:Number): Promise<Pedido>{
 
-     const valorUsuarioBack = await api.get<Pedido>('http://localhost:8080/pedidos/' + id);
+     const valorUsuarioBack = await api.get<Pedido>('/pedidos/' + id);
         return valorUsuarioBack.data;
 }
 
 export async function atualizarPedido (pedido:Pedido) : Promise<number>{
-    var dadosRetorno = await api.put<number>('http://localhost:8080/usuarios/' + pedido.id, pedido);
+    var dadosRetorno = await api.put<number>('/pedidos/' + pedido.id, pedido);
         return dadosRetorno.data;
 }
 
 export async function salvarPedido (pedido:Pedido) : Promise<number>{
-    var dadosRetorno = await api.post<number>('http://localhost:8080/usuarios/' + pedido.id, pedido);
+    var dadosRetorno = await api.post<number>('/pedidos' , pedido);
         return dadosRetorno.data;
 }

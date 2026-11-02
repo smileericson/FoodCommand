@@ -2,9 +2,12 @@ package com.example.foodcommand.application.services;
 
 import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.application.DTOs.EnumStatusUsuario;
+import com.example.foodcommand.domain.entities.Empresa;
 import com.example.foodcommand.domain.entities.Usuario;
+import com.example.foodcommand.domain.repository.EmpresaRepository;
 import com.example.foodcommand.domain.repository.UsuarioRepository;
 import com.example.foodcommand.domain.valueobject.CPF;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +26,9 @@ public class UsuarioService {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
     public LoginResponse validarUsuarioAutenticadoRetornaToken(LoginRequest request) {
 
@@ -52,14 +58,17 @@ public class UsuarioService {
                 .map(UsuarioResponse::new)
                 .toList();
     }
-
+    @Transactional
     public CriarAdminReponse criarAdmin(CriarAdminRequest criarAdminRequest) {
 
         if (!criarAdminRequest.secretKey().equals(secret)) {
-            return new CriarAdminReponse(0L, "Usuario Salvo com sucesso");
+           throw new RuntimeException("Scretkey inválida");
         }
 
+        Empresa empresaSalvar = empresaRepository.save(new Empresa(criarAdminRequest));
+
         Usuario usuarioAdminSalvar = new Usuario(criarAdminRequest);
+        usuarioAdminSalvar.setEmpresa(empresaSalvar);
 
         usuarioRepository.save(usuarioAdminSalvar);
 
@@ -69,10 +78,6 @@ public class UsuarioService {
     public UsuarioLogado getUsuarioLogado() {
         return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-    //Sem id (ou id 0): cria um usuário novo, salva e devolve.
-    //Com id: o findById procura o usuário.
-    //Achou: o map atualiza os campos, salva e devolve o UsuarioResponse.
-    //Não achou: o orElse(null) devolve null, e o controller responde 404.
 
     public UsuarioResponse salvarUsuario(UsuarioRequest usuario, Long id) {
         if (id == null || id == 0L) {

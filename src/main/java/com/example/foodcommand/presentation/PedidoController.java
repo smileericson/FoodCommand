@@ -30,9 +30,6 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    // PASSO 4.3 - usado para descobrir quem é o garçom logado a partir do token
-    @Autowired
-    private TokenService tokenService;
 
     @GetMapping
     //retorna uma resposta do http contendo a lista de pedidoresponse

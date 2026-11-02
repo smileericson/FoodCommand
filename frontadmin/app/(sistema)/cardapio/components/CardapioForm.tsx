@@ -32,6 +32,9 @@ const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valo
 }
 
     const handlerSalvar = async (formData : FormData) =>{
+
+
+        cardapio.preco = cardapio.preco.replace(',','.');
     if(cardapioExistente){
         var dadosRetorno = await  atualizarCardapio(cardapio);
         if(dadosRetorno){
@@ -47,7 +50,7 @@ const handlerChange = (campo: 'nome' | 'descricao' | 'preco' | 'disponivel',valo
         var dadosRetorno = await salvarCardapio(cardapio);
 
         if(dadosRetorno){
-            alert("Usuário foi salvo com sucesso!");
+            alert("Cardapio foi salvo com sucesso!");
         }else{
             alert("Erro ao salvar Cardapio");
 

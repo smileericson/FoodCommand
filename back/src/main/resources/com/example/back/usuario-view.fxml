@@ -3,17 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="372.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.UsuarioController">
+<AnchorPane prefHeight="454.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.UsuarioController">
    <children>
       <Button layoutX="14.0" layoutY="22.0" mnemonicParsing="false" onAction="#voltar" text="voltar" />
-      <Button layoutX="214.0" layoutY="316.0" mnemonicParsing="false" onAction="#salvarUsuario" text="Salvar" />
-      <TextField fx:id="txtNome" layoutX="80.0" layoutY="66.0" />
-      <TextField fx:id="txtCpf" layoutX="80.0" layoutY="98.0" />
-      <TextField fx:id="txtSenha" layoutX="80.0" layoutY="130.0" />
-      <TextField fx:id="txtEmail" layoutX="80.0" layoutY="161.0" />
-      <Label layoutX="26.0" layoutY="70.0" text="Nome:" />
-      <Label layoutX="25.0" layoutY="102.0" text="CPF:" />
-      <Label layoutX="26.0" layoutY="134.0" text="Senha:" />
-      <Label layoutX="27.0" layoutY="164.0" prefHeight="18.0" prefWidth="46.0" text="E-mail:" />
+      <Button layoutX="300.0" layoutY="339.0" mnemonicParsing="false" onAction="#salvarUsuario" text="Salvar" />
+      <TextField fx:id="txtNome" layoutX="432.0" layoutY="130.0" />
+      <TextField fx:id="txtCpf" layoutX="432.0" layoutY="174.0" />
+      <TextField fx:id="txtSenha" layoutX="432.0" layoutY="214.0" />
+      <TextField fx:id="txtEmail" layoutX="432.0" layoutY="256.0" />
+      <Label layoutX="377.0" layoutY="134.0" text="Nome:" />
+      <Label layoutX="383.0" layoutY="173.0" text="CPF:" />
+      <Label layoutX="377.0" layoutY="218.0" text="Senha:" />
+      <Label layoutX="372.0" layoutY="259.0" prefHeight="18.0" prefWidth="46.0" text="E-mail:" />
+      <Label layoutX="464.0" layoutY="95.0" text="Cadastro Admin" />
+      <Label layoutX="157.0" layoutY="95.0" text="Cadastro Empresa" />
+      <Label layoutX="46.0" layoutY="134.0" text="Razao Social:" />
+      <Label layoutX="46.0" layoutY="173.0" text="CNPJ:" />
+      <Label layoutX="33.0" layoutY="218.0" text="Nome Fantasia:" />
+      <TextField fx:id="txtRazaoSocial" layoutX="130.0" layoutY="130.0" />
+      <TextField fx:id="txtCnpj" layoutX="130.0" layoutY="169.0" />
+      <TextField fx:id="txtNomeFantasia" layoutX="130.0" layoutY="215.0" />
    </children>
 </AnchorPane>

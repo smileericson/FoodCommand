@@ -5,7 +5,7 @@ import api from "./api";
 
 export async function buscarListaCardapio() : Promise<Cardapios[]> {
 
-    const dados = await api.get<Cardapios[]>("http://localhost:8080/cardapio");
+    const dados = await api.get<Cardapios[]>("/cardapio");
     
     if(dados.status ==200){
         return dados.data;
@@ -17,7 +17,7 @@ export async function buscarListaCardapio() : Promise<Cardapios[]> {
 
 export async function deletarCardapio(id:number):Promise<number> {
 
-    var dados = await api.delete('http://localhost:8080/cardapio/' + id + '/excluir');
+    var dados = await api.delete('/cardapio/' + id + '/excluir');
     return dados.status;
 }
 
@@ -31,7 +31,7 @@ export async function atualizarStatusCardapio(cardapio:Cardapios):Promise<void> 
         }
 
         var dadosRetorno = await
-            api.patch('http://localhost:8080/cardapio/' + cardapio.id + '/status', novoStatus);
+            api.patch('/cardapio/' + cardapio.id + '/status', novoStatus);
 
         if (dadosRetorno.status == 200) {
             alert("Atulizado status com sucesso!");
@@ -45,17 +45,17 @@ export async function atualizarStatusCardapio(cardapio:Cardapios):Promise<void> 
 
 export async function consultaCardapioPorId (id:Number): Promise<Cardapios>{
 
-     const valorUsuarioBack = await api.get<Cardapios>('http://localhost:8080/cardapio/' + id);
+     const valorUsuarioBack = await api.get<Cardapios>('/cardapio/' + id);
         return valorUsuarioBack.data;
 }
 
 export async function atualizarCardapio (cardapio:Cardapios) : Promise<number>{
-    var dadosRetorno = await api.put<number>('http://localhost:8080/cardapio/' + cardapio.id, cardapio);
+    var dadosRetorno = await api.put<number>('/cardapio/' + cardapio.id, cardapio);
         return dadosRetorno.data;
 }
 
 export async function salvarCardapio (cardapio:Cardapios) : Promise<number>{
-    var dadosRetorno = await api.post<number>('http://localhost:8080/usuarios/' + cardapio.id, cardapio);
+    var dadosRetorno = await api.post<number>('/cardapio' , cardapio);
         return dadosRetorno.data;
 }
 

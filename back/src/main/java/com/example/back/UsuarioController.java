@@ -25,22 +25,36 @@ public class UsuarioController {
     private TextField txtSenha;
     @FXML
     private TextField txtCpf;
+    @FXML
+    private TextField txtRazaoSocial;
+    @FXML
+    private TextField txtCnpj;
+    @FXML
+    private TextField txtNomeFantasia;
+
 
     @FXML
     public void salvarUsuario(ActionEvent event) throws Exception {
 
         //Validar Dados
 
+
         String jsonRequest = String.format("{\n" +
-                        "  \"nome\": \"%s\",\n" +
-                        "  \"email\": \"%s\",\n" +
-                        "  \"senha\": \"%s\",\n" +
-                        "  \"cpf\": \"%S\",\n" +
-                        "  \"secretKey\": \"%s\"\n" +
+                        " \"nome\": \"%s\",\n" +
+                        " \"email\": \"%s\",\n" +
+                        " \"senha\": \"%s\",\n" +
+                        " \"cpf\": \"%s\",\n" +
+                        " \"razaoSocial\": \"%s\",\n" +
+                        " \"cnpj\": \"%s\",\n" +
+                        " \"nomeFantasia\": \"%s\",\n" +
+                        " \"secretKey\": \"%s\"\n" +
                         "}", txtNome.getText(),
                 txtEmail.getText(),
                 txtSenha.getText(),
                 txtCpf.getText(),
+                txtRazaoSocial.getText(),
+                txtCnpj.getText(),
+                txtNomeFantasia.getText(),
                 "kkkkkk12345678910111213141516");
 
         int respostaAPI = ExecutaMetodoAPI("http://localhost:8080/usuarios/admin",jsonRequest,"POST");
@@ -49,7 +63,7 @@ public class UsuarioController {
             voltar(event);
 
         }else {
-            showMessage(Alert.AlertType.ERROR,"Erro ao salvar usuário!");
+            showMessage(Alert.AlertType.ERROR,"Erro ao salvar usuário! Código: "+respostaAPI);
         }
 
     }
@@ -90,4 +104,5 @@ public class UsuarioController {
         alerta.setContentText(msg);
         alerta.showAndWait();
     }
+
 }

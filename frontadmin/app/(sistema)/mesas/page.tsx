@@ -1,6 +1,6 @@
 "use client"
 
-import { buscarListaMesa, deletarMesa } from "@/app/services/mesaService";
+import { atualizarStatusMesa, buscarListaMesa, deletarMesa } from "@/app/services/mesaService";
 import { Mesa } from "@/app/types/mesa";
 import axios from "axios"
 import Link from "next/link";
@@ -43,27 +43,7 @@ export default function Mesas() {
 
     const handleAlterarStatusMesa = async (mesa: Mesa) => {
 
-        var novoStatus = {};
-
-        if (mesa.statusMesa === "LIVRE") {
-            novoStatus = { statusMesa: "OCUPADA" };
-        }else if(mesa.statusMesa === "OCUPADA"){
-            novoStatus = { statusMesa:"AGUARDANDO_FECHAMENTO"}
-        } else {
-            novoStatus = { statusMesa: "LIVRE" }
-        }
-
-        var dadosRetorno = await
-            axios.patch('http://localhost:8080/mesa/' + mesa.id + '/status', novoStatus);
-
-        if (dadosRetorno.status == 200) {
-            alert("Atulizado status com sucesso!");
-
-        } else {
-            alert(dadosRetorno.data);
-
-            return;
-        }
+      await atualizarStatusMesa(mesa);
 
         carregarDados();
 

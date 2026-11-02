@@ -32,7 +32,7 @@ export default function Header() {
                     </div>
 
                     <span className="text-center text-sm font-semibold text-white md:text-base">
-                        {usuario?.nome.toLocaleUpperCase()|| "Usuario não identificado"}
+                        {usuario ? usuario.nome.toLocaleUpperCase(): "Usuario não identificado"}
                     </span>
 
                 </div>
