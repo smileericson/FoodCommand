@@ -81,7 +81,12 @@ public class UsuarioService {
 
     public UsuarioResponse salvarUsuario(UsuarioRequest usuario, Long id) {
         if (id == null || id == 0L) {
-            Usuario usuarioBanco = usuarioRepository.save(new Usuario(usuario));
+            Usuario novoUsuario = new Usuario(usuario);
+            var usuarioLogado = getUsuarioLogado();
+            if (usuarioLogado.empresa_id() != null) {
+                novoUsuario.setEmpresa(empresaRepository.findById(usuarioLogado.empresa_id()).orElse(null));
+            }
+            Usuario usuarioBanco = usuarioRepository.save(novoUsuario);
             return new UsuarioResponse(usuarioBanco);
         }
         return usuarioRepository.findById(id)
@@ -97,7 +102,10 @@ public class UsuarioService {
 
     // o findById procura, o map converte para UsuarioResponse se encontrou, e o orElse(null) devolve null se não encontrou.
     public UsuarioResponse buscarPorId(Long id) {
+        var usuarioLogado = getUsuarioLogado();
         return usuarioRepository.findById(id)
+                .filter(u-> usuarioLogado.empresa_id() == null
+                || (u.getEmpresa() != null && u.getEmpresa().getId().equals(usuarioLogado.empresa_id())))
                 .map(UsuarioResponse::new)
                 .orElse(null);
     }
