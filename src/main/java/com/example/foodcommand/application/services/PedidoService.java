@@ -6,10 +6,7 @@ import com.example.foodcommand.domain.entities.Cardapio;
 import com.example.foodcommand.domain.entities.Mesa;
 import com.example.foodcommand.domain.entities.Pedido;
 import com.example.foodcommand.domain.entities.Usuario;
-import com.example.foodcommand.domain.repository.CardapioRepository;
-import com.example.foodcommand.domain.repository.MesaRepository;
-import com.example.foodcommand.domain.repository.PedidoRepository;
-import com.example.foodcommand.domain.repository.UsuarioRepository;
+import com.example.foodcommand.domain.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +31,18 @@ public class PedidoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private EmpresaRepository empresaRepository;
+
+    private Long empresaLogadaId() {
+        return usuarioService.getUsuarioLogado().empresa_id();
+    }
+
     public List<PedidoResponse> listarTodosPedidosTable(){
-        return pedidoRepository.findAll()
+        var pedidos = empresaLogadaId() == null
+                ? pedidoRepository.findAll()
+                : pedidoRepository.findAllByEmpresa_Id(empresaLogadaId());
+        return pedidos
                 .stream()
                 .map(PedidoResponse::new)
                 .toList();
@@ -43,10 +50,16 @@ public class PedidoService {
 
     public PedidoResponse salvarPedido(PedidoRequest pedido, Long id) {
         if (id == null || id == 0L) {
-            Pedido pedidoBanco = pedidoRepository.save(new Pedido(pedido));
+            Pedido novoPedido = new Pedido(pedido);
+
+            novoPedido.setEmpresa(empresaRepository.findById(empresaLogadaId())
+                    .orElseThrow(() -> new RuntimeException("Empresa não encontrada")));
+
+            Pedido pedidoBanco = pedidoRepository.save(novoPedido);
+
             return new PedidoResponse(pedidoBanco);
         }
-        return pedidoRepository.findById(id)
+        return pedidoRepository.findByIdAndEmpresa_Id(id, empresaLogadaId())
                 .map(pedidoBanco -> {
                     pedidoBanco.setValorSubtotal(pedido.valorSubtotal());
                     pedidoBanco.setTaxaServico(pedido.taxaServico());
@@ -57,13 +70,16 @@ public class PedidoService {
     }
 
     public PedidoResponse buscarPorId(Long id) {
-        return pedidoRepository.findById(id)
+        var pedido = empresaLogadaId() == null
+                ? pedidoRepository.findById(id)
+                : pedidoRepository.findByIdAndEmpresa_Id(id, empresaLogadaId());
+        return pedido
                 .map(PedidoResponse::new)
                 .orElse(null);
     }
 
     public boolean atualizarStatus(EnumStatusPedido status, Long id){
-        return pedidoRepository.findById(id)
+        return pedidoRepository.findByIdAndEmpresa_Id(id, empresaLogadaId())
                 .map(pedido -> {
                     pedido.setStatus(status);
                     pedidoRepository.save(pedido);
@@ -79,7 +95,7 @@ public class PedidoService {
     }
 
     private Pedido buscarPedido(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId)
+        return pedidoRepository.findByIdAndEmpresa_Id(pedidoId, empresaLogadaId())
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
     }
 
@@ -88,7 +104,7 @@ public class PedidoService {
 
         Usuario garcomLogado = buscarGarcomLogado();
 
-        Mesa mesa = mesaRepository.findById(mesaId)
+        Mesa mesa = mesaRepository.findByIdAndEmpresa_Id(mesaId, empresaLogadaId())
                 .orElseThrow(() -> new RuntimeException("Mesa não encontrada."));
 
         if (mesa.getStatusMesa() != EnumStatusMesa.LIVRE) {
@@ -98,6 +114,7 @@ public class PedidoService {
         Pedido pedido = new Pedido();
         pedido.setMesa(mesa);
         pedido.setGarcom(garcomLogado);
+        pedido.setEmpresa(mesa.getEmpresa());
         pedido.setStatus(EnumStatusPedido.ATIVO);
 
         mesa.setStatusMesa(EnumStatusMesa.OCUPADA);
@@ -114,7 +131,7 @@ public class PedidoService {
         Pedido pedido = buscarPedido(pedidoId);
         pedido.validarGarcom(garcomLogado);
 
-        Cardapio cardapio = cardapioRepository.findById(cardapioId)
+        Cardapio cardapio = cardapioRepository.findByIdAndEmpresa_Id(cardapioId,empresaLogadaId())
                 .orElseThrow(() -> new RuntimeException("Item do cardápio não encontrado."));
         if (cardapio.getStatus() != EnumStatusCardapio.ATIVO) {
             throw new RuntimeException("Este item não está disponível no cardápio.");

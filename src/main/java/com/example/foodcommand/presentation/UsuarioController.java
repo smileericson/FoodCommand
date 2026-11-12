@@ -36,12 +36,24 @@ public class UsuarioController {
 
     @PostMapping("/admin")
     @Operation(summary = "Método de criação de usuários ADMS!", description = "Método reponsável em efetuar a criação de novos usuários ADMS!")
-    public ResponseEntity<CriarAdminReponse>criarAdmin(@RequestBody CriarAdminRequest criarAdminRequest) {
+    public ResponseEntity<CriarAdminResponse>criarAdmin(@RequestBody CriarAdminRequest criarAdminRequest) {
         try {
-            CriarAdminReponse repostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
+            CriarAdminResponse repostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
             return ResponseEntity.ok(repostaSalvar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+    // NOVO
+    // Aqui faz: rota que o desktop chama para criar o dono do sistema.
+    // Se der erro (CPF inválido, secretKey errada), devolve 400 COM a mensagem, para o desktop mostrar.
+    @PostMapping("/universal")
+    @Operation(summary = "Criação do usuário universal", description = "Cria o dono do sistema, sem empresa, que enxerga os dados de todas as empresas")
+    public ResponseEntity<?> criarUniversal(@RequestBody CriarUniversalRequest criarUniversalRequest) {
+        try {
+            return ResponseEntity.ok(usuarioService.criarUniversal(criarUniversalRequest));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -101,6 +113,10 @@ public class UsuarioController {
                                              @RequestBody UsuarioRequest usuario) {
        try {
            UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario,id);
+           // NOVO - Aqui faz: se o service devolveu null, o usuário não existe ou é de outra empresa -> 404
+           if (usuarioBanco == null) {
+               return ResponseEntity.notFound().build();
+           }
            return ResponseEntity.ok(usuarioBanco);
        }catch (Exception e){
            return ResponseEntity.badRequest().body(e.getMessage());

@@ -71,6 +71,9 @@ public class CardapioController {
                                        @RequestBody CardapioRequest cardapio) {
         try {
             CardapioResponse cardapioBanco = cardapioService.salvarCardapio(cardapio,id);
+            if(cardapioBanco == null){
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(cardapioBanco);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

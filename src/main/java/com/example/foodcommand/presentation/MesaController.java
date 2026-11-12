@@ -71,6 +71,9 @@ public class MesaController {
                                        @RequestBody MesaRequest mesa) {
         try {
             MesaResponse mesaBanco = mesaService.salvarMesa(mesa,id);
+            if (mesaBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(mesaBanco);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -126,6 +126,9 @@ public class PedidoController {
                                        @RequestBody PedidoRequest pedido) {
         try {
             PedidoResponse pedidoBanco = pedidoService.salvarPedido(pedido,id);
+            if (pedidoBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(pedidoBanco);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

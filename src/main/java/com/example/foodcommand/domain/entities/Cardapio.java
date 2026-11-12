@@ -3,13 +3,12 @@ package com.example.foodcommand.domain.entities;
 
 import com.example.foodcommand.application.DTOs.CardapioRequest;
 import com.example.foodcommand.application.DTOs.EnumStatusCardapio;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import java.math.BigDecimal;
 
@@ -26,6 +25,10 @@ public class Cardapio {
     public String descricao;
     public BigDecimal preco;
     public EnumStatusCardapio status = EnumStatusCardapio.ATIVO;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id",referencedColumnName = "id")
+    private Empresa empresa;
 
     public Cardapio(CardapioRequest cardapio) {
         this.setNome(cardapio.nome());

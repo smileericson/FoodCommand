@@ -1,9 +1,6 @@
 package com.example.foodcommand.domain.entities;
 
-import com.example.foodcommand.application.DTOs.CriarAdminRequest;
-import com.example.foodcommand.application.DTOs.EnumStatusUsuario;
-import com.example.foodcommand.application.DTOs.UsuarioLogado;
-import com.example.foodcommand.application.DTOs.UsuarioRequest;
+import com.example.foodcommand.application.DTOs.*;
 import com.example.foodcommand.domain.valueobject.CPF;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,6 +49,14 @@ public class Usuario implements UserDetails {
 
     public EnumStatusUsuario status =EnumStatusUsuario.ATIVO;
 
+    // usuario universal - quem criou o foodcommand
+    public Usuario(CriarUniversalRequest criarUniversalRequest) {
+        this.setCpf(new CPF(criarUniversalRequest.cpf()));
+        this.setNome(criarUniversalRequest.nome());
+        this.setSenha(criarUniversalRequest.senha());
+        this.setEmail(criarUniversalRequest.email());
+        this.setRole("ROLE_UNIVERSAL");
+    }
 
     //construtor que pega as informações
     public Usuario(CriarAdminRequest criarAdminRequest) {

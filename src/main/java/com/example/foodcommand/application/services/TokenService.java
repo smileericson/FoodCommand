@@ -13,6 +13,8 @@ import com.example.foodcommand.domain.repository.TokenRepository;
 import com.example.foodcommand.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -40,6 +42,20 @@ public class TokenService {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    // NOVO - LIMPEZA DOS TOKENS AO INICIAR O BACKEND
+    // @EventListener(ApplicationReadyEvent.class): o Spring executa este método sozinho,
+    // uma única vez, assim que a aplicação termina de subir.
+    // Aqui faz: apaga todos os tokens salvos na tabela "token".
+    // Por quê: o vericarToken() só aceita tokens que estão nessa tabela. Ao reiniciar o backend,
+    // os tokens antigos deixam de existir, a API devolve 401 ("Token inválido") e o interceptor
+    // do React faz o logout e mostra a tela de login (teste 4 da avaliação).
+    // Os usuários e os demais dados continuam no banco; basta fazer login de novo.
+    @EventListener(ApplicationReadyEvent.class)
+    public void limparTokensAoIniciar() {
+        tokenRepository.deleteAll();
+        System.out.println("Backend iniciado: tokens antigos removidos, é necessário fazer login novamente.");
+    }
 
 
     // Método responsável por gerar um token JWT , recebe o parametro subject e identifica o asunto

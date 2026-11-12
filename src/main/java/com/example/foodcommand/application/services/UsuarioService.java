@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -59,7 +60,7 @@ public class UsuarioService {
                 .toList();
     }
     @Transactional
-    public CriarAdminReponse criarAdmin(CriarAdminRequest criarAdminRequest) {
+    public CriarAdminResponse criarAdmin(CriarAdminRequest criarAdminRequest) {
 
         if (!criarAdminRequest.secretKey().equals(secret)) {
            throw new RuntimeException("Scretkey inválida");
@@ -72,11 +73,32 @@ public class UsuarioService {
 
         usuarioRepository.save(usuarioAdminSalvar);
 
-        return new CriarAdminReponse(usuarioAdminSalvar.getId(), "Usuario Salvo com sucesso!");
+        return new CriarAdminResponse(usuarioAdminSalvar.getId(), "Usuario Salvo com sucesso!");
+    }
+
+    public CriarAdminResponse criarUniversal(CriarUniversalRequest criarUniversalRequest) {
+        if (!criarUniversalRequest.secretKey().equals(secret)) {
+            throw new RuntimeException("SecretKey inválida");
+        }
+        Usuario usuarioUniversal = new Usuario(criarUniversalRequest);
+        usuarioRepository.save(usuarioUniversal);
+
+        return new CriarAdminResponse(usuarioUniversal.getId(),"Usuario universal salvo com sucesso");
     }
 
     public UsuarioLogado getUsuarioLogado() {
         return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+    // NOVO
+    // Aqui faz: busco o usuário pelo id, mas só devolvo se ele for da MESMA empresa de quem está logado.
+    // Se quem está logado não tem empresa (empresa_id null = usuário universal), devolvo qualquer um.
+    // Se for de outra empresa, devolvo vazio -> quem chamou trata como "não encontrado" (404).
+    // É o mesmo filtro que já existia no buscarPorId, agora reaproveitado no alterar e no status.
+    private Optional<Usuario> buscarUsuarioDaEmpresa(Long id) {
+        var usuarioLogado = getUsuarioLogado();
+        return usuarioRepository.findById(id)
+                .filter(u -> usuarioLogado.empresa_id() == null
+                        || (u.getEmpresa() != null && u.getEmpresa().getId().equals(usuarioLogado.empresa_id())));
     }
 
     public UsuarioResponse salvarUsuario(UsuarioRequest usuario, Long id) {
@@ -89,7 +111,7 @@ public class UsuarioService {
             Usuario usuarioBanco = usuarioRepository.save(novoUsuario);
             return new UsuarioResponse(usuarioBanco);
         }
-        return usuarioRepository.findById(id)
+        return buscarUsuarioDaEmpresa(id)
                 .map(usuarioBanco -> {
                     usuarioBanco.setNome(usuario.nome());
                     usuarioBanco.setCpf(new CPF(usuario.cpf()));
@@ -102,10 +124,7 @@ public class UsuarioService {
 
     // o findById procura, o map converte para UsuarioResponse se encontrou, e o orElse(null) devolve null se não encontrou.
     public UsuarioResponse buscarPorId(Long id) {
-        var usuarioLogado = getUsuarioLogado();
-        return usuarioRepository.findById(id)
-                .filter(u-> usuarioLogado.empresa_id() == null
-                || (u.getEmpresa() != null && u.getEmpresa().getId().equals(usuarioLogado.empresa_id())))
+        return buscarUsuarioDaEmpresa(id)
                 .map(UsuarioResponse::new)
                 .orElse(null);
     }
@@ -113,7 +132,9 @@ public class UsuarioService {
     //Achou: o map troca o status, salva e devolve true, e o controller responde 200.
     //Não achou: o orElse(false) devolve false, e o controller responde 404.
     public boolean atualizarStatus(EnumStatusUsuario status, Long id) {
-        return usuarioRepository.findById(id)
+        // ALTERADO: era usuarioRepository.findById(id)
+        // Aqui faz: só mudo o status (e excluo) se o usuário for da minha empresa; senão devolvo false -> 404
+        return buscarUsuarioDaEmpresa(id)
                 .map(usuario -> {
                     usuario.setStatus(status);
                     usuarioRepository.save(usuario);

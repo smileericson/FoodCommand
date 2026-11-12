@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<AnchorPane prefHeight="470.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.UniversalController">
+    <children>
+        <Button layoutX="16.0" layoutY="16.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
+
+        <Label alignment="CENTER" layoutX="0.0" layoutY="62.0" prefWidth="520.0" text="Cadastro Usuário Universal">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="0.0" layoutY="96.0" prefWidth="520.0" text="Dono do sistema: não pertence a nenhuma empresa" textFill="#5f5f5f" />
+        <Label alignment="CENTER" layoutX="0.0" layoutY="114.0" prefWidth="520.0" text="e consulta os dados de todas (somente leitura)." textFill="#5f5f5f" />
+
+        <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="164.0" prefWidth="70.0" text="Nome:" />
+        <TextField fx:id="txtNome" layoutX="120.0" layoutY="160.0" prefWidth="280.0" />
+
+        <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="216.0" prefWidth="70.0" text="CPF:" />
+        <TextField fx:id="txtCpf" layoutX="120.0" layoutY="212.0" prefWidth="280.0" />
+
+        <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="268.0" prefWidth="70.0" text="E-mail:" />
+        <TextField fx:id="txtEmail" layoutX="120.0" layoutY="264.0" prefWidth="280.0" />
+
+        <!-- PasswordField: a senha aparece como bolinhas -->
+        <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="320.0" prefWidth="70.0" text="Senha:" />
+        <PasswordField fx:id="txtSenha" layoutX="120.0" layoutY="316.0" prefWidth="280.0" />
+
+        <!-- defaultButton="true": botão azul e o Enter aciona o Salvar -->
+        <Button defaultButton="true" layoutX="215.0" layoutY="385.0" mnemonicParsing="false" onAction="#salvarUniversal" prefHeight="32.0" prefWidth="90.0" text="Salvar" />
+    </children>
+</AnchorPane>
