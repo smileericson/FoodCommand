@@ -5,11 +5,11 @@
 <?import javafx.scene.text.*?>
 
 
-<AnchorPane prefHeight="470.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.UniversalController">
+<AnchorPane prefHeight="470.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.usuarioAdminController">
     <children>
         <Button layoutX="16.0" layoutY="16.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
 
-        <Label alignment="CENTER" layoutX="0.0" layoutY="62.0" prefWidth="520.0" text="Cadastro Usuário Universal">
+        <Label alignment="CENTER" layoutX="0.0" layoutY="62.0" prefWidth="520.0" text="Cadastro Usuário Admin">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>

@@ -13,10 +13,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-public class UsuarioController {
+public class empresaDonoController {
 
     @FXML
     private TextField txtNome;

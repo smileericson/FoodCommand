@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class UniversalController {
+public class usuarioAdminController {
 
     // Os campos da tela. O nome tem que ser igual ao fx:id do universal-view.fxml
     @FXML

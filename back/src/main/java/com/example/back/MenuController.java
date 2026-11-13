@@ -14,7 +14,7 @@ public class MenuController {
     @FXML
     public void abrirCadastro(ActionEvent event) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/usuario-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/empresaDono-view.fxml"));
 
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -31,7 +31,7 @@ public class MenuController {
     }
     @FXML
     public void abrirUniversal(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/universal-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/usuarioAdmin-view.fxml"));
 
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
