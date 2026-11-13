@@ -24,7 +24,7 @@ public class TipoRestauranteController {
 
     @FXML
 
-    protected void SalvarTipoRestaurante(ActionEvent event) throws Exception {
+    protected void salvarTipoRestaurante(ActionEvent event) throws Exception {
 
         String jsonRequest = String.format("{\"nome\": \"%s\",\n" +
                 "  \"secretKey\": \"%s\"}",txtNome.getText(),"kkkkkk12345678910111213141516");

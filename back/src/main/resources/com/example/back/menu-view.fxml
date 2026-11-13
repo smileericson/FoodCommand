@@ -7,7 +7,7 @@
    <children>
       <Button layoutX="29.0" layoutY="350.0" mnemonicParsing="false" onAction="#sair" text="Sair" />
       <Button layoutX="177.0" layoutY="173.0" mnemonicParsing="false" onAction="#abrirCadastroEmpresaDono" prefHeight="26.0" prefWidth="242.0" text="Cadastro Empresa e Administrador (Dono)" />
-      <Button layoutX="194.0" layoutY="229.0" mnemonicParsing="false" onAction="#AbrirTipoRestaurante" prefHeight="26.0" prefWidth="211.0" text="Cadastro Tipo de Restaurante" />
+      <Button layoutX="194.0" layoutY="229.0" mnemonicParsing="false" onAction="#abrirTipoRestaurante" prefHeight="26.0" prefWidth="211.0" text="Cadastro Tipo de Restaurante" />
       <Button layoutX="192.0" layoutY="126.0" mnemonicParsing="false" onAction="#abrirUsuarioAdmin" prefHeight="26.0" prefWidth="211.0" text="Cadastro Admin do Sistema" />
    </children>
 </AnchorPane>

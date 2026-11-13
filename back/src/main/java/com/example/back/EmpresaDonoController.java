@@ -59,11 +59,11 @@ public class EmpresaDonoController {
 
         int respostaAPI = ExecutaMetodoAPI("http://localhost:8080/usuarios/admin",jsonRequest,"POST");
         if(respostaAPI ==200){
-            showMessage(Alert.AlertType.INFORMATION,"Usuario salvo com sucesso!");
+            showMessage(Alert.AlertType.INFORMATION,"Empresa e dono salvos com sucesso!!");
             voltar(event);
 
         }else {
-            showMessage(Alert.AlertType.ERROR,"Erro ao salvar usuário! Código: "+respostaAPI);
+            showMessage(Alert.AlertType.ERROR,"Erro ao salvar Empresa e dono! Código: "+respostaAPI);
         }
 
     }

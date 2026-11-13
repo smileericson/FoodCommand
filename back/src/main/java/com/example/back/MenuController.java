@@ -22,7 +22,7 @@ public class MenuController {
 
     }
     @FXML
-    public void AbrirTipoRestaurante(ActionEvent event) throws IOException {
+    public void abrirTipoRestaurante(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/tipoRestaurante-view.fxml"));
 
         Scene scene = new Scene(loader.load());
