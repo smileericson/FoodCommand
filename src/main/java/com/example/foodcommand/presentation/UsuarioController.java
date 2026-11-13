@@ -36,12 +36,12 @@ public class UsuarioController {
 
     @PostMapping("/empresadono")
     @Operation(summary = "Criação de Empresa e Dono", description = "Cria a empresa e o usuário dono (ROLE_EMPRESA_DONO) dela")
-    public ResponseEntity<CriarEmpresaDonoResponse>criarEmpresaDono(@RequestBody CriarEmpresaDonoRequest criarEmpresaDonoRequest) {
+    public ResponseEntity<?> criarEmpresaDono(@RequestBody CriarEmpresaDonoRequest criarEmpresaDonoRequest) {
         try {
             CriarEmpresaDonoResponse repostaSalvar = usuarioService.criarEmpresaDono(criarEmpresaDonoRequest);
             return ResponseEntity.ok(repostaSalvar);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     // NOVO

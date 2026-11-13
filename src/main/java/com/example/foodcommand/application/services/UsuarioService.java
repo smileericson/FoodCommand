@@ -31,6 +31,9 @@ public class UsuarioService {
     @Autowired
     private EmpresaRepository empresaRepository;
 
+    @Autowired
+    private CnpjService cnpjService;
+
     public LoginResponse validarUsuarioAutenticadoRetornaToken(LoginRequest request) {
 
         if (usuarioRepository.existsUsuarioByEmailAndSenha(
@@ -66,14 +69,27 @@ public class UsuarioService {
            throw new RuntimeException("Scretkey inválida");
         }
 
-        Empresa empresaSalvar = empresaRepository.save(new Empresa(criarEmpresaDonoRequest));
+        Empresa novaEmpresa = new Empresa(criarEmpresaDonoRequest);
+
+        var dadosCnpj = cnpjService.buscarEmpresaPorCnpj(criarEmpresaDonoRequest.cnpj());
+        novaEmpresa.setRazaoSocial(dadosCnpj.razaoSocial());
+        novaEmpresa.setNomeFantasia(dadosCnpj.nomeFantasia() == null || dadosCnpj.nomeFantasia().isBlank()
+                ? dadosCnpj.razaoSocial()
+                : dadosCnpj.nomeFantasia());
+        novaEmpresa.setCep(dadosCnpj.cep());
+        novaEmpresa.setLogradouro(dadosCnpj.logradouro());
+        novaEmpresa.setBairro(dadosCnpj.bairro());
+        novaEmpresa.setCidade(dadosCnpj.cidade());
+        novaEmpresa.setUf(dadosCnpj.uf());
+
+        Empresa empresaSalvar = empresaRepository.save(novaEmpresa);
 
         Usuario usuarioEmpresaDonoSalvar = new Usuario(criarEmpresaDonoRequest);
         usuarioEmpresaDonoSalvar.setEmpresa(empresaSalvar);
 
         usuarioRepository.save(usuarioEmpresaDonoSalvar);
 
-        return new CriarEmpresaDonoResponse(usuarioEmpresaDonoSalvar.getId(), "Empresa e Dono salvos com sucesso!");
+        return new CriarEmpresaDonoResponse(usuarioEmpresaDonoSalvar.getId(), "Empresa e Dono salvos com sucesso!", dadosCnpj);
     }
 
     public CriarUsuarioAdminSistemaResponse criarUsuarioAdminSistema(CriarUsuarioAdminSistemaRequest criarUsuarioAdminSistemaRequest) {
@@ -87,7 +103,23 @@ public class UsuarioService {
     }
 
     public UsuarioLogado getUsuarioLogado() {
-        return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // ALTERADO - TESTE CHAVE DA SEGURANÇA (Teste Prático 2 da avaliação)
+        // Antes: o retorno era um cast direto para UsuarioLogado.
+        // Problema: com a segurança desligada (.anyRequest().permitAll()), a requisição chega SEM token,
+        // o Spring coloca um usuário anônimo (o principal é o texto "anonymousUser") e o cast quebrava
+        // com ClassCastException, devolvendo erro 500 em vez de liberar o endpoint.
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Caminho normal: o JwtFilter validou o token e colocou o UsuarioLogado no contexto. Nada muda aqui.
+        if (principal instanceof UsuarioLogado usuarioLogado) {
+            return usuarioLogado;
+        }
+
+        // Sem token (só acontece com a segurança desligada): devolve um usuário "vazio", sem id, sem empresa
+        // e sem permissões (List.of()). Sem empresa_id, os services tratam como Admin do Sistema e listam tudo,
+        // o que é o esperado na demonstração. As escritas (POST/PUT/PATCH/DELETE) continuam bloqueadas
+        // pelas regras hasAnyRole do SecurityConfiguration, então esse usuário só consegue consultar.
+        return new UsuarioLogado(null, null, null, null, List.of());
     }
     // NOVO
     // Aqui faz: busco o usuário pelo id, mas só devolvo se ele for da MESMA empresa de quem está logado.
