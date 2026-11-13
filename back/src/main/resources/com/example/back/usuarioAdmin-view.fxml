@@ -31,6 +31,6 @@
         <PasswordField fx:id="txtSenha" layoutX="120.0" layoutY="316.0" prefWidth="280.0" />
 
         <!-- defaultButton="true": botão azul e o Enter aciona o Salvar -->
-        <Button defaultButton="true" layoutX="215.0" layoutY="385.0" mnemonicParsing="false" onAction="#salvarUniversal" prefHeight="32.0" prefWidth="90.0" text="Salvar" />
+        <Button defaultButton="true" layoutX="215.0" layoutY="385.0" mnemonicParsing="false" onAction="#salvarUsuarioAdmin" prefHeight="32.0" prefWidth="90.0" text="Salvar" />
     </children>
 </AnchorPane>

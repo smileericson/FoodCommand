@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 public class usuarioAdminController {
 
-    // Os campos da tela. O nome tem que ser igual ao fx:id do universal-view.fxml
+    // Os campos da tela. O nome tem que ser igual ao fx:id do usuarioAdmin-view.fxml
     @FXML
     private TextField txtNome;
     @FXML
@@ -36,7 +36,7 @@ public class usuarioAdminController {
     // Aqui faz: monta o JSON com os dados da tela e manda para o backend criar o universal.
     // Vai sem token, igual ao Cadastro Admin; o backend confere a secretKey.
     @FXML
-    public void salvarUniversal(ActionEvent event) throws Exception {
+    public void salvarUsuarioAdmin(ActionEvent event) throws Exception {
 
         String jsonRequest = String.format("{\n" +
                         " \"nome\": \"%s\",\n" +
