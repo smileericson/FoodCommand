@@ -49,22 +49,22 @@ public class Usuario implements UserDetails {
 
     public EnumStatusUsuario status =EnumStatusUsuario.ATIVO;
 
-    // usuario universal - quem criou o foodcommand
-    public Usuario(CriarUniversalRequest criarUniversalRequest) {
-        this.setCpf(new CPF(criarUniversalRequest.cpf()));
-        this.setNome(criarUniversalRequest.nome());
-        this.setSenha(criarUniversalRequest.senha());
-        this.setEmail(criarUniversalRequest.email());
-        this.setRole("ROLE_UNIVERSAL");
+    // usuario Admin do Sistema - quem criou o foodcommand
+    public Usuario(CriarUsuarioAdminSistemaRequest criarUsuarioAdminSistemaRequest) {
+        this.setCpf(new CPF(criarUsuarioAdminSistemaRequest.cpf()));
+        this.setNome(criarUsuarioAdminSistemaRequest.nome());
+        this.setSenha(criarUsuarioAdminSistemaRequest.senha());
+        this.setEmail(criarUsuarioAdminSistemaRequest.email());
+        this.setRole("ROLE_ADMIN");
     }
 
-    //construtor que pega as informações
-    public Usuario(CriarAdminRequest criarAdminRequest) {
-        this.setCpf(new CPF(criarAdminRequest.cpf()));
-        this.setNome(criarAdminRequest.nome());
-        this.setSenha(criarAdminRequest.senha());
-        this.setEmail(criarAdminRequest.email());
-        this.setRole("ROLE_ADMIN");
+    // usuario dono da empresa (Empresa e Dono)
+    public Usuario(CriarEmpresaDonoRequest criarEmpresaDonoRequest) {
+        this.setCpf(new CPF(criarEmpresaDonoRequest.cpf()));
+        this.setNome(criarEmpresaDonoRequest.nome());
+        this.setSenha(criarEmpresaDonoRequest.senha());
+        this.setEmail(criarEmpresaDonoRequest.email());
+        this.setRole("ROLE_EMPRESA_DONO");
 
     }
 

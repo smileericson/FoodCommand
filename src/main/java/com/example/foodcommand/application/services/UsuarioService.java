@@ -60,30 +60,30 @@ public class UsuarioService {
                 .toList();
     }
     @Transactional
-    public CriarAdminResponse criarAdmin(CriarAdminRequest criarAdminRequest) {
+    public CriarEmpresaDonoResponse criarEmpresaDono(CriarEmpresaDonoRequest criarEmpresaDonoRequest) {
 
-        if (!criarAdminRequest.secretKey().equals(secret)) {
+        if (!criarEmpresaDonoRequest.secretKey().equals(secret)) {
            throw new RuntimeException("Scretkey inválida");
         }
 
-        Empresa empresaSalvar = empresaRepository.save(new Empresa(criarAdminRequest));
+        Empresa empresaSalvar = empresaRepository.save(new Empresa(criarEmpresaDonoRequest));
 
-        Usuario usuarioAdminSalvar = new Usuario(criarAdminRequest);
-        usuarioAdminSalvar.setEmpresa(empresaSalvar);
+        Usuario usuarioEmpresaDonoSalvar = new Usuario(criarEmpresaDonoRequest);
+        usuarioEmpresaDonoSalvar.setEmpresa(empresaSalvar);
 
-        usuarioRepository.save(usuarioAdminSalvar);
+        usuarioRepository.save(usuarioEmpresaDonoSalvar);
 
-        return new CriarAdminResponse(usuarioAdminSalvar.getId(), "Usuario Salvo com sucesso!");
+        return new CriarEmpresaDonoResponse(usuarioEmpresaDonoSalvar.getId(), "Empresa e Dono salvos com sucesso!");
     }
 
-    public CriarAdminResponse criarUniversal(CriarUniversalRequest criarUniversalRequest) {
-        if (!criarUniversalRequest.secretKey().equals(secret)) {
+    public CriarUsuarioAdminSistemaResponse criarUsuarioAdminSistema(CriarUsuarioAdminSistemaRequest criarUsuarioAdminSistemaRequest) {
+        if (!criarUsuarioAdminSistemaRequest.secretKey().equals(secret)) {
             throw new RuntimeException("SecretKey inválida");
         }
-        Usuario usuarioUniversal = new Usuario(criarUniversalRequest);
-        usuarioRepository.save(usuarioUniversal);
+        Usuario usuarioAdminSistema = new Usuario(criarUsuarioAdminSistemaRequest);
+        usuarioRepository.save(usuarioAdminSistema);
 
-        return new CriarAdminResponse(usuarioUniversal.getId(),"Usuario universal salvo com sucesso");
+        return new CriarUsuarioAdminSistemaResponse(usuarioAdminSistema.getId(), "Usuario Admin do Sistema salvo com sucesso");
     }
 
     public UsuarioLogado getUsuarioLogado() {
@@ -91,7 +91,7 @@ public class UsuarioService {
     }
     // NOVO
     // Aqui faz: busco o usuário pelo id, mas só devolvo se ele for da MESMA empresa de quem está logado.
-    // Se quem está logado não tem empresa (empresa_id null = usuário universal), devolvo qualquer um.
+    // Se quem está logado não tem empresa (empresa_id null = usuário Admin do Sistema), devolvo qualquer um.
     // Se for de outra empresa, devolvo vazio -> quem chamou trata como "não encontrado" (404).
     // É o mesmo filtro que já existia no buscarPorId, agora reaproveitado no alterar e no status.
     private Optional<Usuario> buscarUsuarioDaEmpresa(Long id) {

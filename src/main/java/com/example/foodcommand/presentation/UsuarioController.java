@@ -34,24 +34,24 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
     }
 
-    @PostMapping("/admin")
-    @Operation(summary = "Método de criação de usuários ADMS!", description = "Método reponsável em efetuar a criação de novos usuários ADMS!")
-    public ResponseEntity<CriarAdminResponse>criarAdmin(@RequestBody CriarAdminRequest criarAdminRequest) {
+    @PostMapping("/empresadono")
+    @Operation(summary = "Criação de Empresa e Dono", description = "Cria a empresa e o usuário dono (ROLE_EMPRESA_DONO) dela")
+    public ResponseEntity<CriarEmpresaDonoResponse>criarEmpresaDono(@RequestBody CriarEmpresaDonoRequest criarEmpresaDonoRequest) {
         try {
-            CriarAdminResponse repostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
+            CriarEmpresaDonoResponse repostaSalvar = usuarioService.criarEmpresaDono(criarEmpresaDonoRequest);
             return ResponseEntity.ok(repostaSalvar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
     // NOVO
-    // Aqui faz: rota que o desktop chama para criar o dono do sistema.
+    // Aqui faz: rota que o desktop chama para criar o Admin do Sistema.
     // Se der erro (CPF inválido, secretKey errada), devolve 400 COM a mensagem, para o desktop mostrar.
-    @PostMapping("/universal")
-    @Operation(summary = "Criação do usuário universal", description = "Cria o dono do sistema, sem empresa, que enxerga os dados de todas as empresas")
-    public ResponseEntity<?> criarUniversal(@RequestBody CriarUniversalRequest criarUniversalRequest) {
+    @PostMapping("/usuarioadmin")
+    @Operation(summary = "Criação do usuário Admin do Sistema", description = "Cria o Admin do Sistema, sem empresa, que enxerga os dados de todas as empresas")
+    public ResponseEntity<?> criarUsuarioAdminSistema(@RequestBody CriarUsuarioAdminSistemaRequest criarUsuarioAdminSistemaRequest) {
         try {
-            return ResponseEntity.ok(usuarioService.criarUniversal(criarUniversalRequest));
+            return ResponseEntity.ok(usuarioService.criarUsuarioAdminSistema(criarUsuarioAdminSistemaRequest));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

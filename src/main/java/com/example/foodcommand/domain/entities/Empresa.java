@@ -1,6 +1,6 @@
 package com.example.foodcommand.domain.entities;
 
-import com.example.foodcommand.application.DTOs.CriarAdminRequest;
+import com.example.foodcommand.application.DTOs.CriarEmpresaDonoRequest;
 import com.example.foodcommand.domain.valueobject.CNPJ;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,9 +29,9 @@ public class Empresa {
     @OneToMany(mappedBy = "empresa")
     private List<Usuario> usuarios;
 
-    public Empresa(CriarAdminRequest criarAdminRequest) {
-            this.setRazaoSocial(criarAdminRequest.razaoSocial());
-            this.setCnpj(new CNPJ(criarAdminRequest.cnpj()));
-            this.setNomeFantasia(criarAdminRequest.nomeFantasia());
+    public Empresa(CriarEmpresaDonoRequest criarEmpresaDonoRequest) {
+            this.setRazaoSocial(criarEmpresaDonoRequest.razaoSocial());
+            this.setCnpj(new CNPJ(criarEmpresaDonoRequest.cnpj()));
+            this.setNomeFantasia(criarEmpresaDonoRequest.nomeFantasia());
     }
 }

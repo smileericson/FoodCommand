@@ -50,7 +50,7 @@ public class UsuarioAdminController {
                 txtCpf.getText(),
                 "kkkkkk12345678910111213141516");
 
-        executaMetodoAPI("http://localhost:8080/usuarios/universal", jsonRequest, "POST");
+        executaMetodoAPI("http://localhost:8080/usuarios/usuarioadmin", jsonRequest, "POST");
 
         // Deu certo: mostro a mensagem e volto para o menu.
         // Deu erro: mostro o motivo que a própria API mandou (CPF inválido, secretKey errada...).

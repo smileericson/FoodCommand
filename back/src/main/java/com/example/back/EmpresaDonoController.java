@@ -57,7 +57,7 @@ public class EmpresaDonoController {
                 txtNomeFantasia.getText(),
                 "kkkkkk12345678910111213141516");
 
-        int respostaAPI = ExecutaMetodoAPI("http://localhost:8080/usuarios/admin",jsonRequest,"POST");
+        int respostaAPI = ExecutaMetodoAPI("http://localhost:8080/usuarios/empresadono",jsonRequest,"POST");
         if(respostaAPI ==200){
             showMessage(Alert.AlertType.INFORMATION,"Empresa e dono salvos com sucesso!!");
             voltar(event);
