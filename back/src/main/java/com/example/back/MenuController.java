@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MenuController {
 
     @FXML
-    public void abrirCadastro(ActionEvent event) throws IOException {
+    public void abrirCadastroEmpresaDono(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/empresaDono-view.fxml"));
 
@@ -30,7 +30,7 @@ public class MenuController {
         stage.setScene(scene);
     }
     @FXML
-    public void abrirUniversal(ActionEvent event) throws IOException {
+    public void abrirUsuarioAdmin(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/back/usuarioAdmin-view.fxml"));
 
         Scene scene = new Scene(loader.load());
