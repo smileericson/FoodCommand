@@ -34,7 +34,7 @@ public class empresaDonoController {
 
 
     @FXML
-    public void salvarUsuario(ActionEvent event) throws Exception {
+    public void salvarEmpresaDono(ActionEvent event) throws Exception {
 
         //Validar Dados
 

@@ -33,7 +33,7 @@ public class usuarioAdminController {
     private int codigoResposta;
     private String corpoResposta;
 
-    // Aqui faz: monta o JSON com os dados da tela e manda para o backend criar o universal.
+    // Aqui faz: monta o JSON com os dados da tela e manda para o backend criar o Admin do sistema.
     // Vai sem token, igual ao Cadastro Admin; o backend confere a secretKey.
     @FXML
     public void salvarUsuarioAdmin(ActionEvent event) throws Exception {
@@ -55,10 +55,10 @@ public class usuarioAdminController {
         // Deu certo: mostro a mensagem e volto para o menu.
         // Deu erro: mostro o motivo que a própria API mandou (CPF inválido, secretKey errada...).
         if (codigoResposta == 200) {
-            showMessage(Alert.AlertType.INFORMATION, "Usuário universal salvo com sucesso!");
+            showMessage(Alert.AlertType.INFORMATION, "Usuário Admin salvo com sucesso!");
             voltar(event);
         } else {
-            showMessage(Alert.AlertType.ERROR, "Erro ao salvar usuário universal!\nMotivo: " + corpoResposta);
+            showMessage(Alert.AlertType.ERROR, "Erro ao salvar usuário Admin!\nMotivo: " + corpoResposta);
         }
     }
 

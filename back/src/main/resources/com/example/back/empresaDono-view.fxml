@@ -8,7 +8,7 @@
    <children>
       <Button layoutX="14.0" layoutY="22.0" mnemonicParsing="false" onAction="#voltar" text="voltar" />
 
-      <!-- Titulo e explicacao da tela (mesmo estilo da tela do usuario universal) -->
+      <!-- Titulo e explicacao da tela (mesmo estilo da tela do usuario admin do sistema) -->
       <Label alignment="CENTER" layoutX="87.0" layoutY="20.0" prefHeight="27.0" prefWidth="494.0" text="Cadastro de Empresa e Dono">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -17,7 +17,7 @@
       <Label alignment="CENTER" layoutX="0.0" layoutY="52.0" prefWidth="648.0" text="Cria uma (empresa) e o administrador(dono) dela." textFill="#5f5f5f" />
       <Label alignment="CENTER" layoutX="0.0" layoutY="70.0" prefWidth="648.0" text="O administrador(dono) só enxerga e altera os dados da própria empresa." textFill="#5f5f5f" />
 
-      <Button layoutX="300.0" layoutY="339.0" mnemonicParsing="false" onAction="#salvarUsuario" text="Salvar" />
+      <Button layoutX="300.0" layoutY="339.0" mnemonicParsing="false" onAction="#salvarEmpresaDono" text="Salvar" />
       <TextField fx:id="txtNome" layoutX="432.0" layoutY="130.0" />
       <TextField fx:id="txtCpf" layoutX="432.0" layoutY="174.0" />
       <PasswordField fx:id="txtSenha" layoutX="432.0" layoutY="214.0" />

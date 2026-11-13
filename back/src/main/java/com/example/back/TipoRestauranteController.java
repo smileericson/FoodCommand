@@ -33,10 +33,10 @@ public class TipoRestauranteController {
                 executaMetodoAPI("http://localhost:8080/tiporestaurante/criar",jsonRequest, "POST");
 
         if (respostaApi == 200){
-            showMessage(Alert.AlertType.INFORMATION, "Comunicação salva com sucesso!");
+            showMessage(Alert.AlertType.INFORMATION, "Tipo de restaurante salvo com sucesso!");
             voltar(event);
         }else {
-            showMessage(Alert.AlertType.ERROR, "Erro ao salvar comunicação!");
+            showMessage(Alert.AlertType.ERROR, "Erro ao salvar tipo de restaurante!");
         }
     }// fechao o salvarTipoRestaurante
 
