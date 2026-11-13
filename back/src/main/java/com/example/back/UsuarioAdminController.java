@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class usuarioAdminController {
+public class UsuarioAdminController {
 
     // Os campos da tela. O nome tem que ser igual ao fx:id do usuarioAdmin-view.fxml
     @FXML

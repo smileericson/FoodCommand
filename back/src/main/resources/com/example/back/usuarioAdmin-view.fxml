@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 
 
-<AnchorPane prefHeight="470.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.usuarioAdminController">
+<AnchorPane prefHeight="470.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.UsuarioAdminController">
     <children>
         <Button layoutX="16.0" layoutY="16.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
 
