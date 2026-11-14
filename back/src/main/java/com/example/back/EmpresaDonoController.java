@@ -6,14 +6,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EmpresaDonoController {
 
@@ -31,6 +36,54 @@ public class EmpresaDonoController {
     private TextField txtCnpj;
     @FXML
     private TextField txtNomeFantasia;
+    @FXML
+    private Label lblEndereco;
+
+    @FXML
+    public void buscarCnpj(ActionEvent event) {
+
+        String cnpj = txtCnpj.getText().replaceAll("\\D", "");
+        if (cnpj.isEmpty()) {
+            showMessage(Alert.AlertType.ERROR, "Informe o CNPJ para buscar.");
+            return;
+        }
+
+        try {
+            URL urlAPI = new URL("http://localhost:8080/cnpj/" + cnpj);
+            HttpURLConnection connection = (HttpURLConnection) urlAPI.openConnection();
+            connection.setRequestMethod("GET");
+
+            int codigoResposta = connection.getResponseCode();
+            InputStream corpo = codigoResposta < 400 ? connection.getInputStream() : connection.getErrorStream();
+            String resposta = corpo == null ? "" : new String(corpo.readAllBytes(), StandardCharsets.UTF_8).trim();
+
+            if (codigoResposta == 200) {
+                String razaoSocial = lerCampo(resposta, "razaoSocial");
+                String nomeFantasia = lerCampo(resposta, "nomeFantasia");
+
+                txtRazaoSocial.setText(razaoSocial);
+                txtNomeFantasia.setText(nomeFantasia.trim().isEmpty() ? razaoSocial : nomeFantasia);
+                lblEndereco.setText(lerCampo(resposta, "logradouro") + ", " + lerCampo(resposta, "bairro")
+                        + " - " + lerCampo(resposta, "cidade") + "/" + lerCampo(resposta, "uf")
+                        + " - CEP " + lerCampo(resposta, "cep"));
+            } else {
+                txtRazaoSocial.setText("");
+                txtNomeFantasia.setText("");
+                lblEndereco.setText("");
+                showMessage(Alert.AlertType.ERROR, "Erro ao buscar CNPJ!\nMotivo: " + resposta);
+            }
+        } catch (Exception e) {
+            showMessage(Alert.AlertType.ERROR, "Não foi possível conectar ao backend: " + e.getMessage());
+        }
+    }
+
+    private String lerCampo(String json, String campo) {
+        Matcher matcher = Pattern.compile("\"" + campo + "\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"").matcher(json);
+        if (matcher.find()) {
+            return matcher.group(1).replace("\\\"", "\"").replace("\\\\", "\\");
+        }
+        return "";
+    }
 
 
     @FXML

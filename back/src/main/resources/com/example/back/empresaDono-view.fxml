@@ -33,6 +33,9 @@
       <Label layoutX="33.0" layoutY="218.0" text="Nome Fantasia:" />
       <TextField fx:id="txtRazaoSocial" layoutX="130.0" layoutY="130.0" />
       <TextField fx:id="txtCnpj" layoutX="130.0" layoutY="169.0" />
+      <Button layoutX="290.0" layoutY="169.0" mnemonicParsing="false" onAction="#buscarCnpj" text="Buscar" />
       <TextField fx:id="txtNomeFantasia" layoutX="130.0" layoutY="215.0" />
+      <Label layoutX="62.0" layoutY="259.0" text="Endereço:" />
+      <Label fx:id="lblEndereco" layoutX="130.0" layoutY="259.0" prefWidth="230.0" wrapText="true" />
    </children>
 </AnchorPane>

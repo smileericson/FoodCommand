@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                                 "/usuarios/empresadono",
                                 "/usuarios/usuarioadmin",
                                 "/tiporestaurante/criar",
+                                "/cnpj/**",
                                 "/error",
                                 "/swagger-ui/**",
                                 "/webjars/**",
