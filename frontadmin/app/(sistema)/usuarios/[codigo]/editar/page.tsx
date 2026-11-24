@@ -5,7 +5,8 @@ import UsuarioForm from "../../components/UsuarioForm";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Usuario } from "@/app/types/usuario";
-import consultaUsuarioPorId from "@/app/services/usuarioService";
+import { consultaUsuarioPorId } from "@/app/services/usuarioService";
+
 
 
 export default function EditarUsuario() {

@@ -8,6 +8,18 @@ export class Pedido{
     ){}
 }
 
-export interface PedidoFormProps{
-    pedidoExistente?:Pedido
+export interface ItemComanda{
+    nome:string
+    quantidade:number
+    preco:string
+}
+
+export interface ComandaState{
+    pedido:Pedido | null
+    numeroMesa:number | null
+    itens:ItemComanda[]
+}
+
+export interface HistoricoPedidoState{
+    ultimosConsultados:number[]
 }

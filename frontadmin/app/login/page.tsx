@@ -4,9 +4,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "../types/auth";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/slices/authSlice";
+import { login, setToken } from "../redux/slices/authSlice";
 import { buscarUsuarioLogado } from "../services/usuarioService";
-import Cookies from "js-cookie";
 import { loginBack } from "../services/authService";
 
 export default function Login() {
@@ -23,8 +22,9 @@ export default function Login() {
             var loginResposta = await loginBack(emailTela,senhaTela)
 
             if (loginResposta != null) {
-                Cookies.set('token',loginResposta.token,{secure: true, expires: 7});
-                
+                // Guarda o token na store para a próxima requisição já ir autenticada.
+                dispatch(setToken(loginResposta.token));
+
                 var usuarioLogado = await buscarUsuarioLogado();
 
                 dispatch(login({

@@ -48,27 +48,6 @@ public class PedidoService {
                 .toList();
     }
 
-    public PedidoResponse salvarPedido(PedidoRequest pedido, Long id) {
-        if (id == null || id == 0L) {
-            Pedido novoPedido = new Pedido(pedido);
-
-            novoPedido.setEmpresa(empresaRepository.findById(empresaLogadaId())
-                    .orElseThrow(() -> new RuntimeException("Empresa não encontrada")));
-
-            Pedido pedidoBanco = pedidoRepository.save(novoPedido);
-
-            return new PedidoResponse(pedidoBanco);
-        }
-        return pedidoRepository.findByIdAndEmpresa_Id(id, empresaLogadaId())
-                .map(pedidoBanco -> {
-                    pedidoBanco.setValorSubtotal(pedido.valorSubtotal());
-                    pedidoBanco.setTaxaServico(pedido.taxaServico());
-                    pedidoBanco.setValorTotal(pedido.valorTotal());
-                    return new PedidoResponse(pedidoRepository.save(pedidoBanco));
-                })
-                .orElse(null);
-    }
-
     public PedidoResponse buscarPorId(Long id) {
         var pedido = empresaLogadaId() == null
                 ? pedidoRepository.findById(id)

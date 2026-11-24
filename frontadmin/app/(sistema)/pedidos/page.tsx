@@ -2,13 +2,16 @@
 
 import { buscarListaPedidos, deletarPedido } from "@/app/services/pedidoService";
 import { Pedido } from "@/app/types/pedido";
+import { RootState } from "@/app/redux/store";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Pedidos() {
 
     const [pedidos, setPedidos] = useState<Pedido[]>([]);
+    const ultimosConsultados = useSelector((state: RootState) => state.historicoPedido.ultimosConsultados);
 
     useEffect(() => {
         carregarDados();
@@ -22,6 +25,8 @@ export default function Pedidos() {
             setPedidos( dados);
 
         } catch (error) {
+            // 401: o interceptor já fez o logout e vai mostrar o login, então não exibe o alerta.
+            if (axios.isAxiosError(error) && error.response?.status === 401) return;
             alert("Erro ao carregar dados!")
         }
 
@@ -42,13 +47,12 @@ export default function Pedidos() {
         carregarDados();
     }
 
-    const handleAlterarStatusPedido = async (pedido: Pedido) => {
-
-        
-
-        carregarDados();
-
-    }
+    // Ordena pelo último pedido consultado (histórico do Redux); os demais seguem a ordem do backend.
+    const pedidosOrdenados = [...pedidos].sort((a, b) => {
+        const posicaoA = ultimosConsultados.indexOf(a.id || 0);
+        const posicaoB = ultimosConsultados.indexOf(b.id || 0);
+        return (posicaoA === -1 ? ultimosConsultados.length : posicaoA) - (posicaoB === -1 ? ultimosConsultados.length : posicaoB);
+    });
 
     return (
 
@@ -79,10 +83,10 @@ export default function Pedidos() {
                         </div>
 
                         <Link
-                            href="/pedidos/novo"
+                            href="/pedidos/comanda"
                             className="rounded-lg bg-orange-500 px-5 py-3 text-center font-semibold text-white shadow-md transition duration-200 hover:bg-orange-600 hover:shadow-lg active:scale-95"
                         >
-                            + Novo Pedido
+                            + Abrir Comanda
                         </Link>
 
                     </div>
@@ -154,7 +158,7 @@ export default function Pedidos() {
 
                         <tbody>
 
-                            {pedidos.map((pedido) => (
+                            {pedidosOrdenados.map((pedido) => (
 
                                 <tr
                                     key={pedido.id}
@@ -191,30 +195,11 @@ export default function Pedidos() {
 
                                         <div className="flex flex-col items-center justify-center gap-2">
 
-                                            <Link
-                                                href={`/pedidos/${pedido.id}/editar`}
-                                                className="rounded-md px-3 py-1 text-sm font-semibold text-orange-600 transition duration-200 hover:bg-orange-50 hover:text-orange-800 hover:underline"
-                                            >
-                                                Editar
-                                            </Link>
-
                                             <button
                                                 onClick={() => handleDeletarPedido(pedido)}
                                                 className="rounded-md px-3 py-1 text-sm font-semibold text-red-600 transition duration-200 hover:bg-red-50 hover:text-red-800"
                                             >
                                                 DELETAR
-                                            </button>
-
-                                            <button
-                                                onClick={() => handleAlterarStatusPedido(pedido)}
-                                                className={`rounded-md px-3 py-1 text-sm font-semibold transition duration-200 ${pedido.statusPedido === "CANCELADO"
-                                                        ? 'text-orange-600 hover:bg-red-50 hover:text-red-800'
-                                                        : pedido.statusPedido === "EXCLUIDO"
-                                                            ? 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
-                                                            : 'text-green-600 hover:bg-green-50 hover:text-green-800'
-                                                    }`}
-                                            >
-                                                {pedido.statusPedido}
                                             </button>
 
                                         </div>

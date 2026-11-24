@@ -45,6 +45,13 @@ export default function Sidebar(){
                    Consultar Pedidos
                 </Link>
 
+                <Link
+                    href="/pedidos/comanda"
+                    className="rounded-lg px-4 py-3 text-center font-medium text-zinc-300 transition duration-200 hover:bg-orange-500 hover:text-white"
+                >
+                   Comanda
+                </Link>
+
             </nav>
 
         </aside>

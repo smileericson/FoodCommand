@@ -21,42 +21,33 @@ export async function deletarPedido(id:number):Promise<number> {
     return dados.status;
 }
 
-export async function atualizarStatusUsuario(pedido:Pedido):Promise<void> {
-
-        var novoStatus = {};
-
-        if (pedido.statusPedido === "ATIVO") {
-            novoStatus = { statusPedido: "CANCELADO" }
-        } else {
-            novoStatus = { statusPedido: "ATIVO" }
-        }
-
-        var dadosRetorno = await
-            api.patch('/pedidos/' + pedido.id + '/status', novoStatus);
-
-        if (dadosRetorno.status == 200) {
-            alert("Atulizado status com sucesso!");
-
-        } else {
-            alert(dadosRetorno.data);
-
-            return;
-        }
-    
-}
-
-export async function consultaPedidoPorId (id:Number): Promise<Pedido>{
-
-     const valorUsuarioBack = await api.get<Pedido>('/pedidos/' + id);
-        return valorUsuarioBack.data;
-}
-
-export async function atualizarPedido (pedido:Pedido) : Promise<number>{
-    var dadosRetorno = await api.put<number>('/pedidos/' + pedido.id, pedido);
+export async function abrirAtendimento(mesaId:number) : Promise<Pedido>{
+    var dadosRetorno = await api.post<Pedido>('/pedidos/mesa/' + mesaId + '/abrir');
         return dadosRetorno.data;
 }
 
-export async function salvarPedido (pedido:Pedido) : Promise<number>{
-    var dadosRetorno = await api.post<number>('/pedidos' , pedido);
+export async function adicionarItem(pedidoId:number, cardapioId:number, quantidade:number) : Promise<Pedido>{
+    var dadosRetorno = await api.post<Pedido>('/pedidos/' + pedidoId + '/itens',
+        { cardapioId: cardapioId, quantidade: quantidade });
+        return dadosRetorno.data;
+}
+
+export async function enviarParaPreparo(pedidoId:number) : Promise<Pedido>{
+    var dadosRetorno = await api.patch<Pedido>('/pedidos/' + pedidoId + '/enviar-preparo');
+        return dadosRetorno.data;
+}
+
+export async function marcarPronto(pedidoId:number) : Promise<Pedido>{
+    var dadosRetorno = await api.patch<Pedido>('/pedidos/' + pedidoId + '/pronto');
+        return dadosRetorno.data;
+}
+
+export async function pedirConta(pedidoId:number) : Promise<Pedido>{
+    var dadosRetorno = await api.patch<Pedido>('/pedidos/' + pedidoId + '/pedir-conta');
+        return dadosRetorno.data;
+}
+
+export async function fecharConta(pedidoId:number) : Promise<Pedido>{
+    var dadosRetorno = await api.patch<Pedido>('/pedidos/' + pedidoId + '/fechar-conta');
         return dadosRetorno.data;
 }

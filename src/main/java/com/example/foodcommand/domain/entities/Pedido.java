@@ -2,7 +2,6 @@ package com.example.foodcommand.domain.entities;
 
 import com.example.foodcommand.application.DTOs.EnumStatusMesa;
 import com.example.foodcommand.application.DTOs.EnumStatusPedido;
-import com.example.foodcommand.application.DTOs.PedidoRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,12 +42,6 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
-
-    public Pedido(PedidoRequest pedido) {
-        this.setValorTotal(pedido.valorTotal());
-        this.setTaxaServico(pedido.taxaServico());
-        this.setValorSubtotal(pedido.valorSubtotal());
-    }
 
     public void validarGarcom(Usuario garcomLogado) {
         if (this.garcom == null) {

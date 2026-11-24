@@ -23,7 +23,8 @@ export default function Usuarios() {
             setUsuarios(dados);
 
         } catch (error) {
-
+            // 401: o interceptor já fez o logout e vai mostrar o login, então não exibe o alerta.
+            if (axios.isAxiosError(error) && error.response?.status === 401) return;
             alert("Erro ao carregar dados!")
         }
 

@@ -3,6 +3,8 @@
 import { useDispatch } from "react-redux";
 import { store } from "../redux/store";
 import { logout } from "../redux/slices/authSlice";
+import { fecharComanda } from "../redux/slices/pedidoSlice";
+import { limparHistorico } from "../redux/slices/historicoPedidoSlice";
 
 export default function Header() {
 
@@ -41,6 +43,8 @@ export default function Header() {
                 onClick={()=>
                     {
                     dispatch(logout());
+                    dispatch(fecharComanda());
+                    dispatch(limparHistorico());
                 }
                 }
                     className="rounded-lg bg-orange-500 px-5 py-2 font-semibold text-white transition duration-200 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/20 active:scale-95"

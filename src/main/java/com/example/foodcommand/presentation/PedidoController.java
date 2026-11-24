@@ -7,7 +7,6 @@ import com.example.foodcommand.application.DTOs.EnumStatusPedido;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,18 +33,6 @@ public class PedidoController {
             return  ResponseEntity.ok(pedidoBanco);
         }
         return ResponseEntity.notFound().build();
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Metodo de cosulta de lista de pedidos",description = "Metodo responsavel em efetuar a criação de novos pedidos")
-    public ResponseEntity<?> criar(@RequestBody PedidoRequest pedido){
-        try {
-            PedidoResponse pedidoBanco =  pedidoService.salvarPedido(pedido,0L);
-            return ResponseEntity.ok(pedidoBanco);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @PostMapping("/mesa/{mesaId}/abrir")
@@ -118,21 +105,6 @@ public class PedidoController {
         }
         return ResponseEntity.notFound().build();
 
-    }
-
-    @PutMapping("/{id}")
-    @Operation(summary = "Metodo de cosulta de lista de pedidos",description= "Metodo responsavel em efetuar a atualização de todos os pedidos,filtrado por Id")
-    public ResponseEntity<?> atualizar(@PathVariable Long id,
-                                       @RequestBody PedidoRequest pedido) {
-        try {
-            PedidoResponse pedidoBanco = pedidoService.salvarPedido(pedido,id);
-            if (pedidoBanco == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(pedidoBanco);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @DeleteMapping("/{id}/excluir")

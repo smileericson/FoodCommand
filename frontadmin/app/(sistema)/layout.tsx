@@ -23,6 +23,9 @@ export default function SistemaLayout({ children }) {
         }
     })
 
+    // Renderização condicional: sem usuário no Redux não desenha o sistema (o useEffect acima leva para o login).
+    if (usuario == null) return null;
+
     return (
         <>
         
